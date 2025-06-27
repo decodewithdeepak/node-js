@@ -8,6 +8,7 @@ GET /api/users → fetch all users (return as JSON)
 GET /api/users/1 → fetch user with ID 1  
 POST /api/users → create a new user  
 PUT /api/users/1 → update user with ID 1  
+PATCH /api/users/1 → partially update user with ID 1
 DELETE /api/users/1 → delete user with ID 1  
 */
 
