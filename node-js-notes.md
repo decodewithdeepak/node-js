@@ -88,9 +88,28 @@ npm install -g nodemon
 nodemon app.js
 ```
 
-**Practice Exercise:**
+### Node.js Hello World Example
 
-- Install Node.js and run a simple `console.log('Hello Node!')` script.
+```javascript
+console.log('Hello Node!');
+// console.log(window); // Error in Node.js environment but works in browser
+// console.log(alert("Hey there!")); // Error in Node.js environment but works in browser
+```
+> Note:- Window objects, ui elements, and other browser-specific features are not available in Node.js.
+
+This example demonstrates a key difference between Node.js and browser JavaScript:
+
+- Node.js has no access to browser-specific objects like `window` or `document`
+- Browser functions like `alert()` don't exist in Node.js
+- Node.js includes server-specific features not available in browsers
+
+To run this example, save it as `hello.js` and execute:
+
+```bash
+node hello.js
+```
+
+This will display "Hello Node!" in your terminal, demonstrating that Node.js is correctly executing JavaScript code outside the browser environment.
 
 **Summary:**
 Setting up Node.js is easy and cross-platform. REPL and nodemon speed up development.
@@ -227,29 +246,55 @@ HTTP methods define the type of action to be performed on a resource.
 
 The `fs` module provides an API for interacting with the file system.
 
-- **Sync:**
+#### **Sync (Blocking):**
   Synchronous file operations block the event loop until completed.
 
 ```javascript
+// From your sync_async.js
 const fs = require('fs');
-const data = fs.readFileSync('file.txt', 'utf8');
+
+// Blocking Request (Sync)
+console.log('1');
+const result = fs.readFileSync('./contacts.txt', 'utf8');
+console.log(result);
+console.log('2');
+
+// Output order: 1, [file contents], 2
 ```
 
-- **Async:**
+#### **Async (Non-blocking):**
   Asynchronous file operations allow the event loop to continue running while waiting for the operation to complete.
 
 ```javascript
-fs.readFile('file.txt', 'utf8', (err, data) => {
+// From your sync_async.js
+const fs = require('fs');
+
+// Non-blocking Request (Async)
+console.log('1');
+fs.readFile('./contacts.txt', 'utf8', (err, result) => {
 	if (err) throw err;
-	console.log(data);
+	console.log(result);
 });
+console.log('2');
+
+// Output order: 1, 2, [file contents]
 ```
 
-- **Streams:**
+#### **File Writing:**
 
 ```javascript
-const readStream = fs.createReadStream('file.txt');
-readStream.on('data', (chunk) => console.log(chunk.toString()));
+// From your filehandling.js
+// Synchronous write
+fs.writeFileSync('./file.txt', 'Hello Write Sync');
+
+// Asynchronous write
+fs.writeFile('./file.txt', 'Hello Write Async', (err) => {
+	if (err) {
+		console.error('Error writing file:', err);
+		return;
+	}
+	console.log('File written successfully');
+});
 ```
 
 ### path: Working with File Paths
@@ -359,16 +404,30 @@ Vanilla Node.js requires a lot of boilerplate code for routing, middleware, and 
 ### Setting Up a Web Server in Express.js
 
 ```javascript
+// From your server/index.js
 const express = require('express');
 const app = express();
-app.get('/', (req, res) => res.send('Hello Express!'));
+
+app.get('/', (req, res) => {
+	res.send('Welcome to the Home Page');
+});
+
+app.get('/about', (req, res) => {
+	res.send(
+		`About Us Page - Hello ${req.query.username} , You are ${req.query.age}`
+	);
+});
+
 app.listen(3000, () => console.log('Server running on port 3000'));
+// No need to create the HTTP server manually
+// Express handles server creation internally by calling `app.listen()`
+// Express is just a framework, internally it uses Node.js HTTP module to create the server
 ```
 
 ### Routing Basics
 
 ```javascript
-app.get('/users', (req, res) => res.json([{ name: 'Alice' }]));
+app.get('/users', (req, res) => res.json([{ name: 'Ajay' }]));
 ```
 
 ### Middleware Concepts
@@ -426,7 +485,7 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 app.get('/api/users', (req, res) => {
-	res.json([{ id: 1, name: 'Alice' }]);
+	res.json([{ id: 1, name: 'Ajay' }]);
 });
 app.post('/api/users', (req, res) => {
 	const newUser = req.body;
@@ -528,7 +587,7 @@ Postman is a popular API client that makes it easy to test your REST APIs withou
 
 ## 10. Complete Express REST API Example
 
-Here's a complete example of a REST API built using Express.js that implements all the HTTP methods (GET, POST, PUT, PATCH, DELETE):
+Here's the complete example of a REST API that you've built using Express.js, implementing all the HTTP methods (GET, POST, PUT, PATCH, DELETE):
 
 ```javascript
 // Building REST API's using Node and Express.js
@@ -556,6 +615,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Routes...
 
+// API endpoint to render HTML page fetching all users
 app.get('/users', (req, res) => {
 	res.send(`
         <html>
@@ -566,30 +626,37 @@ app.get('/users', (req, res) => {
                 <h1>Users List</h1>
                 <ul>
                     ${users
-						.map(
-							(user) =>
-								`<li>${user.first_name} ${user.last_name}</li>`
-						)
-						.join('')}
+											.map(
+												(user) =>
+													`<li>${user.first_name} ${user.last_name}</li>`
+											)
+											.join('')}
                 </ul>
             </body>
         </html>
     `);
 });
 
+// API endpoint to fetch all users as JSON
 app.get('/api/users', (req, res) => {
 	res.json(users);
 });
 
+// API endpoint to fetch user by ID
 app.get('/api/users/:id', (req, res) => {
+	// Dynamic path parameter (:id - variable)
+	// req.params.id will contain the value of the ID from the URL
 	const userId = Number(req.params.id);
 	const user = users.find((u) => u.id === userId);
 	res.json(user);
 });
 
+// API endpoint to create a new user
 app.post('/api/users', (req, res) => {
 	const body = req.body;
-	users.push({ ...body, id: users.length + 1 });
+	// console.log('Request Body:', body);
+	users.push({ ...body, id: users.length + 1 }); // Add new user with an incremented ID
+	// Save updated users to MOCK_DATA.json
 	fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
 		res.json({
 			message: 'User created successfully',
@@ -599,14 +666,17 @@ app.post('/api/users', (req, res) => {
 	});
 });
 
+// Chaining route handlers for user operations
 app
 	.route('/api/users/:id')
+	// API endpoint to update user by ID
 	.put((req, res) => {
 		const userId = Number(req.params.id);
 		const userIndex = users.findIndex((u) => u.id === userId);
 		if (userIndex !== -1) {
 			const updatedUser = { ...users[userIndex], ...req.body };
-			users[userIndex] = updatedUser;
+			users[userIndex] = updatedUser; // Update the user in the array
+			// Save updated users to MOCK_DATA.json
 			fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
 				res.json({ message: 'User updated successfully', user: updatedUser });
 			});
@@ -614,19 +684,23 @@ app
 			res.status(404).json({ message: 'User not found' });
 		}
 	})
+	// API endpoint for partial updates to user by ID
 	.patch((req, res) => {
 		const userId = Number(req.params.id);
 		const userIndex = users.findIndex((u) => u.id === userId);
 
 		if (userIndex !== -1) {
+			// Only update the fields provided in the request body
 			const updatedUser = { ...users[userIndex] };
 
+			// Apply only the fields that were provided
 			for (const key in req.body) {
 				updatedUser[key] = req.body[key];
 			}
 
 			users[userIndex] = updatedUser;
 
+			// Save updated users to MOCK_DATA.json
 			fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
 				res.json({ message: 'User patched successfully', user: updatedUser });
 			});
@@ -634,14 +708,16 @@ app
 			res.status(404).json({ message: 'User not found' });
 		}
 	})
+	// API endpoint to delete user by ID
 	.delete((req, res) => {
 		const userId = Number(req.params.id);
 		const userIndex = users.findIndex((u) => u.id === userId);
 
 		if (userIndex !== -1) {
 			const deletedUser = users[userIndex];
-			users.splice(userIndex, 1);
+			users.splice(userIndex, 1); // Remove user from array
 
+			// Save updated users to MOCK_DATA.json
 			fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
 				res.json({ message: 'User deleted successfully', user: deletedUser });
 			});
@@ -650,6 +726,7 @@ app
 		}
 	});
 
+// Start the server
 app.listen(PORT, () =>
 	console.log(`Server is running on http://localhost:${PORT}`)
 );
@@ -671,3 +748,4 @@ app.listen(PORT, () =>
 - **Request body** - Accessible via `req.body` when using appropriate middleware
 - **Sending responses** - Using `res.json()`, `res.send()`, and status codes
 - **Status codes** - 200 OK (default), 404 Not Found for missing resources
+
