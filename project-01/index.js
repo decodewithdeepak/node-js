@@ -12,10 +12,16 @@ DELETE /api/users/1 → delete user with ID 1
 */
 
 const express = require('express');
+const fs = require('fs');
 const users = require('./MOCK_DATA.json'); // Mockaroo.com generated data
+const { log } = require('node:console');
 
 const app = express();
 const PORT = 3000;
+
+// Middleware - Like a plug-in that adds functionality to the app
+app.use(express.urlencoded({ extended: false }));
+
 
 // Routes...
 
@@ -42,35 +48,33 @@ app.get('/api/users', (req, res) => {
     res.json(users);
 });
 
-// // API endpoint to fetch user by ID
-// app.get('/api/users/:id', (req, res) => {
-//     // Dynamic path parameter (:id - variable)
-//     // req.params.id will contain the value of the ID from the URL
-//     const userId = Number(req.params.id);
-//     const user = users.find(u => u.id === userId);
-//     res.json(user);
-// });
-
-// API endpoint to handle user operations by ID
-// This endpoint will handle GET, POST, PUT, DELETE methods for user operations
-app
-.route('/api/users/:id')
 // API endpoint to fetch user by ID
-.get((req, res) => {
+app.get('/api/users/:id', (req, res) => {
+    // Dynamic path parameter (:id - variable)
+    // req.params.id will contain the value of the ID from the URL
     const userId = Number(req.params.id);
     const user = users.find(u => u.id === userId);
     res.json(user);
-})
-// API endpoint to create a new user
-.post((req, res) => {
-    
-})
-// API endpoint to update user by ID
-.put((req, res) => {
-})
-// API endpoint to delete user by ID
-.delete((req, res) => {
 });
 
+// API endpoint to create a new user
+app.post('/api/users', (req, res) => {
+    const body = req.body;
+    // console.log('Request Body:', body);
+    users.push({ ...body, id: users.length + 1 }); // Add new user with an incremented ID
+    // Save updated users to MOCK_DATA.json
+    fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
+        res.json({ message: 'User created successfully', id: users.length, user: body });
+    });
+});
+
+app
+    .route('/api/users/:id')
+    // API endpoint to update user by ID
+    .put((req, res) => {
+    })
+    // API endpoint to delete user by ID
+    .delete((req, res) => {
+    });
 
 app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`));

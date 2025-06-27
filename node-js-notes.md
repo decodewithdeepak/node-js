@@ -446,6 +446,8 @@ app.listen(3000, () => console.log('Server running on port 3000'));
 
 ### Tools for Testing REST APIs
 - **Postman:** A popular tool for testing APIs with a user-friendly interface.
+	- Download Desktop app: [Postman](https://www.postman.com/downloads/)
+	- Install VS Code extension: [Postman for VS Code](https://marketplace.visualstudio.com/items?itemName=postman.postman-for-vscode)
 - **cURL:** A command-line tool for making HTTP requests.
 - **Insomnia:** Another user-friendly API testing tool.
 
