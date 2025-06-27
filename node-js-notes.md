@@ -142,6 +142,7 @@ Node.js architecture is designed for scalability and efficiency using the event 
 ## 4. Core Concepts
 
 ### CommonJS Modules
+
 CommonJS is the default module system used in Node.js. It allows you to split your code into reusable modules.
 
 - Use `require` and `module.exports` to import/export code.
@@ -159,6 +160,7 @@ console.log(add(2, 3));
 ```
 
 ### ES Modules
+
 ES Modules (ECMAScript Modules) are the modern JavaScript module system, which can also be used in Node.js.
 
 - Use `import` and `export` (add "type": "module" in package.json or use .mjs extension).
@@ -190,9 +192,11 @@ Modules, global objects, buffers, and streams are foundational to Node.js develo
 ---
 
 ## 5. Core Modules
+
 Node.js comes with a set of built-in modules that provide essential functionality for building applications. Here are some of the most commonly used core modules:
 
 ### http: Creating Servers
+
 Server creation is a fundamental part of Node.js, allowing you to handle HTTP requests and responses.
 
 ```javascript
@@ -208,7 +212,9 @@ server.listen(3000, () => console.log('Server running on port 3000'));
 ```
 
 ### HTTP methods: GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS
+
 HTTP methods define the type of action to be performed on a resource.
+
 - **GET:** Retrieve data from the server (read-only).
 - **POST:** Submit data to the server to create a resource.
 - **PUT:** Update or replace existing data on the server completely.
@@ -218,10 +224,11 @@ HTTP methods define the type of action to be performed on a resource.
 - **OPTIONS:** Retrieve supported HTTP methods for a resource
 
 ### fs: File Operations
+
 The `fs` module provides an API for interacting with the file system.
 
 - **Sync:**
-Synchronous file operations block the event loop until completed.
+  Synchronous file operations block the event loop until completed.
 
 ```javascript
 const fs = require('fs');
@@ -229,7 +236,7 @@ const data = fs.readFileSync('file.txt', 'utf8');
 ```
 
 - **Async:**
-Asynchronous file operations allow the event loop to continue running while waiting for the operation to complete.
+  Asynchronous file operations allow the event loop to continue running while waiting for the operation to complete.
 
 ```javascript
 fs.readFile('file.txt', 'utf8', (err, data) => {
@@ -346,6 +353,7 @@ npm makes it easy to manage dependencies and scripts in Node.js projects.
 Express.js is a minimal and flexible Node.js web application framework that provides a robust set of features for building web and mobile applications. It simplifies the process of creating server-side applications with Node.js.
 
 ### Problem with Vanilla Node.js
+
 Vanilla Node.js requires a lot of boilerplate code for routing, middleware, and handling requests/responses. Express.js abstracts these complexities, making it easier to build web applications. There is no need to create the server from scratch, handle routing manually, or manage middleware.
 
 ### Setting Up a Web Server in Express.js
@@ -400,10 +408,12 @@ Express.js simplifies web server and API development in Node.js.
 ---
 
 ## 8. REST API
-REST (Representational State Transfer) is an architectural style for designing networked applications. It relies on a stateless, client-server communication model and uses standard HTTP methods to interact with resources.		
+
+REST (Representational State Transfer) is an architectural style for designing networked applications. It relies on a stateless, client-server communication model and uses standard HTTP methods to interact with resources.
 RESTful APIs are widely used for building web services that can be consumed by various clients, including web browsers, mobile apps, and other servers. They are designed to be simple, scalable, and stateless.
 
 ### Key Principles of REST
+
 - **Stateless:** Each request from the client to the server must contain all the information needed to understand and process the request.
 - **Client-Server Architecture:** The client and server are separate entities that communicate over HTTP.
 - **Uniform Interface:** Resources are identified by URIs, and standard HTTP methods (GET, POST, PUT, DELETE) are used to interact with them.
@@ -438,6 +448,7 @@ app.listen(3000, () => console.log('Server running on port 3000'));
 ```
 
 ### Running an Express Server
+
 - Install Express using `npm install express`.
 - Create a file named `index.js` and add the Express server code.
 - Add `"start": "node index.js"` or `"dev": "nodemon index.js"` to your `package.json` scripts section to easily run your server.
@@ -445,13 +456,68 @@ app.listen(3000, () => console.log('Server running on port 3000'));
 - Use `nodemon` for automatic server restarts during development by installing it globally with `npm install -g nodemon` or locally with `npm install --save-dev nodemon` as a dev dependency in your project.
 
 ### Tools for Testing REST APIs
+
 - **Postman:** A popular tool for testing APIs with a user-friendly interface.
-	- Download Desktop app: [Postman](https://www.postman.com/downloads/)
-	- Install VS Code extension: [Postman for VS Code](https://marketplace.visualstudio.com/items?itemName=postman.postman-for-vscode)
+  - Download Desktop app: [Postman](https://www.postman.com/downloads/)
+  - Install VS Code extension: [Postman for VS Code](https://marketplace.visualstudio.com/items?itemName=postman.postman-for-vscode)
 - **cURL:** A command-line tool for making HTTP requests.
 - **Insomnia:** Another user-friendly API testing tool.
 
 ### Best Practices for Designing REST APIs
+
 - Use meaningful resource names (nouns) in URIs.
 - Use appropriate HTTP methods for actions (GET for read, POST for create, PUT/PATCH for update, DELETE for delete).
 - Use status codes to indicate success or failure (e.g., 200 OK, 201 Created, 404 Not Found).
+
+## 9. Testing REST APIs with Postman
+
+Postman is a popular API client that makes it easy to test your REST APIs without writing any frontend code.
+
+### Setting Up Postman
+
+1. Download Postman from [postman.com/downloads](https://www.postman.com/downloads/) or use the VS Code extension
+2. Create a new workspace or collection for your project
+3. Add requests for each endpoint you want to test
+
+### Testing Different HTTP Methods
+
+**1. GET Request (Retrieving Data)**
+- Select `GET` method
+- URL: `http://localhost:3000/api/users` or `http://localhost:3000/api/users/1`
+- Click "Send" to view response
+
+**2. POST Request (Creating Data)**
+- Select `POST` method
+- URL: `http://localhost:3000/api/users`
+- Body tab → x-www-form-urlencoded
+- Add key-value pairs:
+	- `first_name`: `Deepak`
+	- `last_name`: `Modi`
+	- `email`: `deepakmodidev@gmail.com`
+	- `gender`: `Male`
+- Click "Send"
+
+**3. PUT Request (Replacing Data)**
+- Select `PUT` method
+- URL: `http://localhost:3000/api/users/1`
+- Body tab → x-www-form-urlencoded
+- Add key-value pairs:
+	- `first_name`: `Ranjit`
+	- `last_name`: `Modi`
+	- `email`: `ranjitmodi@gmail.com`
+	- `gender`: `Male`
+- Click "Send"
+
+**4. PATCH Request (Partial Updates)**
+- Select `PATCH` method
+- URL: `http://localhost:3000/api/users/1`
+- Body tab → x-www-form-urlencoded
+- Add key-value pair:
+	- `last_name`: `Barnwal`
+- Click "Send"
+
+**5. DELETE Request (Removing Data)**
+- Select `DELETE` method
+- URL: `http://localhost:3000/api/users/1`
+- Click "Send" (returns 204 No Content or confirmation)
+
