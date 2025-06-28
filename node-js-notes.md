@@ -87,7 +87,6 @@ Node.js is an open-source, cross-platform JavaScript runtime environment that al
 - **Community Support:** Huge, active community and lots of learning resources.
 
 **Comparison Example:**
-
 - Traditional backend (e.g., PHP, Java): Each request may create a new thread, which is resource-intensive.
 - Node.js: Uses a single-threaded event loop to handle many requests efficiently.
 
@@ -548,7 +547,9 @@ app.listen(3000, () => {
 
 ### 3.4 Express Middleware
 
-Middleware functions execute during the request-response cycle and can modify request/response objects, end the request-response cycle, or call the next middleware.
+Middleware functions are functions that execute during the request-response cycle in Express.js. They can modify the request and response objects, end the request-response cycle, or call the next middleware function in the stack.
+
+These functions run before the final request handler and can be used for tasks like logging, authentication, parsing request bodies, and error handling.
 
 #### Types of Middleware
 
@@ -2936,6 +2937,8 @@ This completes the comprehensive Node.js notes covering all topics from beginner
 
 ---
 
-*These Notes Were Compiled By Deepak Modi*					
-*Website: [Deepak Modi](https://deepakmodi.tech)*		
+*These Notes Were Compiled By Deepak Modi*		
+
+*Website: [Deepak Modi](https://deepakmodi.tech)*	
+	
 *Connect with me on [LinkedIn](https://www.linkedin.com/in/deepakmodi1/) for more updates and resources!*
