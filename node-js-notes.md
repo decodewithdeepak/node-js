@@ -21,7 +21,7 @@
 3. [Express.js and APIs](#3-expressjs-and-apis)
    - [3.1 Getting Started with Express](#31-getting-started-with-express)
    - [3.2 What is RESTful API?](#32-what-is-restful-api)
-   - [3.3 Building REST APIs with Node.js + Express](#33-building-rest-apis-with-nodejs-express)
+   - [3.3 Building REST APIs with Node.js + Express](#33-building-rest-apis-with-nodejs--express)
    - [3.4 Express Middleware](#34-express-middleware)
    - [3.5 HTTP Headers in APIs](#35-http-headers-in-apis)
    - [3.6 HTTP Status Codes](#36-http-status-codes)
@@ -29,7 +29,7 @@
 
 4. [Database Integration](#4-database-integration)
    - [4.1 Introduction to MongoDB](#41-introduction-to-mongodb)
-   - [4.2 Connecting Node.js with MongoDB (Mongoose + Express)](#42-connecting-nodejs-with-mongodb-mongoose-express)
+   - [4.2 Connecting Node.js with MongoDB (Mongoose + Express)](#42-connecting-nodejs-with-mongodb-mongoose--express)
    - [4.3 MVC Pattern in Node.js](#43-mvc-pattern-in-nodejs)
 
 ---
