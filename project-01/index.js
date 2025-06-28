@@ -68,62 +68,62 @@ app.post('/api/users', (req, res) => {
 
 // Chaining route handlers for user operations
 app.route('/api/users/:id')
-// API endpoint to update user by ID
-.put((req, res) => {
-    const userId = Number(req.params.id);
-    const userIndex = users.findIndex(u => u.id === userId);
-    if (userIndex !== -1) {
-        const updatedUser = { ...users[userIndex], ...req.body };
-        users[userIndex] = updatedUser; // Update the user in the array
-        // Save updated users to MOCK_DATA.json
-        fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
-            res.json({ message: 'User updated successfully', user: updatedUser });
-        });
-    } else {
-        res.status(404).json({ message: 'User not found' });
-    }
-})
-// API endpoint for partial updates to user by ID
-.patch((req, res) => {
-    const userId = Number(req.params.id);
-    const userIndex = users.findIndex(u => u.id === userId);
-
-    if (userIndex !== -1) {
-        // Only update the fields provided in the request body
-        const updatedUser = { ...users[userIndex] };
-
-        // Apply only the fields that were provided
-        for (const key in req.body) {
-            updatedUser[key] = req.body[key];
+    // API endpoint to update user by ID
+    .put((req, res) => {
+        const userId = Number(req.params.id);
+        const userIndex = users.findIndex(u => u.id === userId);
+        if (userIndex !== -1) {
+            const updatedUser = { ...users[userIndex], ...req.body };
+            users[userIndex] = updatedUser; // Update the user in the array
+            // Save updated users to MOCK_DATA.json
+            fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
+                res.json({ message: 'User updated successfully', user: updatedUser });
+            });
+        } else {
+            res.status(404).json({ message: 'User not found' });
         }
+    })
+    // API endpoint for partial updates to user by ID
+    .patch((req, res) => {
+        const userId = Number(req.params.id);
+        const userIndex = users.findIndex(u => u.id === userId);
 
-        users[userIndex] = updatedUser;
+        if (userIndex !== -1) {
+            // Only update the fields provided in the request body
+            const updatedUser = { ...users[userIndex] };
 
-        // Save updated users to MOCK_DATA.json
-        fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
-            res.json({ message: 'User patched successfully', user: updatedUser });
-        });
-    } else {
-        res.status(404).json({ message: 'User not found' });
-    }
-})
-// API endpoint to delete user by ID
-.delete((req, res) => {
-    const userId = Number(req.params.id);
-    const userIndex = users.findIndex(u => u.id === userId);
+            // Apply only the fields that were provided
+            for (const key in req.body) {
+                updatedUser[key] = req.body[key];
+            }
 
-    if (userIndex !== -1) {
-        const deletedUser = users[userIndex];
-        users.splice(userIndex, 1); // Remove user from array
+            users[userIndex] = updatedUser;
 
-        // Save updated users to MOCK_DATA.json
-        fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
-            res.json({ message: 'User deleted successfully', user: deletedUser });
-        });
-    } else {
-        res.status(404).json({ message: 'User not found' });
-    }
-});
+            // Save updated users to MOCK_DATA.json
+            fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
+                res.json({ message: 'User patched successfully', user: updatedUser });
+            });
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    })
+    // API endpoint to delete user by ID
+    .delete((req, res) => {
+        const userId = Number(req.params.id);
+        const userIndex = users.findIndex(u => u.id === userId);
+
+        if (userIndex !== -1) {
+            const deletedUser = users[userIndex];
+            users.splice(userIndex, 1); // Remove user from array
+
+            // Save updated users to MOCK_DATA.json
+            fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
+                res.json({ message: 'User deleted successfully', user: deletedUser });
+            });
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    });
 
 
 // Start the server
