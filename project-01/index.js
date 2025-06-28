@@ -1,9 +1,7 @@
 // Building REST API's using Node and Express.js
 
 /*
-
 GET /users - fetch all users and render HTML page
-
 GET /api/users → fetch all users (return as JSON)
 GET /api/users/1 → fetch user with ID 1  
 POST /api/users → create a new user  
