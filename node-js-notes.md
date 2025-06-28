@@ -3,13 +3,16 @@
 > Recommended YouTube Playlist: [Master NodeJS by Piyush Garg](https://www.youtube.com/playlist?list=PLinedj3B30sDby4Al-i13hQJGQoRQDfPo)
 
 ## Table of Contents
+
 1. [Introduction to Node.js](#1-introduction-to-nodejs)
+
    - [1.1 What is Node.js?](#11-what-is-nodejs)
    - [1.2 Node.js Installation](#12-nodejs-installation)
    - [1.3 How Node.js Works?](#13-how-nodejs-works)
    - [1.4 Hello World in Node.js](#14-hello-world-in-nodejs)
 
 2. [Core Concepts](#2-core-concepts)
+
    - [2.1 Modules in Node.js](#21-modules-in-nodejs)
    - [2.2 File Handling in Node.js](#22-file-handling-in-nodejs)
    - [2.3 Building HTTP Server in Node.js](#23-building-http-server-in-nodejs)
@@ -19,6 +22,7 @@
    - [2.7 Node.js Package Manager (npm)](#27-nodejs-package-manager-npm)
 
 3. [Express.js and APIs](#3-expressjs-and-apis)
+
    - [3.1 Getting Started with Express](#31-getting-started-with-express)
    - [3.2 What is RESTful API?](#32-what-is-restful-api)
    - [3.3 Building REST APIs with Node.js + Express](#33-building-rest-apis-with-nodejs--express)
@@ -28,9 +32,39 @@
    - [3.7 Introduction to POSTMAN](#37-introduction-to-postman)
 
 4. [Database Integration](#4-database-integration)
+
    - [4.1 Introduction to MongoDB](#41-introduction-to-mongodb)
    - [4.2 Connecting Node.js with MongoDB (Mongoose + Express)](#42-connecting-nodejs-with-mongodb-mongoose--express)
    - [4.3 MVC Pattern in Node.js](#43-mvc-pattern-in-nodejs)
+
+5. [Projects and Applications](#5-projects-and-applications)
+
+   - [5.1 URL Shortener (Node.js + MongoDB)](#51-url-shortener-nodejs--mongodb)
+   - [5.2 Blog Application (Node.js, MongoDB, EJS)](#52-blog-application-nodejs-mongodb-ejs)
+     - [5.2.1 Setting up the project](#521-setting-up-the-project)
+     - [5.2.2 Setting up authentication](#522-setting-up-authentication)
+     - [5.2.3 Complete app structure](#523-complete-app-structure)
+   - [5.3 Discord Bot in Node.js](#53-discord-bot-in-nodejs)
+   - [5.4 File Uploads with Multer](#54-file-uploads-with-multer)
+
+6. [Deployment & Performance](#6-deployment--performance)
+
+   - [6.1 AWS Deployment](#61-aws-deployment)
+   - [6.2 NGINX (Setup, Serve Static Content, SSL with LetsEncrypt)](#62-nginx-setup-serve-static-content-ssl-with-letsencrypt)
+   - [6.3 Scaling Node.js with Cluster](#63-scaling-nodejs-with-cluster)
+   - [6.4 Serverless Framework + AWS Lambda](#64-serverless-framework--aws-lambda)
+
+7. [Real-time and Streams](#7-real-time-and-streams)
+
+   - [7.1 WebSocket with Socket.IO](#71-websocket-with-socketio)
+   - [7.2 Node.js Streams](#72-nodejs-streams)
+
+8. [GraphQL with Node.js](#8-graphql-with-nodejs)
+   - [8.1 GraphQL Crash Course](#81-graphql-crash-course)
+   - [8.2 Setting up GraphQL Server](#82-setting-up-graphql-server)
+   - [8.3 Prisma + PostgreSQL Setup](#83-prisma--postgresql-setup)
+   - [8.4 Refactoring GraphQL Code](#84-refactoring-graphql-code)
+   - [8.5 Authentication + JWT in GraphQL](#85-authentication--jwt-in-graphql)
 
 ---
 
@@ -69,7 +103,6 @@ Node.js is used for:
 
 **Real-World Example:**
 Netflix, PayPal, LinkedIn, and Uber use Node.js for parts of their backend systems.
-
 
 ### 1.2 Node.js Installation
 
@@ -113,7 +146,7 @@ nodemon app.js
 
 ### 1.3 How Node.js Works?
 
-Node.js operates on an event-driven, non-blocking I/O model that makes it lightweight and efficient for building scalable network applications.  		
+Node.js operates on an event-driven, non-blocking I/O model that makes it lightweight and efficient for building scalable network applications.
 The core of Node.js is built around the event loop, which allows Node.js to handle multiple requests without creating new threads for each.
 
 ![Node.js Architecture](https://d2ms8rpfqc4h24.cloudfront.net/working_flow_of_node_7610f28abc.jpg)
@@ -127,11 +160,11 @@ The event loop is what allows Node.js to perform non-blocking I/O operations des
 console.log('Start');
 
 setTimeout(() => {
-    console.log('Timeout callback');
+	console.log('Timeout callback');
 }, 0);
 
 setImmediate(() => {
-    console.log('Immediate callback');
+	console.log('Immediate callback');
 });
 
 console.log('End');
@@ -187,10 +220,10 @@ CommonJS is the traditional module system in Node.js, using `require()` and `mod
 ```javascript
 // math.js
 function add(a, b) {
-    return a + b;
+	return a + b;
 }
 function subtract(a, b) {
-    return a - b;
+	return a - b;
 }
 module.exports = { add, subtract };
 
@@ -207,10 +240,10 @@ ES Modules (ECMAScript Modules) use `import` and `export` statements. To use ES 
 ```javascript
 // math.mjs (or math.js with "type": "module")
 export function add(a, b) {
-    return a + b;
+	return a + b;
 }
 export function subtract(a, b) {
-    return a - b;
+	return a - b;
 }
 
 // app.mjs (or app.js with "type": "module")
@@ -224,6 +257,7 @@ console.log(subtract(5, 3)); // 2
 File handling is crucial for many Node.js applications. The `fs` module provides both synchronous and asynchronous methods for file operations. While synchronous methods block the event loop, asynchronous methods allow other operations to continue while waiting for file I/O to complete.
 
 #### Synchronous vs Asynchronous Operations
+
 - **Sync (Blocking):** Synchronous file operations block the event loop until completion, which can lead to performance issues in production applications.
 - **Async (Non-blocking):** Asynchronous file operations allow the event loop to continue running while waiting for the operation to complete, improving scalability and responsiveness.
 
@@ -240,8 +274,8 @@ console.log('2');
 // Asynchronous (Non-blocking) - doesn't block the event loop
 console.log('1');
 fs.readFile('./contacts.txt', 'utf8', (err, result) => {
-    if (err) throw err;
-    console.log(result);
+	if (err) throw err;
+	console.log(result);
 });
 console.log('2');
 // Output: 1, 2, [file contents]
@@ -255,11 +289,11 @@ fs.writeFileSync('./file.txt', 'Hello Write Sync');
 
 // Asynchronous write
 fs.writeFile('./file.txt', 'Hello Write Async', (err) => {
-    if (err) {
-        console.error('Error writing file:', err);
-        return;
-    }
-    console.log('File written successfully');
+	if (err) {
+		console.error('Error writing file:', err);
+		return;
+	}
+	console.log('File written successfully');
 });
 ```
 
@@ -273,15 +307,15 @@ Creating HTTP servers is fundamental to Node.js web development. The built-in `h
 const http = require('http');
 
 const server = http.createServer((req, res) => {
-    console.log(`Request received: ${req.method} ${req.url}`);
-    // Set response headers
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    // Send response
-    res.end('Hello from Node.js Server!');
+	console.log(`Request received: ${req.method} ${req.url}`);
+	// Set response headers
+	res.writeHead(200, { 'Content-Type': 'text/plain' });
+	// Send response
+	res.end('Hello from Node.js Server!');
 });
 
 server.listen(3000, () => {
-    console.log('Server running on http://localhost:3000');
+	console.log('Server running on http://localhost:3000');
 });
 ```
 
@@ -294,18 +328,18 @@ const http = require('http');
 const url = require('url');
 
 const server = http.createServer((req, res) => {
-    const parsedUrl = url.parse(req.url, true);
-    const path = parsedUrl.pathname;
-    const query = parsedUrl.query;
+	const parsedUrl = url.parse(req.url, true);
+	const path = parsedUrl.pathname;
+	const query = parsedUrl.query;
 
-    if (path === '/') {
-        res.end('Home Page');
-    } else if (path === '/about') {
-        res.end(`About Page - Hello ${query.name || 'Guest'}`);
-    } else {
-        res.statusCode = 404;
-        res.end('Page Not Found');
-    }
+	if (path === '/') {
+		res.end('Home Page');
+	} else if (path === '/about') {
+		res.end(`About Page - Hello ${query.name || 'Guest'}`);
+	} else {
+		res.statusCode = 404;
+		res.end('Page Not Found');
+	}
 });
 
 server.listen(3000);
@@ -325,7 +359,7 @@ HTTP methods define the type of action to be performed on a resource or data. Th
 
 ### 2.6 Versioning in Node.js
 
-Node.js follows semantic versioning (SemVer) with the format `MAJOR.MINOR.PATCH`. 
+Node.js follows semantic versioning (SemVer) with the format `MAJOR.MINOR.PATCH`.
 
 - Format: MAJOR.MINOR.PATCH (e.g., 1.2.3)
 - `^1.2.3`: Compatible with 1.x.x
@@ -338,13 +372,16 @@ Node.js follows semantic versioning (SemVer) with the format `MAJOR.MINOR.PATCH`
 | **PATCH** | Bug fixes, backward-compatible              | `1.2.3 → 1.2.4` |
 
 Node.js releases:
+
 - **LTS (Long Term Support)**: Even-numbered versions (18, 20, 22) - recommended for production
 - **Current**: Latest features with shorter support cycles
 
 ### 2.7 Node.js Package Manager (npm)
+
 npm (Node Package Manager) is the default package manager for Node.js, used to install, update, and manage third-party packages and libraries. It provides a vast ecosystem of reusable code, making it easy to add functionality to your Node.js applications.
 
 #### Installing Packages
+
 To install a package, use the following command:
 
 ```bash
@@ -352,6 +389,7 @@ npm install <package-name>
 ```
 
 #### Creating a package.json File
+
 To create a `package.json` file, which contains metadata about your project and its dependencies, run:
 
 ```bash
@@ -359,6 +397,7 @@ npm init -y
 ```
 
 #### Installing, Updating, and Removing Packages
+
 You can manage packages using npm commands:
 
 ```bash
@@ -368,12 +407,15 @@ npm uninstall express
 ```
 
 #### Installing specific package versions
+
 To install a specific version of a package, you can specify the version number:
+
 ```bash
 npm install express@4.18.2
 ```
 
 #### Using npx (Node Package eXecute)
+
 npx is a package runner tool that comes with npm 5.2+ and allows you to execute packages without installing them globally. This is useful for running command-line tools or scripts locally without cluttering your global namespace.
 
 ```bash
@@ -404,11 +446,11 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-    res.send('Welcome to Express!');
+	res.send('Welcome to Express!');
 });
 
 app.listen(3000, () => {
-    console.log('Server running on port 3000');
+	console.log('Server running on port 3000');
 });
 ```
 
@@ -434,49 +476,49 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Sample data
-let users = [
-    { id: 1, name: 'Deepak Modi', email: 'deepak@gmail.com' }
-];
+let users = [{ id: 1, name: 'Deepak Modi', email: 'deepak@gmail.com' }];
 
 // GET all users
 app.get('/api/users', (req, res) => {
-    res.json(users);
+	res.json(users);
 });
 
 // GET user by ID
 app.get('/api/users/:id', (req, res) => {
-    const user = users.find(u => u.id === parseInt(req.params.id));
-    if (!user) return res.status(404).json({ message: 'User not found' });
-    res.json(user);
+	const user = users.find((u) => u.id === parseInt(req.params.id));
+	if (!user) return res.status(404).json({ message: 'User not found' });
+	res.json(user);
 });
 
 // POST create user
 app.post('/api/users', (req, res) => {
-    const newUser = {
-        id: users.length + 1,
-        name: req.body.name,
-        email: req.body.email
-    };
-    users.push(newUser);
-    res.status(201).json(newUser);
+	const newUser = {
+		id: users.length + 1,
+		name: req.body.name,
+		email: req.body.email,
+	};
+	users.push(newUser);
+	res.status(201).json(newUser);
 });
 
 // PUT update user
 app.put('/api/users/:id', (req, res) => {
-    const userIndex = users.findIndex(u => u.id === parseInt(req.params.id));
-    if (userIndex === -1) return res.status(404).json({ message: 'User not found' });
-    
-    users[userIndex] = { ...users[userIndex], ...req.body };
-    res.json(users[userIndex]);
+	const userIndex = users.findIndex((u) => u.id === parseInt(req.params.id));
+	if (userIndex === -1)
+		return res.status(404).json({ message: 'User not found' });
+
+	users[userIndex] = { ...users[userIndex], ...req.body };
+	res.json(users[userIndex]);
 });
 
 // DELETE user
 app.delete('/api/users/:id', (req, res) => {
-    const userIndex = users.findIndex(u => u.id === parseInt(req.params.id));
-    if (userIndex === -1) return res.status(404).json({ message: 'User not found' });
-    
-    users.splice(userIndex, 1);
-    res.status(204).send();
+	const userIndex = users.findIndex((u) => u.id === parseInt(req.params.id));
+	if (userIndex === -1)
+		return res.status(404).json({ message: 'User not found' });
+
+	users.splice(userIndex, 1);
+	res.status(204).send();
 });
 
 app.listen(3000, () => {
@@ -513,8 +555,8 @@ Middleware functions execute during the request-response cycle and can modify re
 ```javascript
 // Application-level middleware
 app.use((req, res, next) => {
-    console.log(`${req.method} ${req.url} - ${new Date().toISOString()}`);
-    next();
+	console.log(`${req.method} ${req.url} - ${new Date().toISOString()}`);
+	next();
 });
 
 // Built-in middleware
@@ -526,8 +568,8 @@ app.use('/api', apiRouter);
 
 // Error-handling middleware
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
+	console.error(err.stack);
+	res.status(500).send('Something broke!');
 });
 ```
 
@@ -537,17 +579,17 @@ HTTP headers provide additional information about the request or response.
 
 ```javascript
 app.get('/api/users', (req, res) => {
-    // Set response headers
-    res.set({
-        'Content-Type': 'application/json',
-        'X-Powered-By': 'Node.js'
-    });
-    
-    // Access request headers
-    const userAgent = req.get('User-Agent');
-    const authorization = req.headers.authorization;
-    
-    res.json(users);
+	// Set response headers
+	res.set({
+		'Content-Type': 'application/json',
+		'X-Powered-By': 'Node.js',
+	});
+
+	// Access request headers
+	const userAgent = req.get('User-Agent');
+	const authorization = req.headers.authorization;
+
+	res.json(users);
 });
 ```
 
@@ -558,11 +600,13 @@ HTTP status codes indicate the result of the HTTP request:
 #### Common Status Codes
 
 - **2xx Success**
+
   - 200 OK: Request successful
   - 201 Created: Resource created successfully
   - 204 No Content: Request successful, no content to return
 
 - **4xx Client Error**
+
   - 400 Bad Request: Invalid request
   - 401 Unauthorized: Authentication required
   - 403 Forbidden: Access denied
@@ -577,6 +621,7 @@ HTTP status codes indicate the result of the HTTP request:
 Postman is a popular API testing tool that allows you to test your REST APIs easily with a user-friendly interface.
 
 #### Installing Postman
+
 - Download Desktop app: [Postman Desktop](https://www.postman.com/downloads/)
 - Use Postman Web: [Postman Web](https://www.postman.com/)
 - Install VS Code extension: [Postman for VS Code](https://marketplace.visualstudio.com/items?itemName=postman.postman-for-vscode)
@@ -584,15 +629,18 @@ Postman is a popular API testing tool that allows you to test your REST APIs eas
 #### Using Postman for API Testing
 
 1. **GET Request**: Test retrieving data
+
    - URL: `http://localhost:3000/api/users`
    - Method: GET
 
 2. **POST Request**: Test creating data
+
    - URL: `http://localhost:3000/api/users`
    - Method: POST
    - Body: `{ "name": "Ranjit Barnwal", "email": "ranjit@gmail.com" }`
 
 3. **PUT Request**: Test updating data
+
    - URL: `http://localhost:3000/api/users/1`
    - Method: PUT
    - Body: `{ "name": "Krishna Agarwal", "email": "krishna@example.com" }`
@@ -638,17 +686,17 @@ const mongoose = require('mongoose');
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/myapp', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
 });
 
 // Connection events
 mongoose.connection.on('connected', () => {
-    console.log('Connected to MongoDB');
+	console.log('Connected to MongoDB');
 });
 
 mongoose.connection.on('error', (err) => {
-    console.log('MongoDB connection error:', err);
+	console.log('MongoDB connection error:', err);
 });
 ```
 
@@ -657,26 +705,26 @@ mongoose.connection.on('error', (err) => {
 ```javascript
 // User schema
 const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true
-    },
-    age: {
-        type: Number,
-        min: 0,
-        max: 120
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
+	name: {
+		type: String,
+		required: true,
+		trim: true,
+	},
+	email: {
+		type: String,
+		required: true,
+		unique: true,
+		lowercase: true,
+	},
+	age: {
+		type: Number,
+		min: 0,
+		max: 120,
+	},
+	createdAt: {
+		type: Date,
+		default: Date.now,
+	},
 });
 
 // Create model
@@ -692,60 +740,59 @@ const User = require('./models/User');
 
 // Create user
 app.post('/api/users', async (req, res) => {
-    try {
-        const user = new User(req.body);
-        await user.save();
-        res.status(201).json(user);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
+	try {
+		const user = new User(req.body);
+		await user.save();
+		res.status(201).json(user);
+	} catch (error) {
+		res.status(400).json({ error: error.message });
+	}
 });
 
 // Get all users
 app.get('/api/users', async (req, res) => {
-    try {
-        const users = await User.find();
-        res.json(users);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+	try {
+		const users = await User.find();
+		res.json(users);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
 });
 
 // Get user by ID
 app.get('/api/users/:id', async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-        if (!user) return res.status(404).json({ message: 'User not found' });
-        res.json(user);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+	try {
+		const user = await User.findById(req.params.id);
+		if (!user) return res.status(404).json({ message: 'User not found' });
+		res.json(user);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
 });
 
 // Update user
 app.put('/api/users/:id', async (req, res) => {
-    try {
-        const user = await User.findByIdAndUpdate(
-            req.params.id, 
-            req.body, 
-            { new: true, runValidators: true }
-        );
-        if (!user) return res.status(404).json({ message: 'User not found' });
-        res.json(user);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
+	try {
+		const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+			new: true,
+			runValidators: true,
+		});
+		if (!user) return res.status(404).json({ message: 'User not found' });
+		res.json(user);
+	} catch (error) {
+		res.status(400).json({ error: error.message });
+	}
 });
 
 // Delete user
 app.delete('/api/users/:id', async (req, res) => {
-    try {
-        const user = await User.findByIdAndDelete(req.params.id);
-        if (!user) return res.status(404).json({ message: 'User not found' });
-        res.status(204).send();
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+	try {
+		const user = await User.findByIdAndDelete(req.params.id);
+		if (!user) return res.status(404).json({ message: 'User not found' });
+		res.status(204).send();
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
 });
 ```
 
@@ -774,9 +821,9 @@ project/
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    age: Number
+	name: { type: String, required: true },
+	email: { type: String, required: true, unique: true },
+	age: Number,
 });
 
 module.exports = mongoose.model('User', userSchema);
@@ -788,32 +835,32 @@ module.exports = mongoose.model('User', userSchema);
 const User = require('../models/User');
 
 exports.getAllUsers = async (req, res) => {
-    try {
-        const users = await User.find();
-        res.json(users);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+	try {
+		const users = await User.find();
+		res.json(users);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
 };
 
 exports.createUser = async (req, res) => {
-    try {
-        const user = new User(req.body);
-        await user.save();
-        res.status(201).json(user);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
+	try {
+		const user = new User(req.body);
+		await user.save();
+		res.status(201).json(user);
+	} catch (error) {
+		res.status(400).json({ error: error.message });
+	}
 };
 
 exports.getUserById = async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-        if (!user) return res.status(404).json({ message: 'User not found' });
-        res.json(user);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+	try {
+		const user = await User.findById(req.params.id);
+		if (!user) return res.status(404).json({ message: 'User not found' });
+		res.json(user);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
 };
 ```
 
@@ -851,8 +898,2044 @@ app.use('/api/users', userRoutes);
 mongoose.connect('mongodb://localhost:27017/myapp');
 
 app.listen(3000, () => {
-    console.log('Server running on port 3000');
+	console.log('Server running on port 3000');
 });
 ```
 
 This MVC structure provides better organization, maintainability, and separation of concerns in your Node.js applications.
+
+## 5. Projects and Applications
+
+### 5.1 URL Shortener (Node.js + MongoDB)
+
+A URL shortener is a simple web application that converts long URLs into shorter, more manageable links. It typically involves generating a unique identifier for each URL and storing the mapping in a database.
+
+#### Features
+
+- Shorten a long URL
+- Redirect to the original URL when the short link is accessed
+- Track the number of clicks on each short link
+- Optionally, allow custom aliases for short links
+
+#### Technologies Used
+
+- **Node.js**: Backend runtime environment
+- **Express.js**: Web framework for Node.js
+- **MongoDB**: NoSQL database to store URL mappings
+- **Mongoose**: ODM library for MongoDB and Node.js
+- **Nodemon**: Development tool for automatic server restarts
+
+#### Project Structure
+
+```
+url-shortener/
+├── models/
+│   └── Url.js
+├── routes/
+│   └── urlRoutes.js
+├── controllers/
+│   └── urlController.js
+├── public/
+│   └── index.html
+├── app.js
+└── package.json
+```
+
+#### Setting Up the Project
+
+1. **Initialize Node.js Project**
+
+   ```bash
+   mkdir url-shortener
+   cd url-shortener
+   npm init -y
+   ```
+
+2. **Install Dependencies**
+
+   ```bash
+   npm install express mongoose
+   npm install --save-dev nodemon
+   ```
+
+3. **Create Project Structure**
+
+   ```bash
+   mkdir models routes controllers public
+   touch app.js
+   ```
+
+4. **Define URL Model (models/Url.js)**
+
+   ```javascript
+   const mongoose = require('mongoose');
+
+   const urlSchema = new mongoose.Schema({
+   	originalUrl: { type: String, required: true },
+   	shortUrl: { type: String, required: true, unique: true },
+   	clicks: { type: Number, default: 0 },
+   });
+
+   module.exports = mongoose.model('Url', urlSchema);
+   ```
+
+5. **Create URL Controller (controllers/urlController.js)**
+
+   ```javascript
+   const Url = require('../models/Url');
+
+   exports.shortenUrl = async (req, res) => {
+   	const { originalUrl } = req.body;
+   	const shortUrl = Math.random().toString(36).substring(2, 8);
+
+   	try {
+   		const url = new Url({ originalUrl, shortUrl });
+   		await url.save();
+   		res.status(201).json(url);
+   	} catch (error) {
+   		res.status(400).json({ error: error.message });
+   	}
+   };
+
+   exports.redirectUrl = async (req, res) => {
+   	const { shortUrl } = req.params;
+
+   	try {
+   		const url = await Url.findOne({ shortUrl });
+   		if (!url) return res.status(404).send('URL not found');
+
+   		url.clicks++;
+   		await url.save();
+
+   		res.redirect(url.originalUrl);
+   	} catch (error) {
+   		res.status(500).json({ error: error.message });
+   	}
+   };
+   ```
+
+6. **Define URL Routes (routes/urlRoutes.js)**
+
+   ```javascript
+   const express = require('express');
+   const urlController = require('../controllers/urlController');
+
+   const router = express.Router();
+
+   router.post('/shorten', urlController.shortenUrl);
+   router.get('/:shortUrl', urlController.redirectUrl);
+
+   module.exports = router;
+   ```
+
+7. **Set Up Express Server (app.js)**
+
+   ```javascript
+   const express = require('express');
+   const mongoose = require('mongoose');
+   const urlRoutes = require('./routes/urlRoutes');
+
+   const app = express();
+
+   // Middleware
+   app.use(express.json());
+   app.use(express.static('public'));
+
+   // Routes
+   app.use('/api/urls', urlRoutes);
+
+   // Connect to MongoDB
+   mongoose.connect('mongodb://localhost:27017/urlshortener', {
+   	useNewUrlParser: true,
+   	useUnifiedTopology: true,
+   });
+
+   app.listen(3000, () => {
+   	console.log('Server running on port 3000');
+   });
+   ```
+
+8. **Create Frontend Form (public/index.html)**
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   	<head>
+   		<meta charset="UTF-8" />
+   		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   		<title>URL Shortener</title>
+   	</head>
+   	<body>
+   		<h1>URL Shortener</h1>
+   		<form id="urlForm">
+   			<input
+   				type="text"
+   				id="originalUrl"
+   				placeholder="Enter URL to shorten"
+   				required
+   			/>
+   			<button type="submit">Shorten</button>
+   		</form>
+   		<div id="result"></div>
+
+   		<script>
+   			document
+   				.getElementById('urlForm')
+   				.addEventListener('submit', async (e) => {
+   					e.preventDefault();
+   					const originalUrl = document.getElementById('originalUrl').value;
+
+   					const response = await fetch('/api/urls/shorten', {
+   						method: 'POST',
+   						headers: {
+   							'Content-Type': 'application/json',
+   						},
+   						body: JSON.stringify({ originalUrl }),
+   					});
+
+   					const data = await response.json();
+   					if (response.ok) {
+   						document.getElementById(
+   							'result'
+   						).innerHTML = `Short URL: <a href="/api/urls/${data.shortUrl}">${data.shortUrl}</a>`;
+   					} else {
+   						document.getElementById(
+   							'result'
+   						).innerHTML = `Error: ${data.error}`;
+   					}
+   				});
+   		</script>
+   	</body>
+   </html>
+   ```
+
+9. **Run the Application**
+
+   ```bash
+   npm run dev
+   ```
+
+10. **Test the URL Shortener**
+
+- Open your browser and go to `http://localhost:3000`.
+- Enter a long URL and click "Shorten".
+- Copy the short URL and test the redirection.
+
+### 5.2 Blog Application (Node.js, MongoDB, EJS)
+
+A blog application is a web application that allows users to create, read, update, and delete blog posts. It typically includes user authentication, a rich text editor for writing posts, and a comment system.
+
+#### Features
+
+- User registration and authentication
+- Create, edit, delete blog posts
+- Rich text editor for formatting posts
+- Comment system for readers to leave feedback
+- Categorize posts by topics
+- Search functionality to find posts
+
+#### Technologies Used
+
+- **Node.js**: Backend runtime environment
+- **Express.js**: Web framework for Node.js
+- **MongoDB**: NoSQL database to store blog posts and user data
+- **Mongoose**: ODM library for MongoDB and Node.js
+- **EJS**: Templating engine to render HTML views
+- **Nodemon**: Development tool for automatic server restarts
+
+#### Project Structure
+
+```
+blog-app/
+├── models/
+│   ├── User.js
+│   └── Post.js
+├── routes/
+│   ├── userRoutes.js
+│   └── postRoutes.js
+├── controllers/
+│   ├── userController.js
+│   └── postController.js
+├── views/
+│   ├── partials/
+│   │   └── header.ejs
+│   ├── index.ejs
+│   ├── login.ejs
+│   ├── register.ejs
+│   ├── dashboard.ejs
+│   └── post.ejs
+├── public/
+│   ├── css/
+│   │   └── styles.css
+│   └── js/
+│       └── scripts.js
+├── app.js
+└── package.json
+```
+
+#### Setting Up the Project
+
+1. **Initialize Node.js Project**
+
+   ```bash
+   mkdir blog-app
+   cd blog-app
+   npm init -y
+   ```
+
+2. **Install Dependencies**
+
+   ```bash
+   npm install express mongoose ejs bcryptjs jsonwebtoken
+   npm install --save-dev nodemon
+   ```
+
+3. **Create Project Structure**
+
+   ```bash
+   mkdir models routes controllers views public
+   mkdir public/css public/js views/partials
+   touch app.js
+   ```
+
+4. **Define User and Post Models (models/User.js, models/Post.js)**
+
+   ```javascript
+   // models/User.js
+   const mongoose = require('mongoose');
+   const bcrypt = require('bcryptjs');
+
+   const userSchema = new mongoose.Schema({
+   	username: { type: String, required: true, unique: true },
+   	email: { type: String, required: true, unique: true },
+   	password: { type: String, required: true },
+   });
+
+   // Hash password before saving
+   userSchema.pre('save', async function (next) {
+   	if (!this.isModified('password')) return next();
+   	this.password = await bcrypt.hash(this.password, 10);
+   	next();
+   });
+
+   module.exports = mongoose.model('User', userSchema);
+   ```
+
+   ```javascript
+   // models/Post.js
+   const mongoose = require('mongoose');
+
+   const postSchema = new mongoose.Schema({
+   	title: { type: String, required: true },
+   	content: { type: String, required: true },
+   	author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+   	createdAt: { type: Date, default: Date.now },
+   	updatedAt: { type: Date, default: Date.now },
+   });
+
+   module.exports = mongoose.model('Post', postSchema);
+   ```
+
+5. **Create User and Post Controllers (controllers/userController.js, controllers/postController.js)**
+
+   ```javascript
+   // controllers/userController.js
+   const User = require('../models/User');
+
+   exports.register = async (req, res) => {
+   	const { username, email, password } = req.body;
+
+   	try {
+   		const user = new User({ username, email, password });
+   		await user.save();
+   		res.status(201).json({ message: 'User registered successfully' });
+   	} catch (error) {
+   		res.status(400).json({ error: error.message });
+   	}
+   };
+
+   exports.login = async (req, res) => {
+   	const { email, password } = req.body;
+
+   	try {
+   		const user = await User.findOne({ email });
+   		if (!user) return res.status(404).json({ message: 'User not found' });
+
+   		// Check password
+   		const isMatch = await bcrypt.compare(password, user.password);
+   		if (!isMatch)
+   			return res.status(400).json({ message: 'Invalid credentials' });
+
+   		// Generate JWT
+   		const token = jwt.sign({ id: user._id }, 'your_jwt_secret', {
+   			expiresIn: '1h',
+   		});
+   		res.json({ token });
+   	} catch (error) {
+   		res.status(500).json({ error: error.message });
+   	}
+   };
+   ```
+
+   ```javascript
+   // controllers/postController.js
+   const Post = require('../models/Post');
+
+   exports.createPost = async (req, res) => {
+   	const { title, content } = req.body;
+   	const author = req.user.id; // Get author from JWT
+
+   	try {
+   		const post = new Post({ title, content, author });
+   		await post.save();
+   		res.status(201).json(post);
+   	} catch (error) {
+   		res.status(400).json({ error: error.message });
+   	}
+   };
+
+   exports.getAllPosts = async (req, res) => {
+   	try {
+   		const posts = await Post.find().populate('author', 'username');
+   		res.json(posts);
+   	} catch (error) {
+   		res.status(500).json({ error: error.message });
+   	}
+   };
+
+   exports.getPostById = async (req, res) => {
+   	const { id } = req.params;
+
+   	try {
+   		const post = await Post.findById(id).populate('author', 'username');
+   		if (!post) return res.status(404).json({ message: 'Post not found' });
+   		res.json(post);
+   	} catch (error) {
+   		res.status(500).json({ error: error.message });
+   	}
+   };
+
+   exports.updatePost = async (req, res) => {
+   	const { id } = req.params;
+   	const { title, content } = req.body;
+
+   	try {
+   		const post = await Post.findByIdAndUpdate(
+   			id,
+   			{ title, content, updatedAt: Date.now() },
+   			{ new: true, runValidators: true }
+   		);
+   		if (!post) return res.status(404).json({ message: 'Post not found' });
+   		res.json(post);
+   	} catch (error) {
+   		res.status(400).json({ error: error.message });
+   	}
+   };
+
+   exports.deletePost = async (req, res) => {
+   	const { id } = req.params;
+
+   	try {
+   		const post = await Post.findByIdAndDelete(id);
+   		if (!post) return res.status(404).json({ message: 'Post not found' });
+   		res.status(204).send();
+   	} catch (error) {
+   		res.status(500).json({ error: error.message });
+   	}
+   };
+   ```
+
+6. **Define User and Post Routes (routes/userRoutes.js, routes/postRoutes.js)**
+
+   ```javascript
+   // routes/userRoutes.js
+   const express = require('express');
+   const userController = require('../controllers/userController');
+
+   const router = express.Router();
+
+   router.post('/register', userController.register);
+   router.post('/login', userController.login);
+
+   module.exports = router;
+   ```
+
+   ```javascript
+   // routes/postRoutes.js
+   const express = require('express');
+   const postController = require('../controllers/postController');
+   const authMiddleware = require('../middleware/authMiddleware');
+
+   const router = express.Router();
+
+   // Protect all post routes
+   router.use(authMiddleware);
+
+   router.post('/', postController.createPost);
+   router.get('/', postController.getAllPosts);
+   router.get('/:id', postController.getPostById);
+   router.put('/:id', postController.updatePost);
+   router.delete('/:id', postController.deletePost);
+
+   module.exports = router;
+   ```
+
+7. **Create Authentication Middleware (middleware/authMiddleware.js)**
+
+   ```javascript
+   const jwt = require('jsonwebtoken');
+   const User = require('../models/User');
+
+   module.exports = async (req, res, next) => {
+   	const token = req.headers['authorization']?.split(' ')[1];
+   	if (!token) return res.status(401).json({ message: 'Unauthorized' });
+
+   	try {
+   		const decoded = jwt.verify(token, 'your_jwt_secret');
+   		req.user = await User.findById(decoded.id);
+   		next();
+   	} catch (error) {
+   		res.status(401).json({ message: 'Invalid or expired token' });
+   	}
+   };
+   ```
+
+8. **Set Up Express Server (app.js)**
+
+   ```javascript
+   const express = require('express');
+   const mongoose = require('mongoose');
+   const userRoutes = require('./routes/userRoutes');
+   const postRoutes = require('./routes/postRoutes');
+
+   const app = express();
+
+   // Middleware
+   app.use(express.json());
+   app.use(express.static('public'));
+
+   // Routes
+   app.use('/api/users', userRoutes);
+   app.use('/api/posts', postRoutes);
+
+   // Connect to MongoDB
+   mongoose.connect('mongodb://localhost:27017/blogapp', {
+   	useNewUrlParser: true,
+   	useUnifiedTopology: true,
+   });
+
+   app.listen(3000, () => {
+   	console.log('Server running on port 3000');
+   });
+   ```
+
+9. **Create Views and Static Files**
+
+   - Create EJS views in the `views` folder for different pages (e.g., index, login, register, dashboard, post).
+   - Create CSS styles in `public/css/styles.css` and JS scripts in `public/js/scripts.js`.
+
+10. **Run the Application**
+
+    ```bash
+    npm run dev
+    ```
+
+11. **Test the Blog Application**
+
+    - Open your browser and go to `http://localhost:3000`.
+    - Register a new user and log in.
+    - Create, edit, and delete blog posts.
+    - Test the comment system and other features.
+
+### 5.3 Discord Bot in Node.js
+
+A Discord bot is a program that interacts with the Discord API to automate tasks, provide information, or entertain users on Discord servers. Discord bots can perform a wide range of functions, from moderating servers to playing music or providing game stats.
+
+#### Features
+
+- Respond to user commands
+- Send automated messages or alerts
+- Moderate chat (e.g., mute, kick, ban users)
+- Provide information (e.g., weather, news, game stats)
+- Play music in voice channels
+- Customizable prefixes and command handling
+
+#### Technologies Used
+
+- **Node.js**: Backend runtime environment
+- **Discord.js**: Powerful library to interact with the Discord API
+- **Nodemon**: Development tool for automatic server restarts
+
+#### Project Structure
+
+```
+discord-bot/
+├── commands/
+│   ├── ping.js
+│   └── ban.js
+├── events/
+│   ├── ready.js
+│   └── message.js
+├── config.json
+├── index.js
+└── package.json
+```
+
+#### Setting Up the Project
+
+1. **Initialize Node.js Project**
+
+   ```bash
+   mkdir discord-bot
+   cd discord-bot
+   npm init -y
+   ```
+
+2. **Install Dependencies**
+
+   ```bash
+   npm install discord.js
+   npm install --save-dev nodemon
+   ```
+
+3. **Create Project Structure**
+
+   ```bash
+   mkdir commands events
+   touch index.js
+   ```
+
+4. **Create Bot Configuration (config.json)**
+
+   ```json
+   {
+   	"token": "YOUR_BOT_TOKEN",
+   	"prefix": "!"
+   }
+   ```
+
+5. **Set Up Bot Client (index.js)**
+
+   ```javascript
+   const { Client, Intents } = require('discord.js');
+   const fs = require('fs');
+   const path = require('path');
+   const config = require('./config.json');
+
+   const client = new Client({
+   	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+   });
+
+   // Load commands
+   client.commands = new Map();
+   const commandFiles = fs
+   	.readdirSync(path.join(__dirname, 'commands'))
+   	.filter((file) => file.endsWith('.js'));
+   for (const file of commandFiles) {
+   	const command = require(`./commands/${file}`);
+   	client.commands.set(command.data.name, command);
+   }
+
+   // Load events
+   const eventFiles = fs
+   	.readdirSync(path.join(__dirname, 'events'))
+   	.filter((file) => file.endsWith('.js'));
+   for (const file of eventFiles) {
+   	const event = require(`./events/${file}`);
+   	client.on(event.name, (...args) => event.execute(...args, client));
+   }
+
+   client.login(config.token);
+   ```
+
+6. **Create Command Example (commands/ping.js)**
+
+   ```javascript
+   const { SlashCommandBuilder } = require('@discordjs/builders');
+
+   module.exports = {
+   	data: new SlashCommandBuilder()
+   		.setName('ping')
+   		.setDescription('Replies with Pong!'),
+   	async execute(interaction) {
+   		await interaction.reply('Pong!');
+   	},
+   };
+   ```
+
+7. **Create Event Example (events/ready.js)**
+
+   ```javascript
+   module.exports = {
+   	name: 'ready',
+   	once: true,
+   	execute(client) {
+   		console.log(`Logged in as ${client.user.tag}`);
+   	},
+   };
+   ```
+
+8. **Run the Bot**
+
+   ```bash
+   node index.js
+   ```
+
+9. **Test the Discord Bot**
+
+   - Invite the bot to your Discord server using the OAuth2 URL generated in the Discord Developer Portal.
+   - Test the bot commands and events in your Discord server.
+
+### 5.4 File Uploads with Multer
+
+Multer is a middleware for handling `multipart/form-data`, which is used for uploading files. It is written on top of the busboy library by Felix Geisendörfer.
+
+#### Features
+
+- Upload single or multiple files
+- Limit file size and type
+- Store files in memory or on disk
+- Rename files during upload
+- Handle file uploads in forms
+
+#### Technologies Used
+
+- **Node.js**: Backend runtime environment
+- **Express.js**: Web framework for Node.js
+- **Multer**: Middleware for handling file uploads
+
+#### Project Structure
+
+```
+file-upload/
+├── uploads/
+├── app.js
+└── package.json
+```
+
+#### Setting Up the Project
+
+1. **Initialize Node.js Project**
+
+   ```bash
+   mkdir file-upload
+   cd file-upload
+   npm init -y
+   ```
+
+2. **Install Dependencies**
+
+   ```bash
+   npm install express multer
+   ```
+
+3. **Create Project Structure**
+
+   ```bash
+   mkdir uploads
+   touch app.js
+   ```
+
+4. **Set Up File Uploads with Multer (app.js)**
+
+   ```javascript
+   const express = require('express');
+   const multer = require('multer');
+   const path = require('path');
+
+   const app = express();
+
+   // Set up storage engine
+   const storage = multer.diskStorage({
+   	destination: './uploads',
+   	filename: (req, file, cb) => {
+   		cb(
+   			null,
+   			file.fieldname + '-' + Date.now() + path.extname(file.originalname)
+   		);
+   	},
+   });
+
+   // Initialize upload variable
+   const upload = multer({
+   	storage,
+   	limits: { fileSize: 1000000 }, // 1 MB limit
+   	fileFilter: (req, file, cb) => {
+   		const filetypes = /jpeg|jpg|png|gif/;
+   		const extname = filetypes.test(
+   			path.extname(file.originalname).toLowerCase()
+   		);
+   		const mimetype = filetypes.test(file.mimetype);
+
+   		if (mimetype && extname) {
+   			return cb(null, true);
+   		}
+   		cb(
+   			'Error: File upload only supports the following filetypes - ' +
+   				filetypes
+   		);
+   	},
+   }).single('myImage'); // 'myImage' is the name attribute in the file input field
+
+   app.post('/upload', (req, res) => {
+   	upload(req, res, (err) => {
+   		if (err) {
+   			return res.status(400).send(err);
+   		}
+   		res.send(`File uploaded: ${req.file.filename}`);
+   	});
+   });
+
+   app.listen(3000, () => {
+   	console.log('Server running on port 3000');
+   });
+   ```
+
+5. **Create Upload Form (public/index.html)**
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   	<head>
+   		<meta charset="UTF-8" />
+   		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   		<title>File Upload</title>
+   	</head>
+   	<body>
+   		<h1>File Upload</h1>
+   		<form id="uploadForm" enctype="multipart/form-data">
+   			<input type="file" name="myImage" accept="image/*" required />
+   			<button type="submit">Upload</button>
+   		</form>
+   		<div id="result"></div>
+
+   		<script>
+   			document
+   				.getElementById('uploadForm')
+   				.addEventListener('submit', async (e) => {
+   					e.preventDefault();
+   					const formData = new FormData();
+   					const fileField = document.querySelector('input[type="file"]');
+
+   					formData.append('myImage', fileField.files[0]);
+
+   					const response = await fetch('/upload', {
+   						method: 'POST',
+   						body: formData,
+   					});
+
+   					const data = await response.text();
+   					document.getElementById('result').innerText = data;
+   				});
+   		</script>
+   	</body>
+   </html>
+   ```
+
+6. **Run the Application**
+
+   ```bash
+   node app.js
+   ```
+
+7. **Test File Uploads**
+
+   - Open your browser and go to `http://localhost:3000`.
+   - Select an image file and click "Upload".
+   - Check the `uploads` folder for the uploaded file.
+
+## 6. Deployment & Performance
+
+### 6.1 AWS Deployment
+
+Deploying Node.js applications on AWS can be done using various services like EC2, Elastic Beanstalk, or Lambda (for serverless).
+
+#### Deploying on EC2
+
+1. **Launch an EC2 Instance**: Choose an Amazon Machine Image (AMI) with Node.js pre-installed or install Node.js manually on a basic Linux AMI.
+2. **Connect to the Instance**: Use SSH to connect to your EC2 instance.
+3. **Transfer Files**: Use SCP or SFTP to transfer your application files to the EC2 instance.
+4. **Install Dependencies**: SSH into your instance and run `npm install` to install your app's dependencies.
+5. **Start the Application**: Use `node` or `npm start` to start your application. Consider using a process manager like PM2 to keep your app running.
+6. **Configure Security Group**: Ensure your EC2 instance's security group allows inbound traffic on the port your app is running (e.g., port 3000).
+7. **Access the Application**: Open a browser and go to `http://<your-ec2-public-dns>:3000`.
+
+#### Deploying on Elastic Beanstalk
+
+1. **Package Your Application**: Ensure your application is working locally and create a ZIP file of your project.
+2. **Create an Elastic Beanstalk Environment**: In the AWS Management Console, go to Elastic Beanstalk and create a new environment.
+3. **Upload and Deploy**: Upload your ZIP file and deploy it to the Elastic Beanstalk environment.
+4. **Configure Environment Variables**: Set any necessary environment variables in the Elastic Beanstalk console.
+5. **Access the Application**: Once deployed, Elastic Beanstalk provides a URL to access your application.
+
+### 6.2 NGINX (Setup, Serve Static Content, SSL with LetsEncrypt)
+
+NGINX is a high-performance web server that can also be used as a reverse proxy, load balancer, and HTTP cache. It is often used to serve static content and as a reverse proxy for Node.js applications.
+
+#### Installing NGINX
+
+```bash
+sudo apt update
+sudo apt install nginx
+```
+
+#### Configuring NGINX
+
+1. **Basic Configuration**: Edit the default configuration file
+
+   ```bash
+   sudo nano /etc/nginx/sites-available/default
+   ```
+
+   - Set the server name and root directory
+
+   ```nginx
+   server {
+       listen 80;
+       server_name your_domain.com;
+       root /var/www/html;
+       index index.html;
+   }
+   ```
+
+2. **Reverse Proxy to Node.js**: If your Node.js app is running on a different port (e.g., 3000), set up a reverse proxy
+
+   ```nginx
+   location / {
+       proxy_pass http://localhost:3000;
+       proxy_http_version 1.1;
+       proxy_set_header Upgrade $http_upgrade;
+       proxy_set_header Connection 'upgrade';
+       proxy_set_header Host $host;
+       proxy_cache_bypass $http_upgrade;
+   }
+   ```
+
+3. **Test and Restart NGINX**
+
+   ```bash
+   sudo nginx -t
+   sudo systemctl restart nginx
+   ```
+
+#### Serving Static Content
+
+- Place your static files (HTML, CSS, JS) in the directory specified by the `root` directive in your NGINX configuration (e.g., `/var/www/html`).
+- NGINX will automatically serve these files when requested.
+
+#### SSL with LetsEncrypt
+
+1. **Install Certbot**
+
+   ```bash
+   sudo apt install certbot python3-certbot-nginx
+   ```
+
+2. **Obtain an SSL Certificate**
+
+   ```bash
+   sudo certbot --nginx -d your_domain.com
+   ```
+
+3. **Automatic Renewal**: Certbot sets up a cron job for automatic renewal. You can test the renewal process with:
+
+   ```bash
+   sudo certbot renew --dry-run
+   ```
+
+### 6.3 Scaling Node.js with Cluster
+
+The Node.js cluster module allows you to create multiple child processes (workers) that share the same server port. This takes advantage of multi-core systems and improves the performance of Node.js applications.
+
+#### Basic Usage
+
+1. **Require the Cluster Module**
+
+   ```javascript
+   const cluster = require('cluster');
+   const http = require('http');
+   const numCPUs = require('os').cpus().length;
+   ```
+
+2. **Fork Workers**
+
+   ```javascript
+   if (cluster.isMaster) {
+   	// Fork workers
+   	for (let i = 0; i < numCPUs; i++) {
+   		cluster.fork();
+   	}
+
+   	cluster.on('exit', (worker, code, signal) => {
+   		console.log(`Worker ${worker.process.pid} died`);
+   	});
+   } else {
+   	// Workers can share any TCP connection
+   	// In this case, it is an HTTP server
+   	http
+   		.createServer((req, res) => {
+   			res.writeHead(200);
+   			res.end('Hello World\n');
+   		})
+   		.listen(8000);
+   }
+   ```
+
+3. **Run the Application**
+
+   ```bash
+   node app.js
+   ```
+
+4. **Test the Clustered Application**
+
+   - Send requests to the server and observe that multiple worker processes handle the requests.
+
+### 6.4 Serverless Framework + AWS Lambda
+
+Serverless computing allows you to build and run applications without having to manage servers. AWS Lambda is a serverless compute service that runs your code in response to events and automatically manages the underlying compute resources.
+
+#### Serverless Framework
+
+The Serverless Framework is an open-source framework that simplifies the development and deployment of serverless applications.
+
+1. **Install Serverless Framework**
+
+   ```bash
+   npm install -g serverless
+   ```
+
+2. **Create a Serverless Service**
+
+   ```bash
+   serverless create --template aws-nodejs --path my-service
+   cd my-service
+   ```
+
+3. **Configure serverless.yml**
+
+   ```yaml
+   service: my-service
+
+   provider:
+     name: aws
+     runtime: nodejs14.x
+
+   functions:
+     hello:
+       handler: handler.hello
+       events:
+         - http:
+             path: hello
+             method: get
+   ```
+
+4. **Deploy the Service**
+
+   ```bash
+   serverless deploy
+   ```
+
+5. **Invoke the Function**
+
+   ```bash
+   serverless invoke -f hello
+   ```
+
+6. **View Logs**
+
+   ```bash
+   serverless logs -f hello
+   ```
+
+7. **Remove the Service**
+
+   ```bash
+   serverless remove
+   ```
+
+## 7. Real-time and Streams
+
+### 7.1 WebSocket with Socket.IO
+
+Socket.IO is a JavaScript library for real-time web applications. It enables real-time, bidirectional, and event-based communication between the browser and the server.
+
+#### Features
+
+- Real-time communication
+- Automatic reconnection
+- Room and namespace support
+- Binary data support
+
+#### Technologies Used
+
+- **Node.js**: Backend runtime environment
+- **Socket.IO**: Library for real-time communication
+
+#### Project Structure
+
+```
+realtime-app/
+├── public/
+│   └── index.html
+├── app.js
+└── package.json
+```
+
+#### Setting Up the Project
+
+1. **Initialize Node.js Project**
+
+   ```bash
+   mkdir realtime-app
+   cd realtime-app
+   npm init -y
+   ```
+
+2. **Install Dependencies**
+
+   ```bash
+   npm install express socket.io
+   ```
+
+3. **Create Project Structure**
+
+   ```bash
+   mkdir public
+   touch app.js
+   ```
+
+4. **Set Up Express and Socket.IO (app.js)**
+
+   ```javascript
+   const express = require('express');
+   const http = require('http');
+   const socketIo = require('socket.io');
+
+   const app = express();
+   const server = http.createServer(app);
+   const io = socketIo(server);
+
+   app.get('/', (req, res) => {
+   	res.sendFile(__dirname + '/public/index.html');
+   });
+
+   io.on('connection', (socket) => {
+   	console.log('A user connected');
+
+   	socket.on('disconnect', () => {
+   		console.log('User disconnected');
+   	});
+   });
+
+   server.listen(3000, () => {
+   	console.log('Server running on port 3000');
+   });
+   ```
+
+5. **Create Client-side Code (public/index.html)**
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   	<head>
+   		<meta charset="UTF-8" />
+   		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   		<title>Real-time App</title>
+   	</head>
+   	<body>
+   		<h1>Real-time Communication with Socket.IO</h1>
+   		<div id="messages"></div>
+   		<input id="messageInput" placeholder="Type a message..." />
+   		<button id="sendButton">Send</button>
+
+   		<script src="/socket.io/socket.io.js"></script>
+   		<script>
+   			const socket = io();
+
+   			const messagesDiv = document.getElementById('messages');
+   			const messageInput = document.getElementById('messageInput');
+   			const sendButton = document.getElementById('sendButton');
+
+   			sendButton.addEventListener('click', () => {
+   				const message = messageInput.value;
+   				socket.emit('chat message', message);
+   				messageInput.value = '';
+   			});
+
+   			socket.on('chat message', (msg) => {
+   				const messageElement = document.createElement('div');
+   				messageElement.textContent = msg;
+   				messagesDiv.appendChild(messageElement);
+   			});
+   		</script>
+   	</body>
+   </html>
+   ```
+
+6. **Run the Application**
+
+   ```bash
+   node app.js
+   ```
+
+7. **Test Real-time Communication**
+
+   - Open multiple browser windows and go to `http://localhost:3000`.
+   - Send messages and observe real-time updates in all connected clients.
+
+### 7.2 Node.js Streams
+
+Streams are objects that allow you to read data from a source or write data to a destination in a continuous fashion. They are used for handling reading/writing files, network communications, or any kind of end-to-end information exchange.
+
+#### Types of Streams
+
+- **Readable Streams**: Streams from which data can be read (e.g., `fs.createReadStream()`).
+- **Writable Streams**: Streams to which data can be written (e.g., `fs.createWriteStream()`).
+- **Duplex Streams**: Streams that are both readable and writable (e.g., TCP sockets).
+- **Transform Streams**: Duplex streams that can modify or transform the data as it is written and read (e.g., zlib compression streams).
+
+#### Using Readable Streams
+
+```javascript
+const fs = require('fs');
+
+// Create a readable stream
+const readStream = fs.createReadStream('input.txt', 'utf8');
+
+// Handle stream events
+readStream.on('data', (chunk) => {
+	console.log('Received chunk:', chunk);
+});
+
+readStream.on('end', () => {
+	console.log('No more data in the stream.');
+});
+
+readStream.on('error', (err) => {
+	console.error('Error:', err);
+});
+```
+
+#### Using Writable Streams
+
+```javascript
+const fs = require('fs');
+
+// Create a writable stream
+const writeStream = fs.createWriteStream('output.txt');
+
+// Write data to the stream
+writeStream.write('Hello, ');
+writeStream.write('world!\n');
+writeStream.end('Goodbye, world!\n');
+
+writeStream.on('finish', () => {
+	console.log('All data has been written to the file.');
+});
+
+writeStream.on('error', (err) => {
+	console.error('Error:', err);
+});
+```
+
+#### Using Duplex and Transform Streams
+
+```javascript
+const { Transform } = require('stream');
+
+// Create a transform stream
+const reverseTransform = new Transform({
+	transform(chunk, encoding, callback) {
+		// Reverse the chunk and push it to the readable side
+		this.push(chunk.toString().split('').reverse().join(''));
+		callback();
+	},
+});
+
+// Pipe readable stream through transform stream to writable stream
+readStream.pipe(reverseTransform).pipe(writeStream);
+```
+
+## 8. GraphQL with Node.js
+
+### 8.1 GraphQL Crash Course
+
+GraphQL is a query language for APIs and a runtime for executing those queries with your existing data. It provides a more efficient, powerful, and flexible alternative to the RESTful API.
+
+#### Key Features of GraphQL
+
+- **Declarative Data Fetching**: Clients can request exactly the data they need, reducing over-fetching and under-fetching of data.
+- **Strongly Typed Schema**: GraphQL APIs are defined by a schema using the GraphQL Schema Definition Language (SDL). The schema specifies the types, queries, and mutations available in the API.
+- **Single Endpoint**: Unlike REST, which exposes multiple endpoints for different resources, a GraphQL API typically exposes a single endpoint for all interactions.
+- **Real-time Data with Subscriptions**: GraphQL supports real-time updates through subscriptions, allowing clients to receive live data updates.
+
+#### GraphQL vs REST
+
+- **Flexibility**: GraphQL allows clients to specify the structure of the response, while REST returns fixed data structures.
+- **Efficiency**: GraphQL reduces the number of requests and the amount of data transferred over the network.
+- **Versioning**: GraphQL APIs are typically versionless, as clients can request only the fields they need.
+
+### 8.2 Setting up GraphQL Server
+
+1. **Install Dependencies**
+
+   ```bash
+   npm install graphql express-graphql
+   ```
+
+2. **Create GraphQL Schema**
+
+   ```javascript
+   const {
+   	GraphQLSchema,
+   	GraphQLObjectType,
+   	GraphQLString,
+   } = require('graphql');
+
+   // Define a simple User type
+   const UserType = new GraphQLObjectType({
+   	name: 'User',
+   	fields: () => ({
+   		id: { type: GraphQLString },
+   		name: { type: GraphQLString },
+   		email: { type: GraphQLString },
+   	}),
+   });
+
+   // Define the RootQuery type
+   const RootQuery = new GraphQLObjectType({
+   	name: 'RootQueryType',
+   	fields: {
+   		user: {
+   			type: UserType,
+   			args: { id: { type: GraphQLString } },
+   			resolve(parent, args) {
+   				// Fetch data from the database or another source
+   				return { id: args.id, name: 'John Doe', email: 'john@example.com' };
+   			},
+   		},
+   	},
+   });
+
+   // Create the schema
+   const schema = new GraphQLSchema({
+   	query: RootQuery,
+   });
+
+   module.exports = schema;
+   ```
+
+3. **Set Up Express and GraphQL (app.js)**
+
+   ```javascript
+   const express = require('express');
+   const { graphqlHTTP } = require('express-graphql');
+   const schema = require('./schema');
+
+   const app = express();
+
+   app.use(
+   	'/graphql',
+   	graphqlHTTP({
+   		schema,
+   		graphiql: true, // Enable GraphiQL interface
+   	})
+   );
+
+   app.listen(3000, () => {
+   	console.log('Server running on port 3000');
+   });
+   ```
+
+4. **Test the GraphQL Server**
+
+   - Open your browser and go to `http://localhost:3000/graphql`.
+   - Use the GraphiQL interface to test queries and mutations.
+
+### 8.3 Prisma + PostgreSQL Setup
+
+Prisma is a next-generation ORM for Node.js and TypeScript that simplifies database access and management. It provides a type-safe database client, migrations, and a powerful data modeling language.
+
+1. **Install Dependencies**
+
+   ```bash
+   npm install prisma @prisma/client
+   ```
+
+2. **Initialize Prisma**
+
+   ```bash
+   npx prisma init
+   ```
+
+3. **Configure Database Connection**
+
+   - Update the `DATABASE_URL` in the `.env` file to point to your PostgreSQL database.
+
+   ```env
+   DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
+   ```
+
+4. **Define Data Model**
+
+   - Update the `schema.prisma` file with your data model.
+
+   ```prisma
+   datasource db {
+       provider = "postgresql"
+       url      = env("DATABASE_URL")
+   }
+
+   generator client {
+       provider = "prisma-client-js"
+   }
+
+   model User {
+       id    String @id @default(cuid())
+       name  String
+       email String @unique
+   }
+   ```
+
+5. **Run Migrations**
+
+   ```bash
+   npx prisma migrate dev --name init
+   ```
+
+6. **Generate Prisma Client**
+
+   ```bash
+   npx prisma generate
+   ```
+
+7. **Use Prisma Client in Your Application**
+
+   ```javascript
+   const { PrismaClient } = require('@prisma/client');
+   const prisma = new PrismaClient();
+
+   async function main() {
+   	// Create a new user
+   	const newUser = await prisma.user.create({
+   		data: {
+   			name: 'Alice',
+   			email: 'alice@example.com',
+   		},
+   	});
+   	console.log('Created new user:', newUser);
+
+   	// Fetch all users
+   	const allUsers = await prisma.user.findMany();
+   	console.log('All users:', allUsers);
+   }
+
+   main()
+   	.catch((e) => console.error(e))
+   	.finally(async () => {
+   		await prisma.$disconnect();
+   	});
+   ```
+
+8. **Run the Application**
+
+   ```bash
+   node app.js
+   ```
+
+9. **Test Prisma + PostgreSQL Integration**
+
+   - Test creating and fetching users in your application.
+
+### 8.4 Refactoring GraphQL Code
+
+As your GraphQL schema and resolvers grow, it's important to keep your code organized and maintainable. Consider the following tips for refactoring GraphQL code:
+
+1. **Modularize Schema and Resolvers**
+
+   - Split your schema and resolvers into separate files and folders based on features or resources.
+
+   ```
+   graphql
+   src/
+   ├── graphql/
+   │   ├── schema/
+   │   │   ├── userSchema.js
+   │   │   └── postSchema.js
+   │   ├── resolvers/
+   │   │   ├── userResolvers.js
+   │   │   └── postResolvers.js
+   │   └── index.js
+   └── server.js
+   ```
+
+2. **Use GraphQL Modules**
+
+   - Consider using the `graphql-modules` library to organize your schema and resolvers into cohesive modules.
+
+   ```javascript
+   const { createModule, gql } = require('graphql-modules');
+
+   // Define the User module
+   const UserModule = createModule({
+   	id: 'user',
+   	dirname: __dirname,
+   	typeDefs: gql`
+   		type User {
+   			id: ID!
+   			name: String!
+   			email: String!
+   		}
+
+   		extend type Query {
+   			user(id: ID!): User
+   			users: [User!]!
+   		}
+
+   		extend type Mutation {
+   			createUser(name: String!, email: String!): User!
+   		}
+   	`,
+   	resolvers: {
+   		Query: {
+   			user: (parent, args, context, info) => {
+   				// Resolver logic
+   			},
+   			users: (parent, args, context, info) => {
+   				// Resolver logic
+   			},
+   		},
+   		Mutation: {
+   			createUser: (parent, args, context, info) => {
+   				// Resolver logic
+   			},
+   		},
+   	},
+   });
+   ```
+
+3. **Use DataLoader for Batch Loading**
+
+   - Use the `dataloader` library to batch and cache database or API calls in your resolvers.
+
+   ```javascript
+   const DataLoader = require('dataloader');
+
+   const userLoader = new DataLoader(async (userIds) => {
+       const users = await User.findByIds(userIds);
+       return userIds.map(id => users.find(user => user.id === id));
+   });
+
+   // In your resolver
+   const resolvers = {
+       Post: {
+           author: (post) => userLoader.load(post.authorId)
+       }
+   };
+   ```
+
+4. **Error Handling and Validation**
+
+   ```javascript
+   const { GraphQLError } = require('graphql');
+
+   const resolvers = {
+       Mutation: {
+           createUser: async (parent, args, context) => {
+               try {
+                   // Validate input
+                   if (!args.email) {
+                       throw new GraphQLError('Email is required', {
+                           extensions: { code: 'BAD_USER_INPUT' }
+                       });
+                   }
+
+                   const user = await User.create(args);
+                   return user;
+               } catch (error) {
+                   throw new GraphQLError('Failed to create user', {
+                       extensions: { code: 'INTERNAL_ERROR' }
+                   });
+               }
+           }
+       }
+   };
+   ```
+
+5. **Use GraphQL Tools for Schema Composition**
+
+   ```javascript
+   const { makeExecutableSchema } = require('@graphql-tools/schema');
+
+   const typeDefs = `
+       type Query {
+           users: [User]
+           posts: [Post]
+       }
+   `;
+
+   const schema = makeExecutableSchema({
+       typeDefs,
+       resolvers
+   });
+   ```
+
+### 8.5 Authentication + JWT in GraphQL
+
+Authentication and authorization are crucial for securing GraphQL APIs. JSON Web Tokens (JWT) provide a stateless way to authenticate users and authorize access to resources.
+
+#### Setting Up JWT Authentication
+
+1. **Install Required Packages**
+
+   ```bash
+   npm install jsonwebtoken bcryptjs
+   ```
+
+2. **Create Authentication Utilities**
+
+   ```javascript
+   // utils/auth.js
+   const jwt = require('jsonwebtoken');
+   const bcrypt = require('bcryptjs');
+
+   const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+   const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
+
+   // Generate JWT token
+   const generateToken = (payload) => {
+       return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+   };
+
+   // Verify JWT token
+   const verifyToken = (token) => {
+       try {
+           return jwt.verify(token, JWT_SECRET);
+       } catch (error) {
+           throw new Error('Invalid or expired token');
+       }
+   };
+
+   // Hash password
+   const hashPassword = async (password) => {
+       const saltRounds = 10;
+       return await bcrypt.hash(password, saltRounds);
+   };
+
+   // Compare password
+   const comparePassword = async (password, hashedPassword) => {
+       return await bcrypt.compare(password, hashedPassword);
+   };
+
+   module.exports = {
+       generateToken,
+       verifyToken,
+       hashPassword,
+       comparePassword
+   };
+   ```
+
+3. **Update User Model with Authentication**
+
+   ```javascript
+   // models/User.js
+   const mongoose = require('mongoose');
+   const { hashPassword } = require('../utils/auth');
+
+   const userSchema = new mongoose.Schema({
+       username: {
+           type: String,
+           required: true,
+           unique: true,
+           trim: true
+       },
+       email: {
+           type: String,
+           required: true,
+           unique: true,
+           lowercase: true
+       },
+       password: {
+           type: String,
+           required: true,
+           minlength: 6
+       },
+       role: {
+           type: String,
+           enum: ['USER', 'ADMIN'],
+           default: 'USER'
+       }
+   }, { timestamps: true });
+
+   // Hash password before saving
+   userSchema.pre('save', async function(next) {
+       if (!this.isModified('password')) return next();
+       this.password = await hashPassword(this.password);
+       next();
+   });
+
+   module.exports = mongoose.model('User', userSchema);
+   ```
+
+4. **Create Authentication Context**
+
+   ```javascript
+   // context/auth.js
+   const { verifyToken } = require('../utils/auth');
+   const User = require('../models/User');
+
+   const getUser = async (req) => {
+       const token = req.headers.authorization?.replace('Bearer ', '');
+       
+       if (!token) return null;
+
+       try {
+           const decoded = verifyToken(token);
+           const user = await User.findById(decoded.userId);
+           return user;
+       } catch (error) {
+           return null;
+       }
+   };
+
+   module.exports = { getUser };
+   ```
+
+5. **Update GraphQL Schema with Authentication**
+
+   ```javascript
+   // schema/typeDefs.js
+   const { gql } = require('apollo-server-express');
+
+   const typeDefs = gql`
+       type User {
+           id: ID!
+           username: String!
+           email: String!
+           role: Role!
+           createdAt: String!
+           updatedAt: String!
+       }
+
+       enum Role {
+           USER
+           ADMIN
+       }
+
+       type AuthPayload {
+           token: String!
+           user: User!
+       }
+
+       type Query {
+           me: User
+           users: [User!]! # Admin only
+       }
+
+       type Mutation {
+           register(input: RegisterInput!): AuthPayload!
+           login(input: LoginInput!): AuthPayload!
+           updateProfile(input: UpdateProfileInput!): User!
+       }
+
+       input RegisterInput {
+           username: String!
+           email: String!
+           password: String!
+       }
+
+       input LoginInput {
+           email: String!
+           password: String!
+       }
+
+       input UpdateProfileInput {
+           username: String
+           email: String
+       }
+   `;
+
+   module.exports = typeDefs;
+   ```
+
+6. **Create Authentication Resolvers**
+
+   ```javascript
+   // resolvers/auth.js
+   const { GraphQLError } = require('graphql');
+   const User = require('../models/User');
+   const { generateToken, comparePassword } = require('../utils/auth');
+
+   const authResolvers = {
+       Query: {
+           me: async (parent, args, context) => {
+               if (!context.user) {
+                   throw new GraphQLError('You must be logged in', {
+                       extensions: { code: 'UNAUTHENTICATED' }
+                   });
+               }
+               return context.user;
+           },
+
+           users: async (parent, args, context) => {
+               // Check if user is admin
+               if (!context.user || context.user.role !== 'ADMIN') {
+                   throw new GraphQLError('Access denied. Admin privileges required.', {
+                       extensions: { code: 'FORBIDDEN' }
+                   });
+               }
+               return await User.find();
+           }
+       },
+
+       Mutation: {
+           register: async (parent, { input }) => {
+               try {
+                   // Check if user already exists
+                   const existingUser = await User.findOne({ 
+                       $or: [{ email: input.email }, { username: input.username }]
+                   });
+
+                   if (existingUser) {
+                       throw new GraphQLError('User with this email or username already exists', {
+                           extensions: { code: 'BAD_USER_INPUT' }
+                       });
+                   }
+
+                   // Create new user
+                   const user = new User(input);
+                   await user.save();
+
+                   // Generate token
+                   const token = generateToken({ userId: user.id });
+
+                   return { token, user };
+               } catch (error) {
+                   throw new GraphQLError(error.message, {
+                       extensions: { code: 'BAD_USER_INPUT' }
+                   });
+               }
+           },
+
+           login: async (parent, { input }) => {
+               try {
+                   // Find user by email
+                   const user = await User.findOne({ email: input.email });
+
+                   if (!user) {
+                       throw new GraphQLError('Invalid email or password', {
+                           extensions: { code: 'UNAUTHENTICATED' }
+                       });
+                   }
+
+                   // Check password
+                   const isPasswordValid = await comparePassword(input.password, user.password);
+
+                   if (!isPasswordValid) {
+                       throw new GraphQLError('Invalid email or password', {
+                           extensions: { code: 'UNAUTHENTICATED' }
+                       });
+                   }
+
+                   // Generate token
+                   const token = generateToken({ userId: user.id });
+
+                   return { token, user };
+               } catch (error) {
+                   throw new GraphQLError(error.message, {
+                       extensions: { code: 'UNAUTHENTICATED' }
+                   });
+               }
+           },
+
+           updateProfile: async (parent, { input }, context) => {
+               if (!context.user) {
+                   throw new GraphQLError('You must be logged in', {
+                       extensions: { code: 'UNAUTHENTICATED' }
+                   });
+               }
+
+               try {
+                   const updatedUser = await User.findByIdAndUpdate(
+                       context.user.id,
+                       input,
+                       { new: true, runValidators: true }
+                   );
+
+                   return updatedUser;
+               } catch (error) {
+                   throw new GraphQLError('Failed to update profile', {
+                       extensions: { code: 'BAD_USER_INPUT' }
+                   });
+               }
+           }
+       }
+   };
+
+   module.exports = authResolvers;
+   ```
+
+7. **Update Server with Authentication Context**
+
+   ```javascript
+   // server.js
+   const { ApolloServer } = require('apollo-server-express');
+   const express = require('express');
+   const mongoose = require('mongoose');
+   const typeDefs = require('./schema/typeDefs');
+   const resolvers = require('./resolvers');
+   const { getUser } = require('./context/auth');
+
+   async function startServer() {
+       const app = express();
+
+       // Connect to MongoDB
+       await mongoose.connect('mongodb://localhost:27017/graphql-auth');
+
+       // Create Apollo Server
+       const server = new ApolloServer({
+           typeDefs,
+           resolvers,
+           context: async ({ req }) => {
+               // Get user from token
+               const user = await getUser(req);
+               return { user };
+           }
+       });
+
+       await server.start();
+       server.applyMiddleware({ app });
+
+       const PORT = process.env.PORT || 4000;
+       app.listen(PORT, () => {
+           console.log(`Server running on http://localhost:${PORT}${server.graphqlPath}`);
+       });
+   }
+
+   startServer().catch(error => {
+       console.error('Error starting server:', error);
+   });
+   ```
+
+#### Testing Authentication
+
+1. **Register a New User**
+
+   ```graphql
+   mutation {
+       register(input: {
+           username: "johndoe"
+           email: "john@example.com"
+           password: "password123"
+       }) {
+           token
+           user {
+               id
+               username
+               email
+               role
+           }
+       }
+   }
+   ```
+
+2. **Login**
+
+   ```graphql
+   mutation {
+       login(input: {
+           email: "john@example.com"
+           password: "password123"
+       }) {
+           token
+           user {
+               id
+               username
+               email
+           }
+       }
+   }
+   ```
+
+3. **Access Protected Resources**
+
+   Add the JWT token to your request headers:
+   ```
+   {
+       "Authorization": "Bearer your-jwt-token-here"
+   }
+   ```
+
+   Then query protected resources:
+   ```graphql
+   query {
+       me {
+           id
+           username
+           email
+           role
+       }
+   }
+   ```
+
+#### Best Practices for GraphQL Authentication
+
+1. **Use HTTPS**: Always use HTTPS in production to protect tokens in transit
+2. **Token Expiration**: Set appropriate token expiration times
+3. **Refresh Tokens**: Implement refresh tokens for better security
+4. **Rate Limiting**: Implement rate limiting to prevent brute force attacks
+5. **Input Validation**: Always validate and sanitize user inputs
+6. **Error Handling**: Don't expose sensitive information in error messages
+
+#### Authorization Patterns
+
+1. **Field-Level Authorization**
+
+   ```javascript
+   const resolvers = {
+       User: {
+           email: (user, args, context) => {
+               // Only allow users to see their own email or admins to see all emails
+               if (context.user.id === user.id || context.user.role === 'ADMIN') {
+                   return user.email;
+               }
+               throw new GraphQLError('Access denied');
+           }
+       }
+   };
+   ```
+
+2. **Directive-Based Authorization**
+
+   ```javascript
+   const { mapSchema, getDirective, MapperKind } = require('@graphql-tools/utils');
+
+   function authDirectiveTransformer(schema, directiveName) {
+       return mapSchema(schema, {
+           [MapperKind.FIELD]: (fieldConfig, _fieldName, typeName) => {
+               const authDirective = getDirective(schema, fieldConfig, directiveName)?.[0];
+               if (authDirective) {
+                   const { requires } = authDirective;
+                   const { resolve = defaultFieldResolver } = fieldConfig;
+                   
+                   fieldConfig.resolve = function(source, args, context, info) {
+                       if (!context.user || context.user.role !== requires) {
+                           throw new GraphQLError('Access denied');
+                       }
+                       return resolve(source, args, context, info);
+                   };
+               }
+               return fieldConfig;
+           }
+       });
+   }
+   ```
+
+This completes the comprehensive Node.js notes covering all topics from beginner to advanced levels, including the integration of GraphQL with authentication and JWT implementation. The notes now provide a complete learning path for mastering Node.js development!
+
+---
+
+*These Notes Were Compiled By Deepak Modi*					
+*Website: [Deepak Modi](https://deepakmodi.tech)*		
+*Connect with me on [LinkedIn](https://www.linkedin.com/in/deepakmodi1/) for more updates and resources!*
