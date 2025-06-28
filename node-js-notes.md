@@ -1,5 +1,39 @@
 # Node.js Master Notes By Deepak Modi
 
+> Recommended YouTube Playlist: [Master NodeJS by Piyush Garg](https://www.youtube.com/playlist?list=PLinedj3B30sDby4Al-i13hQJGQoRQDfPo)
+
+## Table of Contents
+1. [Introduction to Node.js](#1-introduction-to-nodejs)
+   - [1.1 What is Node.js?](#11-what-is-nodejs)
+   - [1.2 Node.js Installation](#12-nodejs-installation)
+   - [1.3 How Node.js Works?](#13-how-nodejs-works)
+   - [1.4 Hello World in Node.js](#14-hello-world-in-nodejs)
+
+2. [Core Concepts](#2-core-concepts)
+   - [2.1 Modules in Node.js](#21-modules-in-nodejs)
+   - [2.2 File Handling in Node.js](#22-file-handling-in-nodejs)
+   - [2.3 Building HTTP Server in Node.js](#23-building-http-server-in-nodejs)
+   - [2.4 Handling URLs](#24-handling-urls)
+   - [2.5 HTTP Methods](#25-http-methods)
+   - [2.6 Versioning in Node.js](#26-versioning-in-nodejs)
+   - [2.7 Node.js Package Manager (npm)](#27-nodejs-package-manager-npm)
+
+3. [Express.js and APIs](#3-expressjs-and-apis)
+   - [3.1 Getting Started with Express](#31-getting-started-with-express)
+   - [3.2 What is RESTful API?](#32-what-is-restful-api)
+   - [3.3 Building REST APIs with Node.js + Express](#33-building-rest-apis-with-nodejs-express)
+   - [3.4 Express Middleware](#34-express-middleware)
+   - [3.5 HTTP Headers in APIs](#35-http-headers-in-apis)
+   - [3.6 HTTP Status Codes](#36-http-status-codes)
+   - [3.7 Introduction to POSTMAN](#37-introduction-to-postman)
+
+4. [Database Integration](#4-database-integration)
+   - [4.1 Introduction to MongoDB](#41-introduction-to-mongodb)
+   - [4.2 Connecting Node.js with MongoDB (Mongoose + Express)](#42-connecting-nodejs-with-mongodb-mongoose-express)
+   - [4.3 MVC Pattern in Node.js](#43-mvc-pattern-in-nodejs)
+
+---
+
 ## 1. Introduction to Node.js
 
 ### 1.1 What is Node.js?
@@ -450,7 +484,7 @@ app.listen(3000, () => {
 });
 ```
 
-### Running an Express Server
+#### Running an Express Server
 
 - Install Express using `npm install express`.
 - Create a file named `index.js` and add the Express server code.
@@ -458,13 +492,13 @@ app.listen(3000, () => {
 - Run commands like `npm start` or `npm run dev` to start your Express server.
 - Use `nodemon` for automatic server restarts during development by installing it globally with `npm install -g nodemon` or locally with `npm install --save-dev nodemon` as a dev dependency in your project.
 
-### Tools for Testing REST APIs
+#### Tools for Testing REST APIs
 
 - **Postman:** A popular tool for testing APIs with a user-friendly interface.
 - **cURL:** A command-line tool for making HTTP requests.
 - **Insomnia:** Another user-friendly API testing tool.
 
-### Best Practices for Designing REST APIs
+#### Best Practices for Designing REST APIs
 
 - Use meaningful resource names (nouns) in URIs.
 - Use appropriate HTTP methods for actions (GET for read, POST for create, PUT/PATCH for update, DELETE for delete).

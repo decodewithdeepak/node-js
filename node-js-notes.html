@@ -365,7 +365,55 @@ code {
           : 'default'
     });
   </script>
-<h1 id="nodejs-master-notes">Node.js Master Notes</h1>
+<h1 id="nodejs-master-notes-by-deepak-modi">Node.js Master Notes By Deepak Modi</h1>
+<blockquote>
+<p>Recommended YouTube Playlist: <a href="https://www.youtube.com/playlist?list=PLinedj3B30sDby4Al-i13hQJGQoRQDfPo">Master NodeJS by Piyush Garg</a></p>
+</blockquote>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li>
+<p><a href="#1-introduction-to-nodejs">Introduction to Node.js</a></p>
+<ul>
+<li><a href="#11-what-is-nodejs">1.1 What is Node.js?</a></li>
+<li><a href="#12-nodejs-installation">1.2 Node.js Installation</a></li>
+<li><a href="#13-how-nodejs-works">1.3 How Node.js Works?</a></li>
+<li><a href="#14-hello-world-in-nodejs">1.4 Hello World in Node.js</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#2-core-concepts">Core Concepts</a></p>
+<ul>
+<li><a href="#21-modules-in-nodejs">2.1 Modules in Node.js</a></li>
+<li><a href="#22-file-handling-in-nodejs">2.2 File Handling in Node.js</a></li>
+<li><a href="#23-building-http-server-in-nodejs">2.3 Building HTTP Server in Node.js</a></li>
+<li><a href="#24-handling-urls">2.4 Handling URLs</a></li>
+<li><a href="#25-http-methods">2.5 HTTP Methods</a></li>
+<li><a href="#26-versioning-in-nodejs">2.6 Versioning in Node.js</a></li>
+<li><a href="#27-nodejs-package-manager-npm">2.7 Node.js Package Manager (npm)</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#3-expressjs-and-apis">Express.js and APIs</a></p>
+<ul>
+<li><a href="#31-getting-started-with-express">3.1 Getting Started with Express</a></li>
+<li><a href="#32-what-is-restful-api">3.2 What is RESTful API?</a></li>
+<li><a href="#33-building-rest-apis-with-nodejs-express">3.3 Building REST APIs with Node.js + Express</a></li>
+<li><a href="#34-express-middleware">3.4 Express Middleware</a></li>
+<li><a href="#35-http-headers-in-apis">3.5 HTTP Headers in APIs</a></li>
+<li><a href="#36-http-status-codes">3.6 HTTP Status Codes</a></li>
+<li><a href="#37-introduction-to-postman">3.7 Introduction to POSTMAN</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#4-database-integration">Database Integration</a></p>
+<ul>
+<li><a href="#41-introduction-to-mongodb">4.1 Introduction to MongoDB</a></li>
+<li><a href="#42-connecting-nodejs-with-mongodb-mongoose-express">4.2 Connecting Node.js with MongoDB (Mongoose + Express)</a></li>
+<li><a href="#43-mvc-pattern-in-nodejs">4.3 MVC Pattern in Node.js</a></li>
+</ul>
+</li>
+</ol>
+<hr>
 <h2 id="1-introduction-to-nodejs">1. Introduction to Node.js</h2>
 <h3 id="11-what-is-nodejs">1.1 What is Node.js?</h3>
 <p>Node.js is an open-source, cross-platform JavaScript runtime environment that allows you to run JavaScript code outside the browser. Created by Ryan Dahl in 2009. Built on Google Chrome's V8 JavaScript engine, Node.js enables developers to build scalable, high-performance backend applications using JavaScript.</p>
@@ -375,9 +423,59 @@ code {
 <ul>
 <li><strong>Key Point:</strong> Node.js is not a programming language or a framework—it's a runtime environment for executing JavaScript on the server side.</li>
 </ul>
-<h3 id="12-how-nodejs-works">1.2 How Node.js Works?</h3>
-<p>Node.js operates on an event-driven, non-blocking I/O model that makes it lightweight and efficient for building scalable network applications. Understanding how Node.js works internally is crucial for writing performant applications.</p>
-<p>The core of Node.js is built around the concept of an event loop, which continuously checks for and executes pending operations. Unlike traditional server technologies that create a new thread for each request, Node.js uses a single thread with an event loop to handle multiple concurrent operations.</p>
+<h4 id="why-use-nodejs">Why use Node.js?</h4>
+<ul>
+<li><strong>Non-blocking I/O:</strong> Handles many connections at once without waiting for operations like file or network access to finish.</li>
+<li><strong>Single Language Stack:</strong> Use JavaScript for both frontend and backend, making full-stack development easier.</li>
+<li><strong>Fast and Efficient:</strong> Powered by the V8 engine, Node.js is known for its speed.</li>
+<li><strong>Large Ecosystem:</strong> npm (Node Package Manager) offers thousands of reusable packages.</li>
+<li><strong>Community Support:</strong> Huge, active community and lots of learning resources.</li>
+</ul>
+<p><strong>Comparison Example:</strong></p>
+<ul>
+<li>Traditional backend (e.g., PHP, Java): Each request may create a new thread, which is resource-intensive.</li>
+<li>Node.js: Uses a single-threaded event loop to handle many requests efficiently.</li>
+</ul>
+<h4 id="nodejs-in-modern-web-development">Node.js in Modern Web Development</h4>
+<p>Node.js is used for:</p>
+<ul>
+<li>REST APIs</li>
+<li>Real-time chat apps (e.g., WhatsApp clones)</li>
+<li>Streaming services (e.g., Netflix)</li>
+<li>IoT applications</li>
+<li>Command-line tools</li>
+</ul>
+<p><strong>Real-World Example:</strong>
+Netflix, PayPal, LinkedIn, and Uber use Node.js for parts of their backend systems.</p>
+<h3 id="12-nodejs-installation">1.2 Node.js Installation</h3>
+<h4 id="installing-nodejs">Installing Node.js</h4>
+<ul>
+<li><strong>Windows/Mac/Linux:</strong> Download from <a href="https://nodejs.org/">nodejs.org</a>. Installer includes npm.</li>
+<li><strong>Check installation:</strong></li>
+</ul>
+<pre class="hljs"><code><div>node -v
+npm -v
+</div></code></pre>
+<h4 id="using-repl-read-eval-print-loop">Using REPL (Read-Eval-Print Loop)</h4>
+<p>REPL lets you run JavaScript code interactively in the terminal:</p>
+<pre class="hljs"><code><div>node
+&gt; 2 + 2
+4
+&gt; .<span class="hljs-built_in">exit</span>
+</div></code></pre>
+<h4 id="running-scripts">Running Scripts</h4>
+<p>Save your code in a <code>.js</code> file and run:</p>
+<pre class="hljs"><code><div>node hello.js
+</div></code></pre>
+<h4 id="using-nodemon-for-development">Using nodemon for Development</h4>
+<p><code>nodemon</code> automatically restarts your app when files change.</p>
+<pre class="hljs"><code><div>npm install -g nodemon
+nodemon app.js
+</div></code></pre>
+<h3 id="13-how-nodejs-works">1.3 How Node.js Works?</h3>
+<p>Node.js operates on an event-driven, non-blocking I/O model that makes it lightweight and efficient for building scalable network applications.  		
+The core of Node.js is built around the event loop, which allows Node.js to handle multiple requests without creating new threads for each.</p>
+<p><img src="https://d2ms8rpfqc4h24.cloudfront.net/working_flow_of_node_7610f28abc.jpg" alt="Node.js Architecture"></p>
 <h4 id="the-event-loop-architecture">The Event Loop Architecture</h4>
 <p>The event loop is what allows Node.js to perform non-blocking I/O operations despite JavaScript being single-threaded. When Node.js performs an I/O operation, like reading from the network or accessing a database, instead of blocking and waiting for the operation to complete, Node.js will resume the operation when the response comes back.</p>
 <pre class="hljs"><code><div><span class="hljs-comment">// Example demonstrating non-blocking behavior</span>
@@ -399,65 +497,10 @@ setImmediate(<span class="hljs-function"><span class="hljs-params">()</span> =&g
 <p>Node.js is built on Google Chrome's V8 JavaScript engine, which compiles JavaScript directly to native machine code instead of interpreting it or executing it as bytecode. This makes Node.js applications incredibly fast and efficient.</p>
 <h4 id="libuv-library">libuv Library</h4>
 <p>Under the hood, Node.js uses libuv, a multi-platform C library that provides support for asynchronous I/O based on event loops. It handles file system operations, DNS lookup, network operations, and more.</p>
-<h3 id="13-nodejs-installation">1.3 Node.js Installation</h3>
-<ul>
-<li><strong>Non-blocking I/O:</strong> Handles many connections at once without waiting for operations like file or network access to finish.</li>
-<li><strong>Single Language Stack:</strong> Use JavaScript for both frontend and backend, making full-stack development easier.</li>
-<li><strong>Fast and Efficient:</strong> Powered by the V8 engine, Node.js is known for its speed.</li>
-<li><strong>Large Ecosystem:</strong> npm (Node Package Manager) offers thousands of reusable packages.</li>
-<li><strong>Community Support:</strong> Huge, active community and lots of learning resources.</li>
-</ul>
-<p><strong>Comparison Example:</strong></p>
-<ul>
-<li>Traditional backend (e.g., PHP, Java): Each request may create a new thread, which is resource-intensive.</li>
-<li>Node.js: Uses a single-threaded event loop to handle many requests efficiently.</li>
-</ul>
-<h3 id="nodejs-in-modern-web-development">Node.js in Modern Web Development</h3>
-<p>Node.js is used for:</p>
-<ul>
-<li>REST APIs</li>
-<li>Real-time chat apps (e.g., WhatsApp clones)</li>
-<li>Streaming services (e.g., Netflix)</li>
-<li>IoT applications</li>
-<li>Command-line tools</li>
-</ul>
-<p><strong>Real-World Example:</strong>
-Netflix, PayPal, LinkedIn, and Uber use Node.js for parts of their backend systems.</p>
-<p><strong>Sample Interview Q&amp;A:</strong></p>
-<ul>
-<li><strong>Q:</strong> What is Node.js and why is it popular?</li>
-<li><strong>A:</strong> Node.js is a JavaScript runtime for server-side programming. It's popular due to its non-blocking I/O, speed, and use of JavaScript on both client and server.</li>
-</ul>
-<p><strong>Summary:</strong>
-Node.js is a powerful tool for building scalable, high-performance backend applications using JavaScript.</p>
-<hr>
-<h2 id="2-setup-and-environment">2. Setup and Environment</h2>
-<h3 id="installing-nodejs">Installing Node.js</h3>
-<ul>
-<li><strong>Windows/Mac/Linux:</strong> Download from <a href="https://nodejs.org/">nodejs.org</a>. Installer includes npm.</li>
-<li><strong>Check installation:</strong></li>
-</ul>
-<pre class="hljs"><code><div>node -v
-npm -v
-</div></code></pre>
-<h3 id="using-repl-read-eval-print-loop">Using REPL (Read-Eval-Print Loop)</h3>
-<p>REPL lets you run JavaScript code interactively in the terminal:</p>
-<pre class="hljs"><code><div>node
-&gt; 2 + 2
-4
-&gt; .<span class="hljs-built_in">exit</span>
-</div></code></pre>
-<h3 id="running-scripts">Running Scripts</h3>
-<p>Save your code in a <code>.js</code> file and run:</p>
-<pre class="hljs"><code><div>node hello.js
-</div></code></pre>
-<h3 id="using-nodemon-for-development">Using nodemon for Development</h3>
-<p><code>nodemon</code> automatically restarts your app when files change.</p>
-<pre class="hljs"><code><div>npm install -g nodemon
-nodemon app.js
-</div></code></pre>
-<h3 id="nodejs-hello-world-example">Node.js Hello World Example</h3>
+<h3 id="14-hello-world-in-nodejs">1.4 Hello World in Node.js</h3>
+<p>Creating your first Node.js application is straightforward and demonstrates the fundamental difference between server-side JavaScript and browser JavaScript. This simple example shows how to execute JavaScript code outside the browser environment.</p>
 <pre class="hljs"><code><div><span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Hello Node!'</span>);
+
 <span class="hljs-comment">// console.log(window); // Error in Node.js environment but works in browser</span>
 <span class="hljs-comment">// console.log(alert("Hey there!")); // Error in Node.js environment but works in browser</span>
 </div></code></pre>
@@ -474,205 +517,132 @@ nodemon app.js
 <pre class="hljs"><code><div>node hello.js
 </div></code></pre>
 <p>This will display &quot;Hello Node!&quot; in your terminal, demonstrating that Node.js is correctly executing JavaScript code outside the browser environment.</p>
-<p><strong>Summary:</strong>
-Setting up Node.js is easy and cross-platform. REPL and nodemon speed up development.</p>
-<hr>
-<h2 id="3-nodejs-architecture">3. Node.js Architecture</h2>
-<p>Node.js architecture is designed for high concurrency and scalability, leveraging an event-driven, non-blocking I/O model.</p>
-<p>Operations can be synchronous (blocking) or asynchronous (non-blocking). The architecture is built around the event loop, which allows Node.js to handle multiple requests without creating new threads for each.</p>
-<p><img src="https://d2ms8rpfqc4h24.cloudfront.net/working_flow_of_node_7610f28abc.jpg" alt="Node.js Architecture"></p>
-<h3 id="event-loop-timers-and-queues">Event Loop, Timers, and Queues</h3>
-<p>Node.js uses an event-driven, non-blocking I/O model. The event loop is the heart of Node.js, allowing it to handle many connections efficiently.</p>
-<ul>
-<li><strong>Phases:</strong> Timers, I/O callbacks, idle/prepare, poll, check, close callbacks.</li>
-<li><strong>Queue:</strong> Events are queued and processed one at a time.</li>
-</ul>
-<h3 id="single-threaded-model-and-worker-threads">Single-threaded Model and Worker Threads</h3>
-<ul>
-<li>Node.js runs JavaScript in a single thread.</li>
-<li>For CPU-intensive tasks, use <code>worker_threads</code> to run code in parallel.</li>
-</ul>
-<h3 id="libuv-overview">libuv Overview</h3>
-<ul>
-<li><code>libuv</code> is a C library that powers Node.js's event loop and handles asynchronous I/O.</li>
-</ul>
-<h3 id="non-blocking-io">Non-blocking I/O</h3>
-<ul>
-<li>Node.js does not wait for file/network/database operations to finish. It uses callbacks/promises to handle results.</li>
-</ul>
-<h3 id="clustering">Clustering</h3>
-<ul>
-<li>Use the <code>cluster</code> module to run multiple Node.js processes and utilize multi-core CPUs.</li>
-</ul>
-<p><strong>Sample Interview Q&amp;A:</strong></p>
-<ul>
-<li><strong>Q:</strong> How does Node.js handle many connections with a single thread?</li>
-<li><strong>A:</strong> Through the event loop and non-blocking I/O, Node.js can process many requests without creating new threads for each.</li>
-</ul>
-<p><strong>Summary:</strong>
-Node.js architecture is designed for scalability and efficiency using the event loop and non-blocking I/O.</p>
-<hr>
-<h2 id="4-core-concepts">4. Core Concepts</h2>
-<h3 id="commonjs-modules">CommonJS Modules</h3>
-<p>CommonJS is the default module system used in Node.js. It allows you to split your code into reusable modules.</p>
-<ul>
-<li>Use <code>require</code> and <code>module.exports</code> to import/export code.</li>
-</ul>
+<h2 id="2-core-concepts">2. Core Concepts</h2>
+<h3 id="21-modules-in-nodejs">2.1 Modules in Node.js</h3>
+<p>Modules are the building blocks of Node.js applications. They allow you to organize your code into separate files and reuse functionality across different parts of your application. Node.js supports both CommonJS and ES modules.</p>
+<h4 id="commonjs-modules-default">CommonJS Modules (Default)</h4>
+<p>CommonJS is the traditional module system in Node.js, using <code>require()</code> and <code>module.exports</code>.</p>
 <pre class="hljs"><code><div><span class="hljs-comment">// math.js</span>
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">a, b</span>) </span>{
-	<span class="hljs-keyword">return</span> a + b;
+    <span class="hljs-keyword">return</span> a + b;
 }
-<span class="hljs-built_in">module</span>.exports = { add };
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">subtract</span>(<span class="hljs-params">a, b</span>) </span>{
+    <span class="hljs-keyword">return</span> a - b;
+}
+<span class="hljs-built_in">module</span>.exports = { add, subtract };
 
 <span class="hljs-comment">// app.js</span>
-<span class="hljs-keyword">const</span> { add } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./math'</span>);
-<span class="hljs-built_in">console</span>.log(add(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>));
+<span class="hljs-keyword">const</span> { add, subtract } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./math'</span>);
+<span class="hljs-built_in">console</span>.log(add(<span class="hljs-number">5</span>, <span class="hljs-number">3</span>)); <span class="hljs-comment">// 8</span>
+<span class="hljs-built_in">console</span>.log(subtract(<span class="hljs-number">5</span>, <span class="hljs-number">3</span>)); <span class="hljs-comment">// 2</span>
 </div></code></pre>
-<h3 id="es-modules">ES Modules</h3>
-<p>ES Modules (ECMAScript Modules) are the modern JavaScript module system, which can also be used in Node.js.</p>
-<ul>
-<li>Use <code>import</code> and <code>export</code> (add &quot;type&quot;: &quot;module&quot; in package.json or use .mjs extension).</li>
-</ul>
+<h4 id="es-modules-modern">ES Modules (Modern)</h4>
+<p>ES Modules (ECMAScript Modules) use <code>import</code> and <code>export</code> statements. To use ES modules, add <code>&quot;type&quot;: &quot;module&quot;</code> to your <code>package.json</code> or use <code>.mjs</code> file extension.</p>
 <pre class="hljs"><code><div><span class="hljs-comment">// math.mjs (or math.js with "type": "module")</span>
 <span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">a, b</span>) </span>{
-	<span class="hljs-keyword">return</span> a + b;
+    <span class="hljs-keyword">return</span> a + b;
 }
-<span class="hljs-comment">// app.mjs (or app.js with "type": "module")</span>
-<span class="hljs-keyword">import</span> { add } <span class="hljs-keyword">from</span> <span class="hljs-string">'./math.mjs'</span>;
-<span class="hljs-built_in">console</span>.log(add(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>));
-</div></code></pre>
-<h3 id="global-objects">Global Objects</h3>
-<ul>
-<li><code>process</code>: Info about the current Node.js process.</li>
-<li><code>__dirname</code>: Directory name of the current module.</li>
-<li><code>__filename</code>: File name of the current module.</li>
-</ul>
-<h3 id="buffer-and-stream-concepts">Buffer and Stream Concepts</h3>
-<ul>
-<li><strong>Buffer:</strong> Raw binary data (useful for file/network operations).</li>
-<li><strong>Stream:</strong> Handles data that is read/written in chunks (e.g., file streams, HTTP requests).</li>
-</ul>
-<p><strong>Summary:</strong>
-Modules, global objects, buffers, and streams are foundational to Node.js development.</p>
-<hr>
-<h2 id="5-core-modules">5. Core Modules</h2>
-<p>Node.js comes with a set of built-in modules that provide essential functionality for building applications. Here are some of the most commonly used core modules:</p>
-<h3 id="http-creating-servers">http: Creating Servers</h3>
-<p>Server creation is a fundamental part of Node.js, allowing you to handle HTTP requests and responses.</p>
-<pre class="hljs"><code><div><span class="hljs-keyword">const</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">'http'</span>);
-<span class="hljs-keyword">const</span> server = http.createServer(<span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> {
-	<span class="hljs-comment">// Handle incoming requests</span>
-	<span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Request received: <span class="hljs-subst">${req.method}</span> <span class="hljs-subst">${req.url}</span>`</span>);
-	<span class="hljs-comment">// Send a response</span>
-	res.writeHead(<span class="hljs-number">200</span>, { <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'text/plain'</span> });
-	res.end(<span class="hljs-string">'Hello from Server'</span>);
-});
-server.listen(<span class="hljs-number">3000</span>, () =&gt; <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Server running on port 3000'</span>));
-</div></code></pre>
-<h3 id="http-methods-get-post-put-patch-delete-head-options">HTTP methods: GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS</h3>
-<p>HTTP methods define the type of action to be performed on a resource.</p>
-<ul>
-<li><strong>GET:</strong> Retrieve data from the server (read-only).</li>
-<li><strong>POST:</strong> Submit data to the server to create a resource.</li>
-<li><strong>PUT:</strong> Update or replace existing data on the server completely.</li>
-<li><strong>PATCH:</strong> Partially update existing data on the server.</li>
-<li><strong>DELETE:</strong> Remove resource or data from the server.</li>
-<li><strong>HEAD:</strong> Similar to GET, but only retrieves headers not the body.</li>
-<li><strong>OPTIONS:</strong> Retrieve supported HTTP methods for a resource</li>
-</ul>
-<h3 id="fs-file-operations">fs: File Operations</h3>
-<p>The <code>fs</code> module provides an API for interacting with the file system.</p>
-<h4 id="sync-blocking"><strong>Sync (Blocking):</strong></h4>
-<p>Synchronous file operations block the event loop until completed.</p>
-<pre class="hljs"><code><div><span class="hljs-comment">// From your sync_async.js</span>
-<span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">subtract</span>(<span class="hljs-params">a, b</span>) </span>{
+    <span class="hljs-keyword">return</span> a - b;
+}
 
-<span class="hljs-comment">// Blocking Request (Sync)</span>
+<span class="hljs-comment">// app.mjs (or app.js with "type": "module")</span>
+<span class="hljs-keyword">import</span> { add, subtract } <span class="hljs-keyword">from</span> <span class="hljs-string">'./math.mjs'</span>;
+<span class="hljs-built_in">console</span>.log(add(<span class="hljs-number">5</span>, <span class="hljs-number">3</span>)); <span class="hljs-comment">// 8</span>
+<span class="hljs-built_in">console</span>.log(subtract(<span class="hljs-number">5</span>, <span class="hljs-number">3</span>)); <span class="hljs-comment">// 2</span>
+</div></code></pre>
+<h3 id="22-file-handling-in-nodejs">2.2 File Handling in Node.js</h3>
+<p>File handling is crucial for many Node.js applications. The <code>fs</code> module provides both synchronous and asynchronous methods for file operations. While synchronous methods block the event loop, asynchronous methods allow other operations to continue while waiting for file I/O to complete.</p>
+<h4 id="synchronous-vs-asynchronous-operations">Synchronous vs Asynchronous Operations</h4>
+<ul>
+<li><strong>Sync (Blocking):</strong> Synchronous file operations block the event loop until completion, which can lead to performance issues in production applications.</li>
+<li><strong>Async (Non-blocking):</strong> Asynchronous file operations allow the event loop to continue running while waiting for the operation to complete, improving scalability and responsiveness.</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
+
+<span class="hljs-comment">// Synchronous (Blocking) - blocks the event loop</span>
 <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'1'</span>);
 <span class="hljs-keyword">const</span> result = fs.readFileSync(<span class="hljs-string">'./contacts.txt'</span>, <span class="hljs-string">'utf8'</span>);
 <span class="hljs-built_in">console</span>.log(result);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'2'</span>);
+<span class="hljs-comment">// Output: 1, [file contents], 2</span>
 
-<span class="hljs-comment">// Output order: 1, [file contents], 2</span>
-</div></code></pre>
-<h4 id="async-non-blocking"><strong>Async (Non-blocking):</strong></h4>
-<p>Asynchronous file operations allow the event loop to continue running while waiting for the operation to complete.</p>
-<pre class="hljs"><code><div><span class="hljs-comment">// From your sync_async.js</span>
-<span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
-
-<span class="hljs-comment">// Non-blocking Request (Async)</span>
+<span class="hljs-comment">// Asynchronous (Non-blocking) - doesn't block the event loop</span>
 <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'1'</span>);
 fs.readFile(<span class="hljs-string">'./contacts.txt'</span>, <span class="hljs-string">'utf8'</span>, (err, result) =&gt; {
-	<span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">throw</span> err;
-	<span class="hljs-built_in">console</span>.log(result);
+    <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">throw</span> err;
+    <span class="hljs-built_in">console</span>.log(result);
 });
 <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'2'</span>);
-
-<span class="hljs-comment">// Output order: 1, 2, [file contents]</span>
+<span class="hljs-comment">// Output: 1, 2, [file contents]</span>
 </div></code></pre>
-<h4 id="file-writing"><strong>File Writing:</strong></h4>
-<pre class="hljs"><code><div><span class="hljs-comment">// From your filehandling.js</span>
-<span class="hljs-comment">// Synchronous write</span>
+<h4 id="file-writing-operations">File Writing Operations</h4>
+<pre class="hljs"><code><div><span class="hljs-comment">// Synchronous write</span>
 fs.writeFileSync(<span class="hljs-string">'./file.txt'</span>, <span class="hljs-string">'Hello Write Sync'</span>);
 
 <span class="hljs-comment">// Asynchronous write</span>
 fs.writeFile(<span class="hljs-string">'./file.txt'</span>, <span class="hljs-string">'Hello Write Async'</span>, (err) =&gt; {
-	<span class="hljs-keyword">if</span> (err) {
-		<span class="hljs-built_in">console</span>.error(<span class="hljs-string">'Error writing file:'</span>, err);
-		<span class="hljs-keyword">return</span>;
-	}
-	<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'File written successfully'</span>);
+    <span class="hljs-keyword">if</span> (err) {
+        <span class="hljs-built_in">console</span>.error(<span class="hljs-string">'Error writing file:'</span>, err);
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'File written successfully'</span>);
 });
 </div></code></pre>
-<h3 id="path-working-with-file-paths">path: Working with File Paths</h3>
-<pre class="hljs"><code><div><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
-<span class="hljs-built_in">console</span>.log(path.join(__dirname, <span class="hljs-string">'file.txt'</span>));
-</div></code></pre>
-<h3 id="os-accessing-system-information">os: Accessing System Information</h3>
-<pre class="hljs"><code><div><span class="hljs-keyword">const</span> os = <span class="hljs-built_in">require</span>(<span class="hljs-string">'os'</span>);
-<span class="hljs-built_in">console</span>.log(os.platform(), os.cpus());
-</div></code></pre>
-<h3 id="events-using-eventemitter">events: Using EventEmitter</h3>
-<pre class="hljs"><code><div><span class="hljs-keyword">const</span> EventEmitter = <span class="hljs-built_in">require</span>(<span class="hljs-string">'events'</span>);
-<span class="hljs-keyword">const</span> emitter = <span class="hljs-keyword">new</span> EventEmitter();
-emitter.on(<span class="hljs-string">'greet'</span>, (name) =&gt; <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Hello, <span class="hljs-subst">${name}</span>!`</span>));
-emitter.emit(<span class="hljs-string">'greet'</span>, <span class="hljs-string">'Node.js'</span>);
-</div></code></pre>
-<h3 id="childprocess-executing-shell-commands">child_process: Executing Shell Commands</h3>
-<pre class="hljs"><code><div><span class="hljs-keyword">const</span> { exec } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'child_process'</span>);
-exec(<span class="hljs-string">'ls'</span>, (err, stdout, stderr) =&gt; {
-	<span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">throw</span> err;
-	<span class="hljs-built_in">console</span>.log(stdout);
+<blockquote>
+<p>Note: Synchronous operations block the event loop, which can lead to performance issues in production applications. Use asynchronous methods for better scalability and responsiveness.</p>
+</blockquote>
+<h3 id="23-building-http-server-in-nodejs">2.3 Building HTTP Server in Node.js</h3>
+<p>Creating HTTP servers is fundamental to Node.js web development. The built-in <code>http</code> module allows you to create servers that can handle HTTP requests and responses.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">'http'</span>);
+
+<span class="hljs-keyword">const</span> server = http.createServer(<span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Request received: <span class="hljs-subst">${req.method}</span> <span class="hljs-subst">${req.url}</span>`</span>);
+    <span class="hljs-comment">// Set response headers</span>
+    res.writeHead(<span class="hljs-number">200</span>, { <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'text/plain'</span> });
+    <span class="hljs-comment">// Send response</span>
+    res.end(<span class="hljs-string">'Hello from Node.js Server!'</span>);
+});
+
+server.listen(<span class="hljs-number">3000</span>, () =&gt; {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Server running on http://localhost:3000'</span>);
 });
 </div></code></pre>
-<h3 id="workerthreads-basics">worker_threads: Basics</h3>
-<pre class="hljs"><code><div><span class="hljs-keyword">const</span> { Worker } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'worker_threads'</span>);
-<span class="hljs-keyword">new</span> Worker(<span class="hljs-string">'./worker.js'</span>);
+<h3 id="24-handling-urls">2.4 Handling URLs</h3>
+<p>URL handling involves parsing request URLs and routing them to appropriate handlers.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">'http'</span>);
+<span class="hljs-keyword">const</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">'url'</span>);
+
+<span class="hljs-keyword">const</span> server = http.createServer(<span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> parsedUrl = url.parse(req.url, <span class="hljs-literal">true</span>);
+    <span class="hljs-keyword">const</span> path = parsedUrl.pathname;
+    <span class="hljs-keyword">const</span> query = parsedUrl.query;
+
+    <span class="hljs-keyword">if</span> (path === <span class="hljs-string">'/'</span>) {
+        res.end(<span class="hljs-string">'Home Page'</span>);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (path === <span class="hljs-string">'/about'</span>) {
+        res.end(<span class="hljs-string">`About Page - Hello <span class="hljs-subst">${query.name || <span class="hljs-string">'Guest'</span>}</span>`</span>);
+    } <span class="hljs-keyword">else</span> {
+        res.statusCode = <span class="hljs-number">404</span>;
+        res.end(<span class="hljs-string">'Page Not Found'</span>);
+    }
+});
+
+server.listen(<span class="hljs-number">3000</span>);
 </div></code></pre>
-<p><strong>Summary:</strong>
-Node.js core modules provide essential building blocks for backend development.</p>
-<hr>
-<h2 id="6-npm-and-package-management">6. npm and Package Management</h2>
-<h3 id="what-is-npm-node-package-manager">What is npm (Node Package Manager)?</h3>
-<p>npm (Node Package Manager) is the default package manager for Node.js, used to install, update, and manage third-party packages.</p>
-<h3 id="creating-and-managing-packagejson">Creating and Managing package.json</h3>
-<pre class="hljs"><code><div>npm init -y
-</div></code></pre>
-<h3 id="installing-updating-and-removing-packages">Installing, Updating, and Removing Packages</h3>
-<pre class="hljs"><code><div>npm install express
-npm update express
-npm uninstall express
-</div></code></pre>
-<h3 id="installing-specific-package-versions">Installing specific package versions</h3>
-<pre class="hljs"><code><div>npm install express@4.18.2
-</div></code></pre>
-<h3 id="using-npx-node-package-execute">Using npx (Node Package eXecute)</h3>
+<h3 id="25-http-methods">2.5 HTTP Methods</h3>
+<p>HTTP methods define the type of action to be performed on a resource or data. They are essential for RESTful APIs and web applications.</p>
 <ul>
-<li>Run packages without installing globally:</li>
+<li><strong>GET</strong>: Retrieve data from the server (read-only).</li>
+<li><strong>POST</strong>: Submit data to the server to create a resource.</li>
+<li><strong>PUT</strong>: Update or replace existing data on the server completely.</li>
+<li><strong>PATCH</strong>: Partially update existing data on the server.</li>
+<li><strong>DELETE</strong>: Remove resource or data from the server.</li>
+<li><strong>HEAD</strong>: Similar to GET, but only retrieves headers not the body.</li>
+<li><strong>OPTIONS</strong>: Retrieve supported HTTP methods for a resource.</li>
 </ul>
-<pre class="hljs"><code><div>npx create-react-app my-app
-</div></code></pre>
-<h3 id="semantic-versioning">Semantic Versioning</h3>
+<h3 id="26-versioning-in-nodejs">2.6 Versioning in Node.js</h3>
+<p>Node.js follows semantic versioning (SemVer) with the format <code>MAJOR.MINOR.PATCH</code>.</p>
 <ul>
 <li>Format: MAJOR.MINOR.PATCH (e.g., 1.2.3)</li>
 <li><code>^1.2.3</code>: Compatible with 1.x.x</li>
@@ -704,95 +674,124 @@ npm uninstall express
 </tr>
 </tbody>
 </table>
-<p><strong>Summary:</strong>
-npm makes it easy to manage dependencies and scripts in Node.js projects.</p>
-<hr>
-<h2 id="7-expressjs-framework">7. Express.js Framework</h2>
-<p>Express.js is a minimal and flexible Node.js web application framework that provides a robust set of features for building web and mobile applications. It simplifies the process of creating server-side applications with Node.js.</p>
-<h3 id="problem-with-vanilla-nodejs">Problem with Vanilla Node.js</h3>
-<p>Vanilla Node.js requires a lot of boilerplate code for routing, middleware, and handling requests/responses. Express.js abstracts these complexities, making it easier to build web applications. There is no need to create the server from scratch, handle routing manually, or manage middleware.</p>
-<h3 id="setting-up-a-web-server-in-expressjs">Setting Up a Web Server in Express.js</h3>
-<pre class="hljs"><code><div><span class="hljs-comment">// From your server/index.js</span>
-<span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+<p>Node.js releases:</p>
+<ul>
+<li><strong>LTS (Long Term Support)</strong>: Even-numbered versions (18, 20, 22) - recommended for production</li>
+<li><strong>Current</strong>: Latest features with shorter support cycles</li>
+</ul>
+<h3 id="27-nodejs-package-manager-npm">2.7 Node.js Package Manager (npm)</h3>
+<p>npm (Node Package Manager) is the default package manager for Node.js, used to install, update, and manage third-party packages and libraries. It provides a vast ecosystem of reusable code, making it easy to add functionality to your Node.js applications.</p>
+<h4 id="installing-packages">Installing Packages</h4>
+<p>To install a package, use the following command:</p>
+<pre class="hljs"><code><div>npm install &lt;package-name&gt;
+</div></code></pre>
+<h4 id="creating-a-packagejson-file">Creating a package.json File</h4>
+<p>To create a <code>package.json</code> file, which contains metadata about your project and its dependencies, run:</p>
+<pre class="hljs"><code><div>npm init -y
+</div></code></pre>
+<h4 id="installing-updating-and-removing-packages">Installing, Updating, and Removing Packages</h4>
+<p>You can manage packages using npm commands:</p>
+<pre class="hljs"><code><div>npm install express
+npm update express
+npm uninstall express
+</div></code></pre>
+<h4 id="installing-specific-package-versions">Installing specific package versions</h4>
+<p>To install a specific version of a package, you can specify the version number:</p>
+<pre class="hljs"><code><div>npm install express@4.18.2
+</div></code></pre>
+<h4 id="using-npx-node-package-execute">Using npx (Node Package eXecute)</h4>
+<p>npx is a package runner tool that comes with npm 5.2+ and allows you to execute packages without installing them globally. This is useful for running command-line tools or scripts locally without cluttering your global namespace.</p>
+<pre class="hljs"><code><div>npx create-react-app my-app
+</div></code></pre>
+<h2 id="3-expressjs-and-apis">3. Express.js and APIs</h2>
+<h3 id="31-getting-started-with-express">3.1 Getting Started with Express</h3>
+<p>Express.js is a minimal and flexible Node.js web application framework that simplifies building web applications and APIs.</p>
+<h4 id="problem-with-vanilla-nodejs">Problem with Vanilla Node.js</h4>
+<p>Vanilla Node.js requires a lot of boilerplate code for routing, middleware, and handling requests/responses. Express.js abstracts these complexities and simplifies the process of creating server-side applications with Node.js. There is no need to create the server from scratch, handle routing manually, or manage middleware.</p>
+<h4 id="installation-and-basic-setup">Installation and Basic Setup</h4>
+<pre class="hljs"><code><div>npm init -y
+npm install express
+</div></code></pre>
+<h4 id="setting-up-a-web-server-in-expressjs">Setting Up a Web Server in Express.js</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
 <span class="hljs-keyword">const</span> app = express();
 
 app.get(<span class="hljs-string">'/'</span>, (req, res) =&gt; {
-	res.send(<span class="hljs-string">'Welcome to the Home Page'</span>);
+    res.send(<span class="hljs-string">'Welcome to Express!'</span>);
 });
 
-app.get(<span class="hljs-string">'/about'</span>, (req, res) =&gt; {
-	res.send(
-		<span class="hljs-string">`About Us Page - Hello <span class="hljs-subst">${req.query.username}</span> , You are <span class="hljs-subst">${req.query.age}</span>`</span>
-	);
+app.listen(<span class="hljs-number">3000</span>, () =&gt; {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Server running on port 3000'</span>);
 });
-
-app.listen(<span class="hljs-number">3000</span>, () =&gt; <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Server running on port 3000'</span>));
-<span class="hljs-comment">// No need to create the HTTP server manually</span>
-<span class="hljs-comment">// Express handles server creation internally by calling `app.listen()`</span>
-<span class="hljs-comment">// Express is just a framework, internally it uses Node.js HTTP module to create the server</span>
 </div></code></pre>
-<h3 id="routing-basics">Routing Basics</h3>
-<pre class="hljs"><code><div>app.get(<span class="hljs-string">'/users'</span>, (req, res) =&gt; res.json([{ <span class="hljs-attr">name</span>: <span class="hljs-string">'Ajay'</span> }]));
-</div></code></pre>
-<h3 id="middleware-concepts">Middleware Concepts</h3>
+<h3 id="32-what-is-restful-api">3.2 What is RESTful API?</h3>
+<p>REST (Representational State Transfer) is an architectural style for designing networked applications. RESTful APIs use standard HTTP methods and are stateless, scalable, and simple to understand.</p>
+<h4 id="key-principles-of-rest">Key Principles of REST</h4>
 <ul>
-<li>Functions that run before route handlers.</li>
+<li><strong>Stateless</strong>: Each request contains all necessary information</li>
+<li><strong>Client-Server Architecture</strong>: Separation of concerns</li>
+<li><strong>Uniform Interface</strong>: Standard HTTP methods and resource identification</li>
+<li><strong>Cacheable</strong>: Responses should define cacheability</li>
 </ul>
-<pre class="hljs"><code><div>app.use(express.json());
-</div></code></pre>
-<h3 id="serving-static-files">Serving Static Files</h3>
-<pre class="hljs"><code><div>app.use(express.static(<span class="hljs-string">'public'</span>));
-</div></code></pre>
-<h3 id="building-restful-apis">Building RESTful APIs</h3>
-<pre class="hljs"><code><div>app.post(<span class="hljs-string">'/users'</span>, (req, res) =&gt; {
-	<span class="hljs-comment">// Add user logic</span>
-	res.status(<span class="hljs-number">201</span>).send(<span class="hljs-string">'User created'</span>);
-});
-</div></code></pre>
-<h3 id="error-handling-middleware">Error Handling Middleware</h3>
-<pre class="hljs"><code><div>app.use(<span class="hljs-function">(<span class="hljs-params">err, req, res, next</span>) =&gt;</span> {
-	res.status(<span class="hljs-number">500</span>).send(<span class="hljs-string">'Something broke!'</span>);
-});
-</div></code></pre>
-<p><strong>Summary:</strong>
-Express.js simplifies web server and API development in Node.js.</p>
-<hr>
-<h2 id="8-rest-api">8. REST API</h2>
-<p>REST (Representational State Transfer) is an architectural style for designing networked applications. It relies on a stateless, client-server communication model and uses standard HTTP methods to interact with resources.
-RESTful APIs are widely used for building web services that can be consumed by various clients, including web browsers, mobile apps, and other servers. They are designed to be simple, scalable, and stateless.</p>
-<h3 id="key-principles-of-rest">Key Principles of REST</h3>
-<ul>
-<li><strong>Stateless:</strong> Each request from the client to the server must contain all the information needed to understand and process the request.</li>
-<li><strong>Client-Server Architecture:</strong> The client and server are separate entities that communicate over HTTP.</li>
-<li><strong>Uniform Interface:</strong> Resources are identified by URIs, and standard HTTP methods (GET, POST, PUT, DELETE) are used to interact with them.</li>
-<li><strong>Cacheable:</strong> Responses must define themselves as cacheable or not to improve performance.</li>
-</ul>
-<h3 id="restful-api-example-with-expressjs">RESTful API Example with Express.js</h3>
+<h3 id="33-building-rest-apis-with-nodejs--express">3.3 Building REST APIs with Node.js + Express</h3>
 <pre class="hljs"><code><div><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
 <span class="hljs-keyword">const</span> app = express();
+
+<span class="hljs-comment">// Middleware for parsing JSON</span>
 app.use(express.json());
+app.use(express.urlencoded({ <span class="hljs-attr">extended</span>: <span class="hljs-literal">false</span> }));
+
+<span class="hljs-comment">// Sample data</span>
+<span class="hljs-keyword">let</span> users = [
+    { <span class="hljs-attr">id</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Deepak Modi'</span>, <span class="hljs-attr">email</span>: <span class="hljs-string">'deepak@gmail.com'</span> }
+];
+
+<span class="hljs-comment">// GET all users</span>
 app.get(<span class="hljs-string">'/api/users'</span>, (req, res) =&gt; {
-	res.json([{ <span class="hljs-attr">id</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Ajay'</span> }]);
+    res.json(users);
 });
+
+<span class="hljs-comment">// GET user by ID</span>
+app.get(<span class="hljs-string">'/api/users/:id'</span>, (req, res) =&gt; {
+    <span class="hljs-keyword">const</span> user = users.find(<span class="hljs-function"><span class="hljs-params">u</span> =&gt;</span> u.id === <span class="hljs-built_in">parseInt</span>(req.params.id));
+    <span class="hljs-keyword">if</span> (!user) <span class="hljs-keyword">return</span> res.status(<span class="hljs-number">404</span>).json({ <span class="hljs-attr">message</span>: <span class="hljs-string">'User not found'</span> });
+    res.json(user);
+});
+
+<span class="hljs-comment">// POST create user</span>
 app.post(<span class="hljs-string">'/api/users'</span>, (req, res) =&gt; {
-	<span class="hljs-keyword">const</span> newUser = req.body;
-	<span class="hljs-comment">// Logic to save newUser</span>
-	res.status(<span class="hljs-number">201</span>).json(newUser);
+    <span class="hljs-keyword">const</span> newUser = {
+        <span class="hljs-attr">id</span>: users.length + <span class="hljs-number">1</span>,
+        <span class="hljs-attr">name</span>: req.body.name,
+        <span class="hljs-attr">email</span>: req.body.email
+    };
+    users.push(newUser);
+    res.status(<span class="hljs-number">201</span>).json(newUser);
 });
+
+<span class="hljs-comment">// PUT update user</span>
 app.put(<span class="hljs-string">'/api/users/:id'</span>, (req, res) =&gt; {
-	<span class="hljs-keyword">const</span> userId = req.params.id;
-	<span class="hljs-keyword">const</span> updatedUser = req.body;
-	<span class="hljs-comment">// Logic to update user with userId</span>
-	res.json(updatedUser);
+    <span class="hljs-keyword">const</span> userIndex = users.findIndex(<span class="hljs-function"><span class="hljs-params">u</span> =&gt;</span> u.id === <span class="hljs-built_in">parseInt</span>(req.params.id));
+    <span class="hljs-keyword">if</span> (userIndex === <span class="hljs-number">-1</span>) <span class="hljs-keyword">return</span> res.status(<span class="hljs-number">404</span>).json({ <span class="hljs-attr">message</span>: <span class="hljs-string">'User not found'</span> });
+    
+    users[userIndex] = { ...users[userIndex], ...req.body };
+    res.json(users[userIndex]);
 });
+
+<span class="hljs-comment">// DELETE user</span>
 app.delete(<span class="hljs-string">'/api/users/:id'</span>, (req, res) =&gt; {
-	<span class="hljs-keyword">const</span> userId = req.params.id;
-	<span class="hljs-comment">// Logic to delete user with userId</span>
-	res.status(<span class="hljs-number">204</span>).send();
+    <span class="hljs-keyword">const</span> userIndex = users.findIndex(<span class="hljs-function"><span class="hljs-params">u</span> =&gt;</span> u.id === <span class="hljs-built_in">parseInt</span>(req.params.id));
+    <span class="hljs-keyword">if</span> (userIndex === <span class="hljs-number">-1</span>) <span class="hljs-keyword">return</span> res.status(<span class="hljs-number">404</span>).json({ <span class="hljs-attr">message</span>: <span class="hljs-string">'User not found'</span> });
+    
+    users.splice(userIndex, <span class="hljs-number">1</span>);
+    res.status(<span class="hljs-number">204</span>).send();
 });
-app.listen(<span class="hljs-number">3000</span>, () =&gt; <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Server running on port 3000'</span>));
+
+app.listen(<span class="hljs-number">3000</span>, () =&gt; {
+	<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Server running on port 3000'</span>);
+});
 </div></code></pre>
-<h3 id="running-an-express-server">Running an Express Server</h3>
+<h4 id="running-an-express-server">Running an Express Server</h4>
 <ul>
 <li>Install Express using <code>npm install express</code>.</li>
 <li>Create a file named <code>index.js</code> and add the Express server code.</li>
@@ -800,249 +799,347 @@ app.listen(<span class="hljs-number">3000</span>, () =&gt; <span class="hljs-bui
 <li>Run commands like <code>npm start</code> or <code>npm run dev</code> to start your Express server.</li>
 <li>Use <code>nodemon</code> for automatic server restarts during development by installing it globally with <code>npm install -g nodemon</code> or locally with <code>npm install --save-dev nodemon</code> as a dev dependency in your project.</li>
 </ul>
-<h3 id="tools-for-testing-rest-apis">Tools for Testing REST APIs</h3>
+<h4 id="tools-for-testing-rest-apis">Tools for Testing REST APIs</h4>
 <ul>
-<li><strong>Postman:</strong> A popular tool for testing APIs with a user-friendly interface.
-<ul>
-<li>Download Desktop app: <a href="https://www.postman.com/downloads/">Postman</a></li>
-<li>Install VS Code extension: <a href="https://marketplace.visualstudio.com/items?itemName=postman.postman-for-vscode">Postman for VS Code</a></li>
-</ul>
-</li>
+<li><strong>Postman:</strong> A popular tool for testing APIs with a user-friendly interface.</li>
 <li><strong>cURL:</strong> A command-line tool for making HTTP requests.</li>
 <li><strong>Insomnia:</strong> Another user-friendly API testing tool.</li>
 </ul>
-<h3 id="best-practices-for-designing-rest-apis">Best Practices for Designing REST APIs</h3>
+<h4 id="best-practices-for-designing-rest-apis">Best Practices for Designing REST APIs</h4>
 <ul>
 <li>Use meaningful resource names (nouns) in URIs.</li>
 <li>Use appropriate HTTP methods for actions (GET for read, POST for create, PUT/PATCH for update, DELETE for delete).</li>
 <li>Use status codes to indicate success or failure (e.g., 200 OK, 201 Created, 404 Not Found).</li>
 </ul>
-<h2 id="9-testing-rest-apis-with-postman">9. Testing REST APIs with Postman</h2>
-<p>Postman is a popular API client that makes it easy to test your REST APIs without writing any frontend code.</p>
-<h3 id="setting-up-postman">Setting Up Postman</h3>
+<h3 id="34-express-middleware">3.4 Express Middleware</h3>
+<p>Middleware functions execute during the request-response cycle and can modify request/response objects, end the request-response cycle, or call the next middleware.</p>
+<h4 id="types-of-middleware">Types of Middleware</h4>
+<pre class="hljs"><code><div><span class="hljs-comment">// Application-level middleware</span>
+app.use(<span class="hljs-function">(<span class="hljs-params">req, res, next</span>) =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${req.method}</span> <span class="hljs-subst">${req.url}</span> - <span class="hljs-subst">${<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().toISOString()}</span>`</span>);
+    next();
+});
+
+<span class="hljs-comment">// Built-in middleware</span>
+app.use(express.json());
+app.use(express.static(<span class="hljs-string">'public'</span>));
+
+<span class="hljs-comment">// Router-level middleware</span>
+app.use(<span class="hljs-string">'/api'</span>, apiRouter);
+
+<span class="hljs-comment">// Error-handling middleware</span>
+app.use(<span class="hljs-function">(<span class="hljs-params">err, req, res, next</span>) =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(err.stack);
+    res.status(<span class="hljs-number">500</span>).send(<span class="hljs-string">'Something broke!'</span>);
+});
+</div></code></pre>
+<h3 id="35-http-headers-in-apis">3.5 HTTP Headers in APIs</h3>
+<p>HTTP headers provide additional information about the request or response.</p>
+<pre class="hljs"><code><div>app.get(<span class="hljs-string">'/api/users'</span>, (req, res) =&gt; {
+    <span class="hljs-comment">// Set response headers</span>
+    res.set({
+        <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'application/json'</span>,
+        <span class="hljs-string">'X-Powered-By'</span>: <span class="hljs-string">'Node.js'</span>
+    });
+    
+    <span class="hljs-comment">// Access request headers</span>
+    <span class="hljs-keyword">const</span> userAgent = req.get(<span class="hljs-string">'User-Agent'</span>);
+    <span class="hljs-keyword">const</span> authorization = req.headers.authorization;
+    
+    res.json(users);
+});
+</div></code></pre>
+<h3 id="36-http-status-codes">3.6 HTTP Status Codes</h3>
+<p>HTTP status codes indicate the result of the HTTP request:</p>
+<h4 id="common-status-codes">Common Status Codes</h4>
+<ul>
+<li>
+<p><strong>2xx Success</strong></p>
+<ul>
+<li>200 OK: Request successful</li>
+<li>201 Created: Resource created successfully</li>
+<li>204 No Content: Request successful, no content to return</li>
+</ul>
+</li>
+<li>
+<p><strong>4xx Client Error</strong></p>
+<ul>
+<li>400 Bad Request: Invalid request</li>
+<li>401 Unauthorized: Authentication required</li>
+<li>403 Forbidden: Access denied</li>
+<li>404 Not Found: Resource not found</li>
+</ul>
+</li>
+<li>
+<p><strong>5xx Server Error</strong></p>
+<ul>
+<li>500 Internal Server Error: Server error</li>
+<li>503 Service Unavailable: Server temporarily unavailable</li>
+</ul>
+</li>
+</ul>
+<h3 id="37-introduction-to-postman">3.7 Introduction to POSTMAN</h3>
+<p>Postman is a popular API testing tool that allows you to test your REST APIs easily with a user-friendly interface.</p>
+<h4 id="installing-postman">Installing Postman</h4>
+<ul>
+<li>Download Desktop app: <a href="https://www.postman.com/downloads/">Postman Desktop</a></li>
+<li>Use Postman Web: <a href="https://www.postman.com/">Postman Web</a></li>
+<li>Install VS Code extension: <a href="https://marketplace.visualstudio.com/items?itemName=postman.postman-for-vscode">Postman for VS Code</a></li>
+</ul>
+<h4 id="using-postman-for-api-testing">Using Postman for API Testing</h4>
 <ol>
-<li>Download Postman from <a href="https://www.postman.com/downloads/">postman.com/downloads</a> or use the VS Code extension</li>
-<li>Create a new workspace or collection for your project</li>
-<li>Add requests for each endpoint you want to test</li>
-</ol>
-<h3 id="testing-different-http-methods">Testing Different HTTP Methods</h3>
-<p><strong>1. GET Request (Retrieving Data)</strong></p>
+<li>
+<p><strong>GET Request</strong>: Test retrieving data</p>
 <ul>
-<li>Select <code>GET</code> method</li>
-<li>URL: <code>http://localhost:3000/api/users</code> or <code>http://localhost:3000/api/users/1</code></li>
-<li>Click &quot;Send&quot; to view response</li>
-</ul>
-<p><strong>2. POST Request (Creating Data)</strong></p>
-<ul>
-<li>Select <code>POST</code> method</li>
 <li>URL: <code>http://localhost:3000/api/users</code></li>
-<li>Body tab → x-www-form-urlencoded</li>
-<li>Add key-value pairs:
-<ul>
-<li><code>first_name</code>: <code>Deepak</code></li>
-<li><code>last_name</code>: <code>Modi</code></li>
-<li><code>email</code>: <code>deepakmodidev@gmail.com</code></li>
-<li><code>gender</code>: <code>Male</code></li>
+<li>Method: GET</li>
 </ul>
 </li>
-<li>Click &quot;Send&quot;</li>
-</ul>
-<p><strong>3. PUT Request (Replacing Data)</strong></p>
+<li>
+<p><strong>POST Request</strong>: Test creating data</p>
 <ul>
-<li>Select <code>PUT</code> method</li>
-<li>URL: <code>http://localhost:3000/api/users/1</code></li>
-<li>Body tab → x-www-form-urlencoded</li>
-<li>Add key-value pairs:
-<ul>
-<li><code>first_name</code>: <code>Ranjit</code></li>
-<li><code>last_name</code>: <code>Modi</code></li>
-<li><code>email</code>: <code>ranjitmodi@gmail.com</code></li>
-<li><code>gender</code>: <code>Male</code></li>
+<li>URL: <code>http://localhost:3000/api/users</code></li>
+<li>Method: POST</li>
+<li>Body: <code>{ &quot;name&quot;: &quot;Ranjit Barnwal&quot;, &quot;email&quot;: &quot;ranjit@gmail.com&quot; }</code></li>
 </ul>
 </li>
-<li>Click &quot;Send&quot;</li>
-</ul>
-<p><strong>4. PATCH Request (Partial Updates)</strong></p>
+<li>
+<p><strong>PUT Request</strong>: Test updating data</p>
 <ul>
-<li>Select <code>PATCH</code> method</li>
 <li>URL: <code>http://localhost:3000/api/users/1</code></li>
-<li>Body tab → x-www-form-urlencoded</li>
-<li>Add key-value pair:
-<ul>
-<li><code>last_name</code>: <code>Barnwal</code></li>
+<li>Method: PUT</li>
+<li>Body: <code>{ &quot;name&quot;: &quot;Krishna Agarwal&quot;, &quot;email&quot;: &quot;krishna@example.com&quot; }</code></li>
 </ul>
 </li>
-<li>Click &quot;Send&quot;</li>
-</ul>
-<p><strong>5. DELETE Request (Removing Data)</strong></p>
+<li>
+<p><strong>DELETE Request</strong>: Test deleting data</p>
 <ul>
-<li>Select <code>DELETE</code> method</li>
 <li>URL: <code>http://localhost:3000/api/users/1</code></li>
-<li>Click &quot;Send&quot; (returns 204 No Content or confirmation)</li>
+<li>Method: DELETE</li>
 </ul>
-<h2 id="10-complete-express-rest-api-example">10. Complete Express REST API Example</h2>
-<p>Here's the complete example of a REST API that you've built using Express.js, implementing all the HTTP methods (GET, POST, PUT, PATCH, DELETE):</p>
-<pre class="hljs"><code><div><span class="hljs-comment">// Building REST API's using Node and Express.js</span>
+</li>
+</ol>
+<h2 id="4-database-integration">4. Database Integration</h2>
+<h3 id="41-introduction-to-mongodb">4.1 Introduction to MongoDB</h3>
+<p>MongoDB is a popular NoSQL database that stores data in flexible, JSON-like documents. It's well-suited for Node.js applications due to its JavaScript-like syntax and scalability.</p>
+<h4 id="why-mongodb-with-nodejs">Why MongoDB with Node.js?</h4>
+<ul>
+<li><strong>JSON-like Documents</strong>: Natural fit with JavaScript objects</li>
+<li><strong>Flexible Schema</strong>: Easy to modify data structure</li>
+<li><strong>Scalability</strong>: Handles large amounts of data efficiently</li>
+<li><strong>Rich Query Language</strong>: Powerful querying capabilities</li>
+</ul>
+<h4 id="mongodb-concepts">MongoDB Concepts</h4>
+<ul>
+<li><strong>Database</strong>: Collection of collections</li>
+<li><strong>Collection</strong>: Group of documents (similar to table in SQL)</li>
+<li><strong>Document</strong>: Individual record (similar to row in SQL)</li>
+<li><strong>Field</strong>: Key-value pair in document (similar to column in SQL)</li>
+</ul>
+<h3 id="42-connecting-nodejs-with-mongodb-mongoose--express">4.2 Connecting Node.js with MongoDB (Mongoose + Express)</h3>
+<p>Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js that provides schema validation, casting, and business logic hooks.</p>
+<h4 id="installation-and-setup">Installation and Setup</h4>
+<pre class="hljs"><code><div>npm install mongoose
+</div></code></pre>
+<h4 id="basic-connection">Basic Connection</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> mongoose = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose'</span>);
 
-<span class="hljs-comment">/*
-GET /users - fetch all users and render HTML page
-GET /api/users → fetch all users (return as JSON)
-GET /api/users/1 → fetch user with ID 1  
-POST /api/users → create a new user  
-PUT /api/users/1 → update user with ID 1  
-PATCH /api/users/1 → partially update user with ID 1
-DELETE /api/users/1 → delete user with ID 1  
-*/</span>
+<span class="hljs-comment">// Connect to MongoDB</span>
+mongoose.connect(<span class="hljs-string">'mongodb://localhost:27017/myapp'</span>, {
+    <span class="hljs-attr">useNewUrlParser</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">useUnifiedTopology</span>: <span class="hljs-literal">true</span>
+});
 
-<span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
-<span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
-<span class="hljs-keyword">const</span> users = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./MOCK_DATA.json'</span>); <span class="hljs-comment">// Mockaroo.com generated data</span>
-<span class="hljs-keyword">const</span> { log } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'node:console'</span>);
+<span class="hljs-comment">// Connection events</span>
+mongoose.connection.on(<span class="hljs-string">'connected'</span>, () =&gt; {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Connected to MongoDB'</span>);
+});
+
+mongoose.connection.on(<span class="hljs-string">'error'</span>, (err) =&gt; {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'MongoDB connection error:'</span>, err);
+});
+</div></code></pre>
+<h4 id="defining-schemas-and-models">Defining Schemas and Models</h4>
+<pre class="hljs"><code><div><span class="hljs-comment">// User schema</span>
+<span class="hljs-keyword">const</span> userSchema = <span class="hljs-keyword">new</span> mongoose.Schema({
+    <span class="hljs-attr">name</span>: {
+        <span class="hljs-attr">type</span>: <span class="hljs-built_in">String</span>,
+        <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">trim</span>: <span class="hljs-literal">true</span>
+    },
+    <span class="hljs-attr">email</span>: {
+        <span class="hljs-attr">type</span>: <span class="hljs-built_in">String</span>,
+        <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">unique</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">lowercase</span>: <span class="hljs-literal">true</span>
+    },
+    <span class="hljs-attr">age</span>: {
+        <span class="hljs-attr">type</span>: <span class="hljs-built_in">Number</span>,
+        <span class="hljs-attr">min</span>: <span class="hljs-number">0</span>,
+        <span class="hljs-attr">max</span>: <span class="hljs-number">120</span>
+    },
+    <span class="hljs-attr">createdAt</span>: {
+        <span class="hljs-attr">type</span>: <span class="hljs-built_in">Date</span>,
+        <span class="hljs-attr">default</span>: <span class="hljs-built_in">Date</span>.now
+    }
+});
+
+<span class="hljs-comment">// Create model</span>
+<span class="hljs-keyword">const</span> User = mongoose.model(<span class="hljs-string">'User'</span>, userSchema);
+
+<span class="hljs-built_in">module</span>.exports = User;
+</div></code></pre>
+<h4 id="crud-operations-with-mongoose">CRUD Operations with Mongoose</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> User = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./models/User'</span>);
+
+<span class="hljs-comment">// Create user</span>
+app.post(<span class="hljs-string">'/api/users'</span>, <span class="hljs-keyword">async</span> (req, res) =&gt; {
+    <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">new</span> User(req.body);
+        <span class="hljs-keyword">await</span> user.save();
+        res.status(<span class="hljs-number">201</span>).json(user);
+    } <span class="hljs-keyword">catch</span> (error) {
+        res.status(<span class="hljs-number">400</span>).json({ <span class="hljs-attr">error</span>: error.message });
+    }
+});
+
+<span class="hljs-comment">// Get all users</span>
+app.get(<span class="hljs-string">'/api/users'</span>, <span class="hljs-keyword">async</span> (req, res) =&gt; {
+    <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">const</span> users = <span class="hljs-keyword">await</span> User.find();
+        res.json(users);
+    } <span class="hljs-keyword">catch</span> (error) {
+        res.status(<span class="hljs-number">500</span>).json({ <span class="hljs-attr">error</span>: error.message });
+    }
+});
+
+<span class="hljs-comment">// Get user by ID</span>
+app.get(<span class="hljs-string">'/api/users/:id'</span>, <span class="hljs-keyword">async</span> (req, res) =&gt; {
+    <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> User.findById(req.params.id);
+        <span class="hljs-keyword">if</span> (!user) <span class="hljs-keyword">return</span> res.status(<span class="hljs-number">404</span>).json({ <span class="hljs-attr">message</span>: <span class="hljs-string">'User not found'</span> });
+        res.json(user);
+    } <span class="hljs-keyword">catch</span> (error) {
+        res.status(<span class="hljs-number">500</span>).json({ <span class="hljs-attr">error</span>: error.message });
+    }
+});
+
+<span class="hljs-comment">// Update user</span>
+app.put(<span class="hljs-string">'/api/users/:id'</span>, <span class="hljs-keyword">async</span> (req, res) =&gt; {
+    <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> User.findByIdAndUpdate(
+            req.params.id, 
+            req.body, 
+            { <span class="hljs-attr">new</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">runValidators</span>: <span class="hljs-literal">true</span> }
+        );
+        <span class="hljs-keyword">if</span> (!user) <span class="hljs-keyword">return</span> res.status(<span class="hljs-number">404</span>).json({ <span class="hljs-attr">message</span>: <span class="hljs-string">'User not found'</span> });
+        res.json(user);
+    } <span class="hljs-keyword">catch</span> (error) {
+        res.status(<span class="hljs-number">400</span>).json({ <span class="hljs-attr">error</span>: error.message });
+    }
+});
+
+<span class="hljs-comment">// Delete user</span>
+app.delete(<span class="hljs-string">'/api/users/:id'</span>, <span class="hljs-keyword">async</span> (req, res) =&gt; {
+    <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> User.findByIdAndDelete(req.params.id);
+        <span class="hljs-keyword">if</span> (!user) <span class="hljs-keyword">return</span> res.status(<span class="hljs-number">404</span>).json({ <span class="hljs-attr">message</span>: <span class="hljs-string">'User not found'</span> });
+        res.status(<span class="hljs-number">204</span>).send();
+    } <span class="hljs-keyword">catch</span> (error) {
+        res.status(<span class="hljs-number">500</span>).json({ <span class="hljs-attr">error</span>: error.message });
+    }
+});
+</div></code></pre>
+<h3 id="43-mvc-pattern-in-nodejs">4.3 MVC Pattern in Node.js</h3>
+<p>MVC (Model-View-Controller) is an architectural pattern that separates application logic into three interconnected components.</p>
+<h4 id="mvc-structure">MVC Structure</h4>
+<pre class="hljs"><code><div>project/
+├── models/
+│   └── User.js
+├── views/
+│   └── users.ejs
+├── controllers/
+│   └── userController.js
+├── routes/
+│   └── userRoutes.js
+└── app.js
+</div></code></pre>
+<h4 id="model-modelsuserjs">Model (models/User.js)</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> mongoose = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose'</span>);
+
+<span class="hljs-keyword">const</span> userSchema = <span class="hljs-keyword">new</span> mongoose.Schema({
+    <span class="hljs-attr">name</span>: { <span class="hljs-attr">type</span>: <span class="hljs-built_in">String</span>, <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span> },
+    <span class="hljs-attr">email</span>: { <span class="hljs-attr">type</span>: <span class="hljs-built_in">String</span>, <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">unique</span>: <span class="hljs-literal">true</span> },
+    <span class="hljs-attr">age</span>: <span class="hljs-built_in">Number</span>
+});
+
+<span class="hljs-built_in">module</span>.exports = mongoose.model(<span class="hljs-string">'User'</span>, userSchema);
+</div></code></pre>
+<h4 id="controller-controllersusercontrollerjs">Controller (controllers/userController.js)</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> User = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../models/User'</span>);
+
+exports.getAllUsers = <span class="hljs-keyword">async</span> (req, res) =&gt; {
+    <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">const</span> users = <span class="hljs-keyword">await</span> User.find();
+        res.json(users);
+    } <span class="hljs-keyword">catch</span> (error) {
+        res.status(<span class="hljs-number">500</span>).json({ <span class="hljs-attr">error</span>: error.message });
+    }
+};
+
+exports.createUser = <span class="hljs-keyword">async</span> (req, res) =&gt; {
+    <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">new</span> User(req.body);
+        <span class="hljs-keyword">await</span> user.save();
+        res.status(<span class="hljs-number">201</span>).json(user);
+    } <span class="hljs-keyword">catch</span> (error) {
+        res.status(<span class="hljs-number">400</span>).json({ <span class="hljs-attr">error</span>: error.message });
+    }
+};
+
+exports.getUserById = <span class="hljs-keyword">async</span> (req, res) =&gt; {
+    <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> User.findById(req.params.id);
+        <span class="hljs-keyword">if</span> (!user) <span class="hljs-keyword">return</span> res.status(<span class="hljs-number">404</span>).json({ <span class="hljs-attr">message</span>: <span class="hljs-string">'User not found'</span> });
+        res.json(user);
+    } <span class="hljs-keyword">catch</span> (error) {
+        res.status(<span class="hljs-number">500</span>).json({ <span class="hljs-attr">error</span>: error.message });
+    }
+};
+</div></code></pre>
+<h4 id="routes-routesuserroutesjs">Routes (routes/userRoutes.js)</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">const</span> userController = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../controllers/userController'</span>);
+
+<span class="hljs-keyword">const</span> router = express.Router();
+
+router.get(<span class="hljs-string">'/'</span>, userController.getAllUsers);
+router.post(<span class="hljs-string">'/'</span>, userController.createUser);
+router.get(<span class="hljs-string">'/:id'</span>, userController.getUserById);
+
+<span class="hljs-built_in">module</span>.exports = router;
+</div></code></pre>
+<h4 id="main-app-appjs">Main App (app.js)</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">const</span> mongoose = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose'</span>);
+<span class="hljs-keyword">const</span> userRoutes = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./routes/userRoutes'</span>);
 
 <span class="hljs-keyword">const</span> app = express();
-<span class="hljs-keyword">const</span> PORT = <span class="hljs-number">3000</span>;
 
-<span class="hljs-comment">// Middleware - Like a plug-in that adds functionality to the app</span>
-app.use(express.urlencoded({ <span class="hljs-attr">extended</span>: <span class="hljs-literal">false</span> }));
+<span class="hljs-comment">// Middleware</span>
+app.use(express.json());
 
-<span class="hljs-comment">// Routes...</span>
+<span class="hljs-comment">// Routes</span>
+app.use(<span class="hljs-string">'/api/users'</span>, userRoutes);
 
-<span class="hljs-comment">// API endpoint to render HTML page fetching all users</span>
-app.get(<span class="hljs-string">'/users'</span>, (req, res) =&gt; {
-	res.send(<span class="hljs-string">`
-        &lt;html&gt;
-            &lt;head&gt;
-                &lt;title&gt;Users&lt;/title&gt;
-            &lt;/head&gt;
-            &lt;body&gt;
-                &lt;h1&gt;Users List&lt;/h1&gt;
-                &lt;ul&gt;
-                    <span class="hljs-subst">${users
-											.map(
-												(user) =&gt;
-													<span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">${user.first_name}</span> <span class="hljs-subst">${user.last_name}</span>&lt;/li&gt;`</span>
-											)
-											.join(<span class="hljs-string">''</span>)}</span>
-                &lt;/ul&gt;
-            &lt;/body&gt;
-        &lt;/html&gt;
-    `</span>);
+<span class="hljs-comment">// Connect to MongoDB</span>
+mongoose.connect(<span class="hljs-string">'mongodb://localhost:27017/myapp'</span>);
+
+app.listen(<span class="hljs-number">3000</span>, () =&gt; {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Server running on port 3000'</span>);
 });
-
-<span class="hljs-comment">// API endpoint to fetch all users as JSON</span>
-app.get(<span class="hljs-string">'/api/users'</span>, (req, res) =&gt; {
-	res.json(users);
-});
-
-<span class="hljs-comment">// API endpoint to fetch user by ID</span>
-app.get(<span class="hljs-string">'/api/users/:id'</span>, (req, res) =&gt; {
-	<span class="hljs-comment">// Dynamic path parameter (:id - variable)</span>
-	<span class="hljs-comment">// req.params.id will contain the value of the ID from the URL</span>
-	<span class="hljs-keyword">const</span> userId = <span class="hljs-built_in">Number</span>(req.params.id);
-	<span class="hljs-keyword">const</span> user = users.find(<span class="hljs-function">(<span class="hljs-params">u</span>) =&gt;</span> u.id === userId);
-	res.json(user);
-});
-
-<span class="hljs-comment">// API endpoint to create a new user</span>
-app.post(<span class="hljs-string">'/api/users'</span>, (req, res) =&gt; {
-	<span class="hljs-keyword">const</span> body = req.body;
-	<span class="hljs-comment">// console.log('Request Body:', body);</span>
-	users.push({ ...body, <span class="hljs-attr">id</span>: users.length + <span class="hljs-number">1</span> }); <span class="hljs-comment">// Add new user with an incremented ID</span>
-	<span class="hljs-comment">// Save updated users to MOCK_DATA.json</span>
-	fs.writeFile(<span class="hljs-string">'./MOCK_DATA.json'</span>, <span class="hljs-built_in">JSON</span>.stringify(users), (err) =&gt; {
-		res.json({
-			<span class="hljs-attr">message</span>: <span class="hljs-string">'User created successfully'</span>,
-			<span class="hljs-attr">id</span>: users.length,
-			<span class="hljs-attr">user</span>: body,
-		});
-	});
-});
-
-<span class="hljs-comment">// Chaining route handlers for user operations</span>
-app
-	.route(<span class="hljs-string">'/api/users/:id'</span>)
-	<span class="hljs-comment">// API endpoint to update user by ID</span>
-	.put(<span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> {
-		<span class="hljs-keyword">const</span> userId = <span class="hljs-built_in">Number</span>(req.params.id);
-		<span class="hljs-keyword">const</span> userIndex = users.findIndex(<span class="hljs-function">(<span class="hljs-params">u</span>) =&gt;</span> u.id === userId);
-		<span class="hljs-keyword">if</span> (userIndex !== <span class="hljs-number">-1</span>) {
-			<span class="hljs-keyword">const</span> updatedUser = { ...users[userIndex], ...req.body };
-			users[userIndex] = updatedUser; <span class="hljs-comment">// Update the user in the array</span>
-			<span class="hljs-comment">// Save updated users to MOCK_DATA.json</span>
-			fs.writeFile(<span class="hljs-string">'./MOCK_DATA.json'</span>, <span class="hljs-built_in">JSON</span>.stringify(users), (err) =&gt; {
-				res.json({ <span class="hljs-attr">message</span>: <span class="hljs-string">'User updated successfully'</span>, <span class="hljs-attr">user</span>: updatedUser });
-			});
-		} <span class="hljs-keyword">else</span> {
-			res.status(<span class="hljs-number">404</span>).json({ <span class="hljs-attr">message</span>: <span class="hljs-string">'User not found'</span> });
-		}
-	})
-	<span class="hljs-comment">// API endpoint for partial updates to user by ID</span>
-	.patch(<span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> {
-		<span class="hljs-keyword">const</span> userId = <span class="hljs-built_in">Number</span>(req.params.id);
-		<span class="hljs-keyword">const</span> userIndex = users.findIndex(<span class="hljs-function">(<span class="hljs-params">u</span>) =&gt;</span> u.id === userId);
-
-		<span class="hljs-keyword">if</span> (userIndex !== <span class="hljs-number">-1</span>) {
-			<span class="hljs-comment">// Only update the fields provided in the request body</span>
-			<span class="hljs-keyword">const</span> updatedUser = { ...users[userIndex] };
-
-			<span class="hljs-comment">// Apply only the fields that were provided</span>
-			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> req.body) {
-				updatedUser[key] = req.body[key];
-			}
-
-			users[userIndex] = updatedUser;
-
-			<span class="hljs-comment">// Save updated users to MOCK_DATA.json</span>
-			fs.writeFile(<span class="hljs-string">'./MOCK_DATA.json'</span>, <span class="hljs-built_in">JSON</span>.stringify(users), (err) =&gt; {
-				res.json({ <span class="hljs-attr">message</span>: <span class="hljs-string">'User patched successfully'</span>, <span class="hljs-attr">user</span>: updatedUser });
-			});
-		} <span class="hljs-keyword">else</span> {
-			res.status(<span class="hljs-number">404</span>).json({ <span class="hljs-attr">message</span>: <span class="hljs-string">'User not found'</span> });
-		}
-	})
-	<span class="hljs-comment">// API endpoint to delete user by ID</span>
-	.delete(<span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> {
-		<span class="hljs-keyword">const</span> userId = <span class="hljs-built_in">Number</span>(req.params.id);
-		<span class="hljs-keyword">const</span> userIndex = users.findIndex(<span class="hljs-function">(<span class="hljs-params">u</span>) =&gt;</span> u.id === userId);
-
-		<span class="hljs-keyword">if</span> (userIndex !== <span class="hljs-number">-1</span>) {
-			<span class="hljs-keyword">const</span> deletedUser = users[userIndex];
-			users.splice(userIndex, <span class="hljs-number">1</span>); <span class="hljs-comment">// Remove user from array</span>
-
-			<span class="hljs-comment">// Save updated users to MOCK_DATA.json</span>
-			fs.writeFile(<span class="hljs-string">'./MOCK_DATA.json'</span>, <span class="hljs-built_in">JSON</span>.stringify(users), (err) =&gt; {
-				res.json({ <span class="hljs-attr">message</span>: <span class="hljs-string">'User deleted successfully'</span>, <span class="hljs-attr">user</span>: deletedUser });
-			});
-		} <span class="hljs-keyword">else</span> {
-			res.status(<span class="hljs-number">404</span>).json({ <span class="hljs-attr">message</span>: <span class="hljs-string">'User not found'</span> });
-		}
-	});
-
-<span class="hljs-comment">// Start the server</span>
-app.listen(PORT, () =&gt;
-	<span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Server is running on http://localhost:<span class="hljs-subst">${PORT}</span>`</span>)
-);
 </div></code></pre>
-<h3 id="key-features-implemented">Key Features Implemented</h3>
-<ol>
-<li><strong>Serving HTML content</strong> - The <code>/users</code> endpoint renders an HTML page</li>
-<li><strong>REST API endpoints</strong> - CRUD operations using all standard HTTP methods</li>
-<li><strong>Dynamic route parameters</strong> - Using <code>:id</code> to handle different user IDs</li>
-<li><strong>Middleware</strong> - Using <code>express.urlencoded()</code> to parse form data</li>
-<li><strong>Route chaining</strong> - Using <code>app.route()</code> to group related endpoints</li>
-<li><strong>File operations</strong> - Reading from and writing to JSON file for persistence</li>
-<li><strong>Error handling</strong> - Checking if user exists and returning appropriate status codes</li>
-</ol>
-<h3 id="important-concepts">Important Concepts</h3>
-<ul>
-<li><strong>Route parameters</strong> - <code>:id</code> creates a variable in <code>req.params.id</code></li>
-<li><strong>Request body</strong> - Accessible via <code>req.body</code> when using appropriate middleware</li>
-<li><strong>Sending responses</strong> - Using <code>res.json()</code>, <code>res.send()</code>, and status codes</li>
-<li><strong>Status codes</strong> - 200 OK (default), 404 Not Found for missing resources</li>
-</ul>
-<h2 id="11-middleware-in-expressjs">11. Middleware in Express.js</h2>
-<p>Middleware functions are functions that have access to the request object (<code>req</code>), response object (<code>res</code>), and the next middleware function in the application’s request-response cycle. They can perform various tasks such as logging, authentication, parsing request bodies, and more.</p>
-<p>These functions run before the route handlers.</p>
+<p>This MVC structure provides better organization, maintainability, and separation of concerns in your Node.js applications.</p>
 
 </body>
 </html>
