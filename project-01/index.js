@@ -18,8 +18,31 @@ const app = express();
 const PORT = 3000;
 
 // Middleware - Like a plug-in that adds functionality to the app
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false })); // This middleware parses incoming request bodies in a middleware before your handlers, available under the `req.body` property.
 
+// // Middleware - have access to request and response objects in the request-response cycle
+// app.use((req, res, next) => {
+//     console.log('Hello from middleware 1');
+//     req.myUserName = 'deepakmodi.io'; 
+//     next(); // Call next middleware or route handler
+// });
+
+// app.use((req, res, next) => {
+//     console.log('Hello from middleware 2', req.myUserName);
+//     // You can modify the response object here if needed
+//     // res.end('Hello from middleware 2'); // End the response here
+//     // If you want to continue to the next middleware, use next() instead of res.end
+//     next(); // Call next middleware or route handler
+// });
+
+app.use((req, res, next) => {
+    fs.appendFile('log.txt', 
+        `${Date.now()} - ${req.method}: ${req.path}\n`, 
+        (err,data) => {
+            next(); 
+        }
+    );
+});
 
 // Routes...
 
@@ -43,6 +66,7 @@ app.get('/users', (req, res) => {
 
 // API endpoint to fetch all users as JSON
 app.get('/api/users', (req, res) => {
+    console.log('I am in /api/users route');
     res.json(users);
 });
 
