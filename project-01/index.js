@@ -13,7 +13,6 @@ DELETE /api/users/1 → delete user with ID 1
 const express = require('express');
 const fs = require('fs');
 const users = require('./MOCK_DATA.json'); // Mockaroo.com generated data
-const { log } = require('node:console');
 
 const app = express();
 const PORT = 3000;
