@@ -677,12 +677,20 @@ Postman is a popular API testing tool that allows you to test your REST APIs eas
 
 MongoDB is a popular NoSQL database that stores data in flexible, JSON-like documents. It's well-suited for Node.js applications due to its JavaScript-like syntax and scalability.
 
+MongoDB uses the lightweight and flexible BSON (Binary JSON), an extension JSON, to maximize efficiency.
+
 #### Why MongoDB with Node.js?
 
 - **JSON-like Documents**: Natural fit with JavaScript objects
 - **Flexible Schema**: Easy to modify data structure
 - **Scalability**: Handles large amounts of data efficiently
 - **Rich Query Language**: Powerful querying capabilities
+
+#### Installation and Setup of MongoDB
+- **Windows/Mac/Linux**: Download from [mongodb.com](https://www.mongodb.com/try/download/community).
+
+> For step-by-step installation, refer to this blog: [How to Install MongoDB on Windows](https://deepakmodi.hashnode.dev/how-to-install-mongodb-with-mongosh-on-windows-manually)
+
 
 #### MongoDB Concepts
 
@@ -695,8 +703,8 @@ MongoDB is a popular NoSQL database that stores data in flexible, JSON-like docu
 
 Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js that provides schema validation, casting, and business logic hooks.
 
-#### Installation and Setup
-
+#### Installation of Mongoose
+To use Mongoose, you need to install it in your Node.js project:
 ```bash
 npm install mongoose
 ```
