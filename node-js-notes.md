@@ -27,8 +27,8 @@
    - [3.2 What is RESTful API?](#32-what-is-restful-api)
    - [3.3 Building REST APIs with Node.js + Express](#33-building-rest-apis-with-nodejs--express)
    - [3.4 Express Middleware](#34-express-middleware)
-   - [3.5 HTTP Headers in APIs](#35-http-headers-in-apis)
-   - [3.6 HTTP Status Codes](#36-http-status-codes)
+   - [3.5 HTTP Status Codes](#35-http-status-codes)
+   - [3.6 HTTP Headers in APIs](#36-http-headers-in-apis)
    - [3.7 Introduction to POSTMAN](#37-introduction-to-postman)
 
 4. [Database Integration](#4-database-integration)
@@ -544,6 +544,7 @@ app.listen(3000, () => {
 - Use meaningful resource names (nouns) in URIs.
 - Use appropriate HTTP methods for actions (GET for read, POST for create, PUT/PATCH for update, DELETE for delete).
 - Use status codes to indicate success or failure (e.g., 200 OK, 201 Created, 404 Not Found).
+- Use middleware for common tasks like authentication, logging, and error handling.
 
 ### 3.4 Express Middleware
 
@@ -573,10 +574,37 @@ app.use((err, req, res, next) => {
 	res.status(500).send('Something broke!');
 });
 ```
+### 3.5 HTTP Status Codes
 
-### 3.5 HTTP Headers in APIs
+HTTP status codes indicate the result of an HTTP request. They are grouped into five categories:
+- **1xx Informational**: Request received, continuing process
+- **2xx Success**: The request was successfully received, understood, and accepted
+- **3xx Redirection**: Further action needs to be taken to complete the request
+- **4xx Client Error**: The request contains bad syntax or cannot be fulfilled
+- **5xx Server Error**: The server failed to fulfill a valid request
 
-HTTP headers provide additional information about the request or response.
+#### Common Status Codes
+
+- **2xx Success**
+  - 200 OK: Request successful
+  - 201 Created: Resource created successfully
+  - 204 No Content: Request successful, no content to return
+
+- **4xx Client Error**
+  - 400 Bad Request: Invalid request
+  - 401 Unauthorized: Authentication required
+  - 403 Forbidden: Access denied
+  - 404 Not Found: Resource not found
+
+- **5xx Server Error**
+  - 500 Internal Server Error: Server error
+  - 503 Service Unavailable: Server temporarily unavailable
+
+> Always return a appropriate status code with the response to indicate the result of the request. 
+
+### 3.6 HTTP Headers in APIs
+
+HTTP headers provide additional information about the request or response. They are key-value pairs sent between the client and server, allowing for metadata exchange.
 
 ```javascript
 app.get('/api/users', (req, res) => {
@@ -593,29 +621,22 @@ app.get('/api/users', (req, res) => {
 	res.json(users);
 });
 ```
+#### Common built-in HTTP Headers
+- **Content-Type**: Indicates the media type of the resource (e.g., `application/json`, `text/html`).
+- **Authorization**: Contains credentials for authenticating the client.
+- **Cache-Control**: Directives for caching mechanisms in both requests and responses.
+- **User-Agent**: Information about the client application making the request.
 
-### 3.6 HTTP Status Codes
+#### Custom Headers
 
-HTTP status codes indicate the result of the HTTP request:
+Custom headers can be added to requests and responses to provide additional context or metadata. They should follow the naming convention of `X-` prefix to avoid conflicts with standard headers.
 
-#### Common Status Codes
-
-- **2xx Success**
-
-  - 200 OK: Request successful
-  - 201 Created: Resource created successfully
-  - 204 No Content: Request successful, no content to return
-
-- **4xx Client Error**
-
-  - 400 Bad Request: Invalid request
-  - 401 Unauthorized: Authentication required
-  - 403 Forbidden: Access denied
-  - 404 Not Found: Resource not found
-
-- **5xx Server Error**
-  - 500 Internal Server Error: Server error
-  - 503 Service Unavailable: Server temporarily unavailable
+```javascript
+app.get('/api/users', (req, res) => {
+	res.set('X-Custom-Header', 'CustomValue');
+	res.json(users);
+});
+```
 
 ### 3.7 Introduction to POSTMAN
 
@@ -2940,5 +2961,5 @@ This completes the comprehensive Node.js notes covering all topics from beginner
 *These Notes Were Compiled By Deepak Modi*		
 
 *Website: [Deepak Modi](https://deepakmodi.tech)*	
-	
+
 *Connect with me on [LinkedIn](https://www.linkedin.com/in/deepakmodi1/) for more updates and resources!*

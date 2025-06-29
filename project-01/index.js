@@ -36,10 +36,10 @@ app.use(express.urlencoded({ extended: false })); // This middleware parses inco
 // });
 
 app.use((req, res, next) => {
-    fs.appendFile('log.txt', 
-        `${Date.now()} - ${req.method}: ${req.path}\n`, 
-        (err,data) => {
-            next(); 
+    fs.appendFile('log.txt',
+        `${Date.now()} - ${req.method}: ${req.path}\n`,
+        (err, data) => {
+            next();
         }
     );
 });
@@ -66,7 +66,11 @@ app.get('/users', (req, res) => {
 
 // API endpoint to fetch all users as JSON
 app.get('/api/users', (req, res) => {
-    console.log('I am in /api/users route');
+    // console.log('I am in /api/users route');
+    // res.setHeader('myName', 'Deepak Modi'); // Set custom header
+    // Add prefix X- to custom headers to avoid conflicts with built-in headers
+    res.setHeader('X-My-Name', 'Deepak Modi');
+    console.log(req.headers);
     res.json(users);
 });
 
@@ -76,7 +80,11 @@ app.get('/api/users/:id', (req, res) => {
     // req.params.id will contain the value of the ID from the URL
     const userId = Number(req.params.id);
     const user = users.find(u => u.id === userId);
-    res.json(user);
+    if (user) {
+        res.json(user);
+    } else {
+        res.status(404).json({ message: 'User not found' });
+    }
 });
 
 // API endpoint to create a new user
@@ -86,7 +94,7 @@ app.post('/api/users', (req, res) => {
     users.push({ ...body, id: users.length + 1 }); // Add new user with an incremented ID
     // Save updated users to MOCK_DATA.json
     fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
-        res.json({ message: 'User created successfully', id: users.length, user: body });
+        res.status(201).json({ message: 'User created successfully', id: users.length, user: body });
     });
 });
 
