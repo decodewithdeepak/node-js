@@ -715,19 +715,9 @@ npm install mongoose
 const mongoose = require('mongoose');
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/myapp', {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-});
-
-// Connection events
-mongoose.connection.on('connected', () => {
-	console.log('Connected to MongoDB');
-});
-
-mongoose.connection.on('error', (err) => {
-	console.log('MongoDB connection error:', err);
-});
+mongoose.connect('mongodb://localhost:27017/myapp')
+    .then(() => console.log('MongoDB connected'))
+    .catch((err) => console.error('MongoDB connection error:', err));
 ```
 
 #### Defining Schemas and Models
@@ -1083,10 +1073,9 @@ url-shortener/
    app.use('/api/urls', urlRoutes);
 
    // Connect to MongoDB
-   mongoose.connect('mongodb://localhost:27017/urlshortener', {
-   	useNewUrlParser: true,
-   	useUnifiedTopology: true,
-   });
+   mongoose.connect('mongodb://localhost:27017/urlshortener')
+   	.then(() => console.log('MongoDB Connected'))
+   	.catch((err) => console.error('MongoDB connection error:', err));
 
    app.listen(3000, () => {
    	console.log('Server running on port 3000');
@@ -1457,10 +1446,9 @@ blog-app/
    app.use('/api/posts', postRoutes);
 
    // Connect to MongoDB
-   mongoose.connect('mongodb://localhost:27017/blogapp', {
-   	useNewUrlParser: true,
-   	useUnifiedTopology: true,
-   });
+   mongoose.connect('mongodb://localhost:27017/blogapp')
+   	.then(() => console.log('MongoDB Connected'))
+   	.catch((err) => console.error('MongoDB connection error:', err));
 
    app.listen(3000, () => {
    	console.log('Server running on port 3000');
