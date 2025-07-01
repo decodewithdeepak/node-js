@@ -818,7 +818,7 @@ app.delete('/api/users/:id', async (req, res) => {
 
 ### 4.3 MVC Pattern in Node.js
 
-MVC (Model-View-Controller) is an architectural pattern that separates application logic into three interconnected components
+MVC (Model-View-Controller) is an architectural pattern that separates application logic into three interconnected components.
 
 #### MVC Structure
 A typical MVC structure in Node.js might look like this:
