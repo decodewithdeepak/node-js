@@ -828,24 +828,26 @@ app.delete('/api/users/:id', async (req, res) => {
 
 ### 4.3 MVC Pattern in Node.js
 
-MVC (Model-View-Controller) is an architectural pattern that separates application logic into three interconnected components.
+MVC (Model-View-Controller) is an architectural pattern that separates application logic into three interconnected components
 
 #### MVC Structure
+A typical MVC structure in Node.js might look like this:
 
 ```
 project/
 ├── models/
-│   └── User.js
+│   └── User.js             →  Schema and model
 ├── views/
-│   └── users.ejs
+│   └── users.ejs           →  n
 ├── controllers/
-│   └── userController.js
+│   └── userController.js   →  All logic (CRUD)
 ├── routes/
-│   └── userRoutes.js
-└── app.js
+│   └── userRoutes.js       →  API endpoints
+└── app.js                  →  Main file (connect, setup)
 ```
 
 #### Model (models/User.js)
+The model handles data and database interactions. 
 
 ```javascript
 const mongoose = require('mongoose');
@@ -860,6 +862,7 @@ module.exports = mongoose.model('User', userSchema);
 ```
 
 #### Controller (controllers/userController.js)
+The controller contains the logic for handling requests and responses.
 
 ```javascript
 const User = require('../models/User');
@@ -894,7 +897,11 @@ exports.getUserById = async (req, res) => {
 };
 ```
 
+#### View (views/users.ejs)
+The view is responsible for rendering the user interface. For web apps, you might use templating engines like EJS, Pug, or Handlebars. For REST APIs serving JSON to frontend frameworks like React/Next.js, views are typically handled on the frontend.
+
 #### Routes (routes/userRoutes.js)
+The routes define the endpoints and map them to controller functions.
 
 ```javascript
 const express = require('express');
@@ -910,6 +917,7 @@ module.exports = router;
 ```
 
 #### Main App (app.js)
+The entry point of the application sets up the server, connects to the database, and uses the routes.
 
 ```javascript
 const express = require('express');
