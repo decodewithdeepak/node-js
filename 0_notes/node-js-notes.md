@@ -1000,7 +1000,7 @@ url-shortener/
 
    const urlSchema = new mongoose.Schema({
    	originalUrl: { type: String, required: true },
-   	shortUrl: { type: String, required: true, unique: true },
+   	shortCode: { type: String, required: true, unique: true },
    	clicks: { type: Number, default: 0 },
    });
 
@@ -1014,10 +1014,12 @@ url-shortener/
 
    exports.shortenUrl = async (req, res) => {
    	const { originalUrl } = req.body;
-   	const shortUrl = Math.random().toString(36).substring(2, 8);
+   	const shortCode = Math.random()       // 0.7834592847563
+                        .toString(36)     // "0.s8w7xqp4zk"
+                        .substring(2, 8); // "s8w7xq"
 
    	try {
-   		const url = new Url({ originalUrl, shortUrl });
+   		const url = new Url({ originalUrl, shortCode });
    		await url.save();
    		res.status(201).json(url);
    	} catch (error) {
@@ -1026,10 +1028,10 @@ url-shortener/
    };
 
    exports.redirectUrl = async (req, res) => {
-   	const { shortUrl } = req.params;
+   	const { shortCode } = req.params;
 
    	try {
-   		const url = await Url.findOne({ shortUrl });
+   		const url = await Url.findOne({ shortCode });
    		if (!url) return res.status(404).send('URL not found');
 
    		url.clicks++;
@@ -1051,7 +1053,7 @@ url-shortener/
    const router = express.Router();
 
    router.post('/shorten', urlController.shortenUrl);
-   router.get('/:shortUrl', urlController.redirectUrl);
+   router.get('/:shortCode', urlController.redirectUrl);
 
    module.exports = router;
    ```
@@ -1119,17 +1121,16 @@ url-shortener/
    						},
    						body: JSON.stringify({ originalUrl }),
    					});
-
-   					const data = await response.json();
-   					if (response.ok) {
-   						document.getElementById(
-   							'result'
-   						).innerHTML = `Short URL: <a href="/api/urls/${data.shortUrl}">${data.shortUrl}</a>`;
-   					} else {
-   						document.getElementById(
-   							'result'
-   						).innerHTML = `Error: ${data.error}`;
-   					}
+					const data = await response.json();
+					if (response.ok) {
+						document.getElementById(
+							'result'
+						).innerHTML = `Short URL: <a href="/api/urls/${data.shortCode}">${data.shortCode}</a>`;
+					} else {
+						document.getElementById(
+							'result'
+						).innerHTML = `Error: ${data.error}`;
+					}
    				});
    		</script>
    	</body>

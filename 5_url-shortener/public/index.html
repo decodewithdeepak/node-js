@@ -32,17 +32,16 @@
    						},
    						body: JSON.stringify({ originalUrl }),
    					});
-
-   					const data = await response.json();
-   					if (response.ok) {
-   						document.getElementById(
-   							'result'
-   						).innerHTML = `Short URL: <a href="/api/urls/${data.shortUrl}">${data.shortUrl}</a>`;
-   					} else {
-   						document.getElementById(
-   							'result'
-   						).innerHTML = `Error: ${data.error}`;
-   					}
+					const data = await response.json();
+					if (response.ok) {
+						document.getElementById(
+							'result'
+						).innerHTML = `Short URL: <a href="/api/urls/${data.shortCode}">${data.shortCode}</a>`;
+					} else {
+						document.getElementById(
+							'result'
+						).innerHTML = `Error: ${data.error}`;
+					}
    				});
    		</script>
    	</body>
