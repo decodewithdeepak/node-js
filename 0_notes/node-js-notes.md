@@ -828,7 +828,8 @@ project/
 ├── models/
 │   └── User.js             →  Schema and model
 ├── views/
-│   └── users.ejs           →  n
+│   └── users.ejs           →  Templating engine (EJS, Pug, etc.)
+│   └── index.html          →  Static HTML
 ├── controllers/
 │   └── userController.js   →  All logic (CRUD)
 ├── routes/
@@ -889,6 +890,25 @@ exports.getUserById = async (req, res) => {
 
 #### View (views/users.ejs)
 The view is responsible for rendering the user interface. For web apps, you might use templating engines like EJS, Pug, or Handlebars. For REST APIs serving JSON to frontend frameworks like React/Next.js, views are typically handled on the frontend.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Users</title>
+</head>
+<body>
+	<h1>Users List</h1>
+	<ul>
+		<% users.forEach(user => { %>
+			<li><%= user.name %> - <%= user.email %></li>
+		<% }) %>
+	</ul>
+</body>
+</html>
+```
 
 #### Routes (routes/userRoutes.js)
 The routes define the endpoints and map them to controller functions.

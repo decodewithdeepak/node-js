@@ -1,8 +1,13 @@
 const Url = require('../models/Url');
 
 async function shortenUrl(req, res) {
+	// https://deepakmodi.tech/ => https://bit.ly/46okdIC
+	// 46okdIC => shortCode
+
 	const { originalUrl } = req.body;
-	const shortCode = Math.random().toString(36).substring(2, 8);
+   	const shortCode = Math.random()       // 0.7834592847563
+                        .toString(36)     // "0.s8w7xqp4zk"
+                        .substring(2, 8); // "s8w7xq"
 
 	try {
 		const url = new Url({ originalUrl, shortCode });
