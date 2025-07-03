@@ -9,7 +9,7 @@ const register = async (req, res) => {
         // Hash password
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-        
+
         // Create user object
         const user = new User({
             username,
@@ -18,7 +18,7 @@ const register = async (req, res) => {
 
         // Save in database
         await user.save();
-        res.json({ message: 'User registered successfully' });
+        res.json({ message: 'User registered successfully', role: user.role });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -41,7 +41,7 @@ const login = async (req, res) => {
             return res.status(401).json({ message: 'Wrong password' });
         }
 
-        res.json({ message: 'Login successful', username: user.username });
+        res.json({ message: 'Login successful', username: user.username, role: user.role });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -58,8 +58,76 @@ const getUsers = async (req, res) => {
     }
 };
 
+// Upgrade to Premium
+const upgradeToPremium = async (req, res) => {
+    const { username } = req.body;
+
+    try {
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.role = 'premium';
+        await user.save();
+
+        res.json({ message: 'Upgraded to premium successfully', role: user.role });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Free Content Access
+const getFreeContent = async (req, res) => {
+    const { username } = req.body;
+
+    if (!username) {
+        return res.status(400).json({ message: 'Username required' });
+    }
+
+    try {
+        const user = await User.findOne({ username });
+        
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.json({ message: `Hello ${username}! This is free content available to all logged users!` });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Premium Content Access
+const getPremiumContent = async (req, res) => {
+    const { username } = req.body;
+
+    if (!username) {
+        return res.status(400).json({ message: 'Username required' });
+    }
+
+    try {
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (user.role !== 'premium') {
+            return res.status(403).json({ message: `Premium access required. Your role: ${user.role}` });
+        }
+
+        res.json({ message: `Hello ${username}! This is premium content only for premium users!` });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 module.exports = {
     register,
     login,
-    getUsers
+    getUsers,
+    upgradeToPremium,
+    getFreeContent,
+    getPremiumContent
 };
