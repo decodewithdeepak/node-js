@@ -37,34 +37,42 @@
    - [4.2 Connecting Node.js with MongoDB (Mongoose + Express)](#42-connecting-nodejs-with-mongodb-mongoose--express)
    - [4.3 MVC Pattern in Node.js](#43-mvc-pattern-in-nodejs)
 
-5. [Projects and Applications](#5-projects-and-applications)
+5. [Authentication and Authorization](#5-authentication-and-authorization)
 
-   - [5.1 URL Shortener (Node.js + MongoDB)](#51-url-shortener-nodejs--mongodb)
-   - [5.2 Blog Application (Node.js, MongoDB, EJS)](#52-blog-application-nodejs-mongodb-ejs)
-     - [5.2.1 Setting up the project](#521-setting-up-the-project)
-     - [5.2.2 Setting up authentication](#522-setting-up-authentication)
-     - [5.2.3 Complete app structure](#523-complete-app-structure)
-   - [5.3 Discord Bot in Node.js](#53-discord-bot-in-nodejs)
-   - [5.4 File Uploads with Multer](#54-file-uploads-with-multer)
+   - [5.1 Authentication Methods](#51-authentication-methods)
+   - [5.2 Session-based Authentication](#52-session-based-authentication)
+   - [5.3 JWT (JSON Web Tokens)](#53-jwt-json-web-tokens)
+   - [5.4 OAuth 2.0 Integration](#54-oauth-20-integration)
+   - [5.5 Authorization and Role-based Access Control](#55-authorization-and-role-based-access-control)
 
-6. [Deployment & Performance](#6-deployment--performance)
+6. [Projects and Applications](#6-projects-and-applications)
 
-   - [6.1 AWS Deployment](#61-aws-deployment)
-   - [6.2 NGINX (Setup, Serve Static Content, SSL with LetsEncrypt)](#62-nginx-setup-serve-static-content-ssl-with-letsencrypt)
-   - [6.3 Scaling Node.js with Cluster](#63-scaling-nodejs-with-cluster)
-   - [6.4 Serverless Framework + AWS Lambda](#64-serverless-framework--aws-lambda)
+   - [6.1 URL Shortener (Node.js + MongoDB)](#61-url-shortener-nodejs--mongodb)
+   - [6.2 Blog Application (Node.js, MongoDB, EJS)](#62-blog-application-nodejs-mongodb-ejs)
+     - [6.2.1 Setting up the project](#621-setting-up-the-project)
+     - [6.2.2 Setting up authentication](#622-setting-up-authentication)
+     - [6.2.3 Complete app structure](#623-complete-app-structure)
+   - [6.3 Discord Bot in Node.js](#63-discord-bot-in-nodejs)
+   - [6.4 File Uploads with Multer](#64-file-uploads-with-multer)
 
-7. [Real-time and Streams](#7-real-time-and-streams)
+7. [Deployment & Performance](#7-deployment--performance)
 
-   - [7.1 WebSocket with Socket.IO](#71-websocket-with-socketio)
-   - [7.2 Node.js Streams](#72-nodejs-streams)
+   - [7.1 AWS Deployment](#71-aws-deployment)
+   - [7.2 NGINX (Setup, Serve Static Content, SSL with LetsEncrypt)](#72-nginx-setup-serve-static-content-ssl-with-letsencrypt)
+   - [7.3 Scaling Node.js with Cluster](#73-scaling-nodejs-with-cluster)
+   - [7.4 Serverless Framework + AWS Lambda](#74-serverless-framework--aws-lambda)
 
-8. [GraphQL with Node.js](#8-graphql-with-nodejs)
-   - [8.1 GraphQL Crash Course](#81-graphql-crash-course)
-   - [8.2 Setting up GraphQL Server](#82-setting-up-graphql-server)
-   - [8.3 Prisma + PostgreSQL Setup](#83-prisma--postgresql-setup)
-   - [8.4 Refactoring GraphQL Code](#84-refactoring-graphql-code)
-   - [8.5 Authentication + JWT in GraphQL](#85-authentication--jwt-in-graphql)
+8. [Real-time and Streams](#8-real-time-and-streams)
+
+   - [8.1 WebSocket with Socket.IO](#81-websocket-with-socketio)
+   - [8.2 Node.js Streams](#82-nodejs-streams)
+
+9. [GraphQL with Node.js](#9-graphql-with-nodejs)
+   - [9.1 GraphQL Crash Course](#91-graphql-crash-course)
+   - [9.2 Setting up GraphQL Server](#92-setting-up-graphql-server)
+   - [9.3 Prisma + PostgreSQL Setup](#93-prisma--postgresql-setup)
+   - [9.4 Refactoring GraphQL Code](#94-refactoring-graphql-code)
+   - [9.5 Authentication + JWT in GraphQL](#95-authentication--jwt-in-graphql)
 
 ---
 
@@ -952,9 +960,415 @@ app.listen(3000, () => {
 
 This MVC structure provides better organization, maintainability, and separation of concerns in your Node.js applications.
 
-## 5. Projects and Applications
+## 5. Authentication and Authorization
 
-### 5.1 URL Shortener (Node.js + MongoDB)
+Authentication and authorization are crucial security components in web applications. Authentication verifies user identity, while authorization determines what resources users can access based on their permissions.
+
+### 5.1 Authentication Methods
+
+Authentication is the process of verifying who a user is. There are several methods to implement authentication in Node.js applications:
+- **Password-based Authentication**: Storing user credentials (username/email and password) securely in database.
+- **Session-based Authentication (Stateful)**: Storing user information on the server and using cookies to maintain state.
+- **Token-based Authentication (Stateless)**: Using tokens (like JWT) to authenticate users without maintaining server-side state.
+- **OAuth Authentication**: Using third-party services (like Google, GitHub, Facebook) to authenticate users.
+
+#### Password-based Authentication
+
+The most simple authentication method is by storing username/email and password securely in the database. Passwords should be hashed before storing them to enhance security.
+
+```javascript
+const bcrypt = require('bcryptjs'); // hashing algorithm
+const User = require('../models/User');
+
+// Registration
+const registerUser = async (req, res) => {
+    const { username, email, password } = req.body;
+    
+    try {
+        // Hash password
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        
+        // Create user
+        const user = new User({
+            username,
+            email,
+            password: hashedPassword
+        });
+        
+        await user.save();
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+// Login
+const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+    
+    try {
+        // Find user
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+        
+        // Verify password
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+        
+        res.status(200).json({ message: 'Login successful', userId: user._id });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+```
+
+### 5.2 Session-based Authentication
+
+Session-based authentication stores user information on the server and uses cookies (session ID) to maintain state. 
+
+#### Installing Session Dependencies
+
+```bash
+npm install express-session connect-mongo
+```
+
+#### Session Implementation
+
+```javascript
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+
+// Session configuration
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'your-session-secret',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: 'mongodb://localhost:27017/your-app'
+    }),
+    cookie: {
+        secure: false, // Set to true in production with HTTPS
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+}));
+
+// Login with sessions
+const loginWithSession = async (req, res) => {
+    const { email, password } = req.body;
+    
+    try {
+        const user = await User.findOne({ email });
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+        
+        // Store user info in session
+        req.session.userId = user._id;
+        req.session.username = user.username;
+        
+        res.status(200).json({
+            message: 'Login successful',
+            user: { id: user._id, username: user.username, email: user.email }
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Session middleware for protecting routes
+const requireAuth = (req, res, next) => {
+    if (!req.session.userId) {
+        return res.status(401).json({ message: 'Please log in to access this resource' });
+    }
+    next();
+};
+
+// Logout
+const logout = (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ message: 'Could not log out' });
+        }
+        res.clearCookie('connect.sid'); // Clear session cookie
+        res.status(200).json({ message: 'Logged out successfully' });
+    });
+};
+```
+
+### 5.3 JWT (JSON Web Tokens)
+
+JWT is a stateless authentication method that encodes user information in a token. It's ideal for APIs and distributed systems.
+
+#### Installing JWT Dependencies
+
+```bash
+npm install jsonwebtoken
+```
+
+#### JWT Implementation
+
+```javascript
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+
+// Generate JWT token
+const generateToken = (userId) => {
+    return jwt.sign({ userId }, JWT_SECRET, { expiresIn: '7d' });
+};
+
+// Login with JWT
+const loginWithJWT = async (req, res) => {
+    const { email, password } = req.body;
+    
+    try {
+        const user = await User.findOne({ email });
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+        
+        // Generate token
+        const token = generateToken(user._id);
+        
+        res.status(200).json({
+            message: 'Login successful',
+            token,
+            user: { id: user._id, username: user.username, email: user.email }
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// JWT Middleware for protecting routes
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+    
+    if (!token) {
+        return res.status(401).json({ message: 'Access token required' });
+    }
+    
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(403).json({ message: 'Invalid or expired token' });
+        }
+        req.userId = decoded.userId;
+        next();
+    });
+};
+
+// Protected route example
+app.get('/api/profile', authenticateToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.userId).select('-password');
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+```
+
+### 5.4 OAuth 2.0 Integration
+
+OAuth allows users to authenticate using third-party services like Google, GitHub, or Facebook.
+
+#### Installing OAuth Dependencies
+
+```bash
+npm install passport passport-google-oauth20 passport-local express-session
+```
+
+#### Google OAuth Example
+
+```javascript
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
+// Google OAuth configuration
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: '/auth/google/callback'
+}, async (accessToken, refreshToken, profile, done) => {
+    try {
+        // Check if user exists
+        let user = await User.findOne({ googleId: profile.id });
+        
+        if (user) {
+            return done(null, user);
+        }
+        
+        // Create new user
+        user = new User({
+            googleId: profile.id,
+            username: profile.displayName,
+            email: profile.emails[0].value,
+            avatar: profile.photos[0].value
+        });
+        
+        await user.save();
+        return done(null, user);
+    } catch (error) {
+        return done(error, null);
+    }
+}));
+
+// Serialize user for session
+passport.serializeUser((user, done) => {
+    done(null, user._id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await User.findById(id);
+        done(null, user);
+    } catch (error) {
+        done(error, null);
+    }
+});
+
+// OAuth routes
+app.get('/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+app.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    (req, res) => {
+        res.redirect('/dashboard'); // Successful authentication
+    }
+);
+```
+
+### 5.5 Authorization and Role-based Access Control
+
+Authorization determines what authenticated users can access based on their roles and permissions.
+
+#### Role-based Authorization
+
+```javascript
+// User model with roles
+const userSchema = new mongoose.Schema({
+    username: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    role: {
+        type: String,
+        enum: ['user', 'admin', 'moderator'],
+        default: 'user'
+    },
+    permissions: [{
+        type: String,
+        enum: ['read', 'write', 'delete', 'manage_users']
+    }]
+});
+
+// Authorization middleware
+const authorize = (roles = []) => {
+    return (req, res, next) => {
+        if (!req.user) {
+            return res.status(401).json({ message: 'Authentication required' });
+        }
+        
+        if (roles.length && !roles.includes(req.user.role)) {
+            return res.status(403).json({ message: 'Insufficient permissions' });
+        }
+        
+        next();
+    };
+};
+
+// Permission-based authorization
+const checkPermission = (permission) => {
+    return (req, res, next) => {
+        if (!req.user) {
+            return res.status(401).json({ message: 'Authentication required' });
+        }
+        
+        if (!req.user.permissions.includes(permission)) {
+            return res.status(403).json({ message: `${permission} permission required` });
+        }
+        
+        next();
+    };
+};
+
+// Protected routes with role-based access
+app.get('/api/admin/users', 
+    authenticateToken, 
+    authorize(['admin']), 
+    async (req, res) => {
+        try {
+            const users = await User.find().select('-password');
+            res.json(users);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+);
+
+app.delete('/api/posts/:id', 
+    authenticateToken, 
+    checkPermission('delete'), 
+    async (req, res) => {
+        try {
+            const post = await Post.findByIdAndDelete(req.params.id);
+            if (!post) {
+                return res.status(404).json({ message: 'Post not found' });
+            }
+            res.status(204).send();
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+);
+
+// Resource-based authorization (users can only edit their own posts)
+const checkResourceOwnership = async (req, res, next) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        
+        if (post.author.toString() !== req.userId && req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Access denied' });
+        }
+        
+        req.post = post;
+        next();
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+app.put('/api/posts/:id', 
+    authenticateToken, 
+    checkResourceOwnership, 
+    async (req, res) => {
+        try {
+            const updatedPost = await Post.findByIdAndUpdate(
+                req.params.id, 
+                req.body, 
+                { new: true }
+            );
+            res.json(updatedPost);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+);
+```
+
+## 6. Projects and Applications
+
+### 6.1 URL Shortener (Node.js + MongoDB)
 
 A URL shortener is a simple web application that converts long URLs into shorter, more manageable links. It typically involves generating a unique identifier for each URL and storing the mapping in a database.
 
@@ -1169,7 +1583,7 @@ url-shortener/
 - Enter a long URL and click "Shorten".
 - Copy the short URL and test the redirection.
 
-### 5.2 Blog Application (Node.js, MongoDB, EJS)
+### 6.2 Blog Application (Node.js, MongoDB, EJS)
 
 A blog application is a web application that allows users to create, read, update, and delete blog posts. It typically includes user authentication, a rich text editor for writing posts, and a comment system.
 
@@ -1188,6 +1602,7 @@ A blog application is a web application that allows users to create, read, updat
 - **Express.js**: Web framework for Node.js
 - **MongoDB**: NoSQL database to store blog posts and user data
 - **Mongoose**: ODM library for MongoDB and Node.js
+- **jwt**: JSON Web Tokens for user authentication
 - **EJS**: Templating engine to render HTML views
 - **Nodemon**: Development tool for automatic server restarts
 
@@ -1494,7 +1909,7 @@ blog-app/
     - Create, edit, and delete blog posts.
     - Test the comment system and other features.
 
-### 5.3 Discord Bot in Node.js
+### 6.3 Discord Bot in Node.js
 
 A Discord bot is a program that interacts with the Discord API to automate tasks, provide information, or entertain users on Discord servers. Discord bots can perform a wide range of functions, from moderating servers to playing music or providing game stats.
 
@@ -1633,7 +2048,7 @@ discord-bot/
    - Invite the bot to your Discord server using the OAuth2 URL generated in the Discord Developer Portal.
    - Test the bot commands and events in your Discord server.
 
-### 5.4 File Uploads with Multer
+### 6.4 File Uploads with Multer
 
 Multer is a middleware for handling `multipart/form-data`, which is used for uploading files. It is written on top of the busboy library by Felix Geisendörfer.
 
@@ -1791,9 +2206,9 @@ file-upload/
    - Select an image file and click "Upload".
    - Check the `uploads` folder for the uploaded file.
 
-## 6. Deployment & Performance
+## 7. Deployment & Performance
 
-### 6.1 AWS Deployment
+### 7.1 AWS Deployment
 
 Deploying Node.js applications on AWS can be done using various services like EC2, Elastic Beanstalk, or Lambda (for serverless).
 
@@ -1815,7 +2230,7 @@ Deploying Node.js applications on AWS can be done using various services like EC
 4. **Configure Environment Variables**: Set any necessary environment variables in the Elastic Beanstalk console.
 5. **Access the Application**: Once deployed, Elastic Beanstalk provides a URL to access your application.
 
-### 6.2 NGINX (Setup, Serve Static Content, SSL with LetsEncrypt)
+### 7.2 NGINX (Setup, Serve Static Content, SSL with LetsEncrypt)
 
 NGINX is a high-performance web server that can also be used as a reverse proxy, load balancer, and HTTP cache. It is often used to serve static content and as a reverse proxy for Node.js applications.
 
@@ -1890,7 +2305,7 @@ sudo apt install nginx
    sudo certbot renew --dry-run
    ```
 
-### 6.3 Scaling Node.js with Cluster
+### 7.3 Scaling Node.js with Cluster
 
 The Node.js cluster module allows you to create multiple child processes (workers) that share the same server port. This takes advantage of multi-core systems and improves the performance of Node.js applications.
 
@@ -1938,7 +2353,7 @@ The Node.js cluster module allows you to create multiple child processes (worker
 
    - Send requests to the server and observe that multiple worker processes handle the requests.
 
-### 6.4 Serverless Framework + AWS Lambda
+### 7.4 Serverless Framework + AWS Lambda
 
 Serverless computing allows you to build and run applications without having to manage servers. AWS Lambda is a serverless compute service that runs your code in response to events and automatically manages the underlying compute resources.
 
@@ -2001,9 +2416,9 @@ The Serverless Framework is an open-source framework that simplifies the develop
    serverless remove
    ```
 
-## 7. Real-time and Streams
+## 8. Real-time and Streams
 
-### 7.1 WebSocket with Socket.IO
+### 8.1 WebSocket with Socket.IO
 
 Socket.IO is a JavaScript library for real-time web applications. It enables real-time, bidirectional, and event-based communication between the browser and the server.
 
@@ -2131,7 +2546,7 @@ realtime-app/
    - Open multiple browser windows and go to `http://localhost:3000`.
    - Send messages and observe real-time updates in all connected clients.
 
-### 7.2 Node.js Streams
+### 8.2 Node.js Streams
 
 Streams are objects that allow you to read data from a source or write data to a destination in a continuous fashion. They are used for handling reading/writing files, network communications, or any kind of end-to-end information exchange.
 
@@ -2204,9 +2619,9 @@ const reverseTransform = new Transform({
 readStream.pipe(reverseTransform).pipe(writeStream);
 ```
 
-## 8. GraphQL with Node.js
+## 9. GraphQL with Node.js
 
-### 8.1 GraphQL Crash Course
+### 9.1 GraphQL Crash Course
 
 GraphQL is a query language for APIs and a runtime for executing those queries with your existing data. It provides a more efficient, powerful, and flexible alternative to the RESTful API.
 
@@ -2223,7 +2638,7 @@ GraphQL is a query language for APIs and a runtime for executing those queries w
 - **Efficiency**: GraphQL reduces the number of requests and the amount of data transferred over the network.
 - **Versioning**: GraphQL APIs are typically versionless, as clients can request only the fields they need.
 
-### 8.2 Setting up GraphQL Server
+### 9.2 Setting up GraphQL Server
 
 1. **Install Dependencies**
 
@@ -2300,7 +2715,7 @@ GraphQL is a query language for APIs and a runtime for executing those queries w
    - Open your browser and go to `http://localhost:3000/graphql`.
    - Use the GraphiQL interface to test queries and mutations.
 
-### 8.3 Prisma + PostgreSQL Setup
+### 9.3 Prisma + PostgreSQL Setup
 
 Prisma is a next-generation ORM for Node.js and TypeScript that simplifies database access and management. It provides a type-safe database client, migrations, and a powerful data modeling language.
 
@@ -2395,7 +2810,7 @@ Prisma is a next-generation ORM for Node.js and TypeScript that simplifies datab
 
    - Test creating and fetching users in your application.
 
-### 8.4 Refactoring GraphQL Code
+### 9.4 Refactoring GraphQL Code
 
 As your GraphQL schema and resolvers grow, it's important to keep your code organized and maintainable. Consider the following tips for refactoring GraphQL code:
 
@@ -2528,7 +2943,7 @@ As your GraphQL schema and resolvers grow, it's important to keep your code orga
    });
    ```
 
-### 8.5 Authentication + JWT in GraphQL
+### 9.5 Authentication + JWT in GraphQL
 
 Authentication and authorization are crucial for securing GraphQL APIs. JSON Web Tokens (JWT) provide a stateless way to authenticate users and authorize access to resources.
 
