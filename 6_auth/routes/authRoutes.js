@@ -12,13 +12,13 @@ router.post('/login', login);
 // Get all users (for testing)
 router.get('/users', getUsers);
 
-// Upgrade to Premium
+// Upgrade to Premium (POST - modifying data)
 router.post('/upgrade', upgradeToPremium);
 
-// Free User Content
-router.post('/free-content', getFreeContent);
+// Free User Content (GET - retrieving data)
+router.get('/free-content/:username', getFreeContent);
 
-// Premium User Content
-router.post('/premium-content', getPremiumContent);
+// Premium User Content (GET - retrieving data)
+router.get('/premium-content/:username', getPremiumContent);
 
 module.exports = router;

@@ -79,7 +79,7 @@ const upgradeToPremium = async (req, res) => {
 
 // Free Content Access
 const getFreeContent = async (req, res) => {
-    const { username } = req.body;
+    const { username } = req.params;
 
     if (!username) {
         return res.status(400).json({ message: 'Username required' });
@@ -87,7 +87,7 @@ const getFreeContent = async (req, res) => {
 
     try {
         const user = await User.findOne({ username });
-        
+
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -100,7 +100,7 @@ const getFreeContent = async (req, res) => {
 
 // Premium Content Access
 const getPremiumContent = async (req, res) => {
-    const { username } = req.body;
+    const { username } = req.params;
 
     if (!username) {
         return res.status(400).json({ message: 'Username required' });
