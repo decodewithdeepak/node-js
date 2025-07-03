@@ -837,9 +837,9 @@ project/
 │   └── User.js             →  Schema and model
 ├── views/
 │   └── users.ejs           →  Templating engine (EJS, Pug, etc.)
-│   └── index.html          →  Static HTML
+│   └── index.html          →  Static HTML file
 ├── controllers/
-│   └── userController.js   →  All logic (CRUD)
+│   └── userController.js   →  Business logic (CRUD)
 ├── routes/
 │   └── userRoutes.js       →  API endpoints
 └── app.js                  →  Main file (connect, setup)
