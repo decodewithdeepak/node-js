@@ -769,8 +769,8 @@ const User = require('./models/User');
 // Create user
 app.post('/api/users', async (req, res) => {
 	try {
-		const user = new User(req.body);
-		await user.save();
+		const user = new User(req.body); // create user object
+		await user.save(); // save in database
 		res.status(201).json(user);
 	} catch (error) {
 		res.status(400).json({ error: error.message });

@@ -7,14 +7,16 @@ const register = async (req, res) => {
 
     try {
         // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Create user
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        
+        // Create user object
         const user = new User({
             username,
             password: hashedPassword
         });
 
+        // Save in database
         await user.save();
         res.json({ message: 'User registered successfully' });
     } catch (error) {
