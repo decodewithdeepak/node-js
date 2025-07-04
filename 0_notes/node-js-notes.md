@@ -48,12 +48,9 @@
 6. [Projects and Applications](#6-projects-and-applications)
 
    - [6.1 URL Shortener (Node.js + MongoDB)](#61-url-shortener-nodejs--mongodb)
-   - [6.2 Blog Application (Node.js, MongoDB, EJS)](#62-blog-application-nodejs-mongodb-ejs)
-     - [6.2.1 Setting up the project](#621-setting-up-the-project)
-     - [6.2.2 Setting up authentication](#622-setting-up-authentication)
-     - [6.2.3 Complete app structure](#623-complete-app-structure)
-   - [6.3 Discord Bot in Node.js](#63-discord-bot-in-nodejs)
-   - [6.4 File Uploads with Multer](#64-file-uploads-with-multer)
+   - [6.2 Discord Bot in Node.js](#62-discord-bot-in-nodejs)
+   - [6.3 File Uploads with Multer](#63-file-uploads-with-multer)
+   - [6.4 Blog Application (Node.js, MongoDB, EJS)](#64-blog-application-nodejs-mongodb-ejs)
 
 7. [Deployment & Performance](#7-deployment--performance)
 
@@ -1724,28 +1721,31 @@ discord-bot/
 
 ### 6.3 File Uploads with Multer
 
-Multer is a middleware for handling `multipart/form-data`, which is used for uploading files. It is written on top of the busboy library by Felix Geisendörfer.
+Multer is a Node.js middleware for handling `multipart/form-data`, which is used for uploading files. It is written on top of the busboy library and provides a simple way to handle file uploads in Express.js applications.
 
 #### Features
 
 - Upload single or multiple files
-- Limit file size and type
-- Store files in memory or on disk
-- Rename files during upload
-- Handle file uploads in forms
+- Store files on disk with custom naming
+- Access uploaded files via URL
+- Simple form-based file uploads
+- File metadata and path information
 
 #### Technologies Used
 
 - **Node.js**: Backend runtime environment
 - **Express.js**: Web framework for Node.js
 - **Multer**: Middleware for handling file uploads
+- **EJS**: Templating engine for rendering views
 
 #### Project Structure
 
 ```
 file-upload/
 ├── uploads/
-├── app.js
+├── views/
+│   └── homepage.ejs
+├── index.js
 └── package.json
 ```
 
@@ -1762,17 +1762,18 @@ file-upload/
 2. **Install Dependencies**
 
    ```bash
-   npm install express multer
+   npm install express multer ejs
+   npm install --save-dev nodemon
    ```
 
 3. **Create Project Structure**
 
    ```bash
-   mkdir uploads
-   touch app.js
+   mkdir uploads views
+   touch index.js
    ```
 
-4. **Set Up File Uploads with Multer (app.js)**
+4. **Set Up File Uploads with Multer (index.js)**
 
    ```javascript
    const express = require('express');
@@ -1780,105 +1781,110 @@ file-upload/
    const path = require('path');
 
    const app = express();
+   const PORT = 3000;
 
-   // Set up storage engine
+   // Using diskStorage for better file control
    const storage = multer.diskStorage({
-   	destination: './uploads',
-   	filename: (req, file, cb) => {
-   		cb(
-   			null,
-   			file.fieldname + '-' + Date.now() + path.extname(file.originalname)
-   		);
-   	},
+       destination: function (req, file, cb) {
+           cb(null, 'uploads/'); // directory where files will be saved
+       },
+       filename: function (req, file, cb) {
+           cb(null, Date.now() + '-' + file.originalname); // unique filename
+       }
+   })
+   const upload = multer({ storage: storage });
+
+   // Set EJS as the view engine
+   app.set('view engine', 'ejs');
+   app.set('views', path.resolve('./views'));
+
+   // Serve uploaded files as static content
+   app.use('/uploads', express.static('uploads'));
+
+   app.get('/', (req, res) => {
+       res.render('homepage');
    });
 
-   // Initialize upload variable
-   const upload = multer({
-   	storage,
-   	limits: { fileSize: 1000000 }, // 1 MB limit
-   	fileFilter: (req, file, cb) => {
-   		const filetypes = /jpeg|jpg|png|gif/;
-   		const extname = filetypes.test(
-   			path.extname(file.originalname).toLowerCase()
-   		);
-   		const mimetype = filetypes.test(file.mimetype);
-
-   		if (mimetype && extname) {
-   			return cb(null, true);
-   		}
-   		cb(
-   			'Error: File upload only supports the following filetypes - ' +
-   				filetypes
-   		);
-   	},
-   }).single('myImage'); // 'myImage' is the name attribute in the file input field
-
-   app.post('/upload', (req, res) => {
-   	upload(req, res, (err) => {
-   		if (err) {
-   			return res.status(400).send(err);
-   		}
-   		res.send(`File uploaded: ${req.file.filename}`);
-   	});
+   app.post('/upload', upload.single('yourFile'), (req, res) => {
+       console.log('File uploaded:', req.file);
+       res.redirect('/');
    });
 
-   app.listen(3000, () => {
-   	console.log('Server running on port 3000');
+   app.listen(PORT, () => {
+       console.log(`Server is running on http://localhost:${PORT}`);
    });
    ```
 
-5. **Create Upload Form (public/index.html)**
+5. **Create Upload Form (views/homepage.ejs)**
 
    ```html
    <!DOCTYPE html>
    <html lang="en">
-   	<head>
-   		<meta charset="UTF-8" />
-   		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   		<title>File Upload</title>
-   	</head>
-   	<body>
-   		<h1>File Upload</h1>
-   		<form id="uploadForm" enctype="multipart/form-data">
-   			<input type="file" name="myImage" accept="image/*" required />
-   			<button type="submit">Upload</button>
-   		</form>
-   		<div id="result"></div>
-
-   		<script>
-   			document
-   				.getElementById('uploadForm')
-   				.addEventListener('submit', async (e) => {
-   					e.preventDefault();
-   					const formData = new FormData();
-   					const fileField = document.querySelector('input[type="file"]');
-
-   					formData.append('myImage', fileField.files[0]);
-
-   					const response = await fetch('/upload', {
-   						method: 'POST',
-   						body: formData,
-   					});
-
-   					const data = await response.text();
-   					document.getElementById('result').innerText = data;
-   				});
-   		</script>
-   	</body>
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>File Upload</title>
+   </head>
+   <body>
+       <h1>File Upload</h1>
+       <form action="/upload" method="POST" enctype="multipart/form-data">
+           <input type="file" name="yourFile">
+           <button type="submit">Upload</button>
+       </form>
+   </body>
    </html>
    ```
 
-6. **Run the Application**
+6. **Update package.json Scripts**
 
-   ```bash
-   node app.js
+   ```json
+   {
+     "scripts": {
+       "start": "node index.js",
+       "dev": "nodemon index.js"
+     }
+   }
    ```
 
-7. **Test File Uploads**
+7. **Run the Application**
 
-   - Open your browser and go to `http://localhost:3000`.
-   - Select an image file and click "Upload".
-   - Check the `uploads` folder for the uploaded file.
+   ```bash
+   npm run dev
+   ```
+
+8. **Test File Uploads**
+
+   - Open browser to `http://localhost:3000`
+   - Select a file and click "Upload"
+   - Check console for file details
+   - Access uploaded files at `http://localhost:3000/uploads/filename`
+
+#### Key Features Explained
+
+**DiskStorage Configuration:**
+```javascript
+const storage = multer.diskStorage({
+    destination: 'uploads/',
+    filename: Date.now() + '-' + file.originalname
+});
+```
+
+**File Information:**
+When a file is uploaded, you get detailed information:
+```javascript
+{
+  fieldname: 'yourFile',
+  originalname: 'profile.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/',
+  filename: '1751617189467-profile.jpg',
+  path: 'uploads/1751617189467-profile.jpg',
+  size: 107896
+}
+```
+
+This simple file upload system provides a complete solution for handling file uploads with proper storage and access functionality.
 
 ### 6.4 Blog Application (Node.js, MongoDB, EJS)
 
