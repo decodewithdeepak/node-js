@@ -1583,7 +1583,304 @@ url-shortener/
 - Enter a long URL and click "Shorten".
 - Copy the short URL and test the redirection.
 
-### 6.2 Blog Application (Node.js, MongoDB, EJS)
+### 6.2 Discord Bot in Node.js
+
+A Discord bot is a program that interacts with the Discord API to automate tasks, provide information, or entertain users on Discord servers. Discord bots can perform a wide range of functions, from moderating servers to playing music or providing game stats.
+
+#### Features
+
+- Respond to user commands
+- Send automated messages or alerts
+- Moderate chat (e.g., mute, kick, ban users)
+- Provide information (e.g., weather, news, game stats)
+- Play music in voice channels
+- Customizable prefixes and command handling
+
+#### Technologies Used
+
+- **Node.js**: Backend runtime environment
+- **Discord.js**: Powerful library to interact with the Discord API
+- **Nodemon**: Development tool for automatic server restarts
+
+#### Project Structure
+
+```
+discord-bot/
+├── commands/
+│   ├── ping.js
+│   └── ban.js
+├── events/
+│   ├── ready.js
+│   └── message.js
+├── config.json
+├── index.js
+└── package.json
+```
+
+#### Setting Up the Project
+
+1. **Initialize Node.js Project**
+
+   ```bash
+   mkdir discord-bot
+   cd discord-bot
+   npm init -y
+   ```
+
+2. **Install Dependencies**
+
+   ```bash
+   npm install discord.js
+   npm install --save-dev nodemon
+   ```
+
+3. **Create Project Structure**
+
+   ```bash
+   mkdir commands events
+   touch index.js
+   ```
+
+4. **Create Bot Configuration (config.json)**
+
+   ```json
+   {
+   	"token": "YOUR_BOT_TOKEN",
+   	"prefix": "!"
+   }
+   ```
+
+5. **Set Up Bot Client (index.js)**
+
+   ```javascript
+   const { Client, Intents } = require('discord.js');
+   const fs = require('fs');
+   const path = require('path');
+   const config = require('./config.json');
+
+   const client = new Client({
+   	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+   });
+
+   // Load commands
+   client.commands = new Map();
+   const commandFiles = fs
+   	.readdirSync(path.join(__dirname, 'commands'))
+   	.filter((file) => file.endsWith('.js'));
+   for (const file of commandFiles) {
+   	const command = require(`./commands/${file}`);
+   	client.commands.set(command.data.name, command);
+   }
+
+   // Load events
+   const eventFiles = fs
+   	.readdirSync(path.join(__dirname, 'events'))
+   	.filter((file) => file.endsWith('.js'));
+   for (const file of eventFiles) {
+   	const event = require(`./events/${file}`);
+   	client.on(event.name, (...args) => event.execute(...args, client));
+   }
+
+   client.login(config.token);
+   ```
+
+6. **Create Command Example (commands/ping.js)**
+
+   ```javascript
+   const { SlashCommandBuilder } = require('@discordjs/builders');
+
+   module.exports = {
+   	data: new SlashCommandBuilder()
+   		.setName('ping')
+   		.setDescription('Replies with Pong!'),
+   	async execute(interaction) {
+   		await interaction.reply('Pong!');
+   	},
+   };
+   ```
+
+7. **Create Event Example (events/ready.js)**
+
+   ```javascript
+   module.exports = {
+   	name: 'ready',
+   	once: true,
+   	execute(client) {
+   		console.log(`Logged in as ${client.user.tag}`);
+   	},
+   };
+   ```
+
+8. **Run the Bot**
+
+   ```bash
+   node index.js
+   ```
+
+9. **Test the Discord Bot**
+
+   - Invite the bot to your Discord server using the OAuth2 URL generated in the Discord Developer Portal.
+   - Test the bot commands and events in your Discord server.
+
+### 6.3 File Uploads with Multer
+
+Multer is a middleware for handling `multipart/form-data`, which is used for uploading files. It is written on top of the busboy library by Felix Geisendörfer.
+
+#### Features
+
+- Upload single or multiple files
+- Limit file size and type
+- Store files in memory or on disk
+- Rename files during upload
+- Handle file uploads in forms
+
+#### Technologies Used
+
+- **Node.js**: Backend runtime environment
+- **Express.js**: Web framework for Node.js
+- **Multer**: Middleware for handling file uploads
+
+#### Project Structure
+
+```
+file-upload/
+├── uploads/
+├── app.js
+└── package.json
+```
+
+#### Setting Up the Project
+
+1. **Initialize Node.js Project**
+
+   ```bash
+   mkdir file-upload
+   cd file-upload
+   npm init -y
+   ```
+
+2. **Install Dependencies**
+
+   ```bash
+   npm install express multer
+   ```
+
+3. **Create Project Structure**
+
+   ```bash
+   mkdir uploads
+   touch app.js
+   ```
+
+4. **Set Up File Uploads with Multer (app.js)**
+
+   ```javascript
+   const express = require('express');
+   const multer = require('multer');
+   const path = require('path');
+
+   const app = express();
+
+   // Set up storage engine
+   const storage = multer.diskStorage({
+   	destination: './uploads',
+   	filename: (req, file, cb) => {
+   		cb(
+   			null,
+   			file.fieldname + '-' + Date.now() + path.extname(file.originalname)
+   		);
+   	},
+   });
+
+   // Initialize upload variable
+   const upload = multer({
+   	storage,
+   	limits: { fileSize: 1000000 }, // 1 MB limit
+   	fileFilter: (req, file, cb) => {
+   		const filetypes = /jpeg|jpg|png|gif/;
+   		const extname = filetypes.test(
+   			path.extname(file.originalname).toLowerCase()
+   		);
+   		const mimetype = filetypes.test(file.mimetype);
+
+   		if (mimetype && extname) {
+   			return cb(null, true);
+   		}
+   		cb(
+   			'Error: File upload only supports the following filetypes - ' +
+   				filetypes
+   		);
+   	},
+   }).single('myImage'); // 'myImage' is the name attribute in the file input field
+
+   app.post('/upload', (req, res) => {
+   	upload(req, res, (err) => {
+   		if (err) {
+   			return res.status(400).send(err);
+   		}
+   		res.send(`File uploaded: ${req.file.filename}`);
+   	});
+   });
+
+   app.listen(3000, () => {
+   	console.log('Server running on port 3000');
+   });
+   ```
+
+5. **Create Upload Form (public/index.html)**
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   	<head>
+   		<meta charset="UTF-8" />
+   		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   		<title>File Upload</title>
+   	</head>
+   	<body>
+   		<h1>File Upload</h1>
+   		<form id="uploadForm" enctype="multipart/form-data">
+   			<input type="file" name="myImage" accept="image/*" required />
+   			<button type="submit">Upload</button>
+   		</form>
+   		<div id="result"></div>
+
+   		<script>
+   			document
+   				.getElementById('uploadForm')
+   				.addEventListener('submit', async (e) => {
+   					e.preventDefault();
+   					const formData = new FormData();
+   					const fileField = document.querySelector('input[type="file"]');
+
+   					formData.append('myImage', fileField.files[0]);
+
+   					const response = await fetch('/upload', {
+   						method: 'POST',
+   						body: formData,
+   					});
+
+   					const data = await response.text();
+   					document.getElementById('result').innerText = data;
+   				});
+   		</script>
+   	</body>
+   </html>
+   ```
+
+6. **Run the Application**
+
+   ```bash
+   node app.js
+   ```
+
+7. **Test File Uploads**
+
+   - Open your browser and go to `http://localhost:3000`.
+   - Select an image file and click "Upload".
+   - Check the `uploads` folder for the uploaded file.
+
+### 6.4 Blog Application (Node.js, MongoDB, EJS)
 
 A blog application is a web application that allows users to create, read, update, and delete blog posts. It typically includes user authentication, a rich text editor for writing posts, and a comment system.
 
@@ -1908,303 +2205,6 @@ blog-app/
     - Register a new user and log in.
     - Create, edit, and delete blog posts.
     - Test the comment system and other features.
-
-### 6.3 Discord Bot in Node.js
-
-A Discord bot is a program that interacts with the Discord API to automate tasks, provide information, or entertain users on Discord servers. Discord bots can perform a wide range of functions, from moderating servers to playing music or providing game stats.
-
-#### Features
-
-- Respond to user commands
-- Send automated messages or alerts
-- Moderate chat (e.g., mute, kick, ban users)
-- Provide information (e.g., weather, news, game stats)
-- Play music in voice channels
-- Customizable prefixes and command handling
-
-#### Technologies Used
-
-- **Node.js**: Backend runtime environment
-- **Discord.js**: Powerful library to interact with the Discord API
-- **Nodemon**: Development tool for automatic server restarts
-
-#### Project Structure
-
-```
-discord-bot/
-├── commands/
-│   ├── ping.js
-│   └── ban.js
-├── events/
-│   ├── ready.js
-│   └── message.js
-├── config.json
-├── index.js
-└── package.json
-```
-
-#### Setting Up the Project
-
-1. **Initialize Node.js Project**
-
-   ```bash
-   mkdir discord-bot
-   cd discord-bot
-   npm init -y
-   ```
-
-2. **Install Dependencies**
-
-   ```bash
-   npm install discord.js
-   npm install --save-dev nodemon
-   ```
-
-3. **Create Project Structure**
-
-   ```bash
-   mkdir commands events
-   touch index.js
-   ```
-
-4. **Create Bot Configuration (config.json)**
-
-   ```json
-   {
-   	"token": "YOUR_BOT_TOKEN",
-   	"prefix": "!"
-   }
-   ```
-
-5. **Set Up Bot Client (index.js)**
-
-   ```javascript
-   const { Client, Intents } = require('discord.js');
-   const fs = require('fs');
-   const path = require('path');
-   const config = require('./config.json');
-
-   const client = new Client({
-   	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
-   });
-
-   // Load commands
-   client.commands = new Map();
-   const commandFiles = fs
-   	.readdirSync(path.join(__dirname, 'commands'))
-   	.filter((file) => file.endsWith('.js'));
-   for (const file of commandFiles) {
-   	const command = require(`./commands/${file}`);
-   	client.commands.set(command.data.name, command);
-   }
-
-   // Load events
-   const eventFiles = fs
-   	.readdirSync(path.join(__dirname, 'events'))
-   	.filter((file) => file.endsWith('.js'));
-   for (const file of eventFiles) {
-   	const event = require(`./events/${file}`);
-   	client.on(event.name, (...args) => event.execute(...args, client));
-   }
-
-   client.login(config.token);
-   ```
-
-6. **Create Command Example (commands/ping.js)**
-
-   ```javascript
-   const { SlashCommandBuilder } = require('@discordjs/builders');
-
-   module.exports = {
-   	data: new SlashCommandBuilder()
-   		.setName('ping')
-   		.setDescription('Replies with Pong!'),
-   	async execute(interaction) {
-   		await interaction.reply('Pong!');
-   	},
-   };
-   ```
-
-7. **Create Event Example (events/ready.js)**
-
-   ```javascript
-   module.exports = {
-   	name: 'ready',
-   	once: true,
-   	execute(client) {
-   		console.log(`Logged in as ${client.user.tag}`);
-   	},
-   };
-   ```
-
-8. **Run the Bot**
-
-   ```bash
-   node index.js
-   ```
-
-9. **Test the Discord Bot**
-
-   - Invite the bot to your Discord server using the OAuth2 URL generated in the Discord Developer Portal.
-   - Test the bot commands and events in your Discord server.
-
-### 6.4 File Uploads with Multer
-
-Multer is a middleware for handling `multipart/form-data`, which is used for uploading files. It is written on top of the busboy library by Felix Geisendörfer.
-
-#### Features
-
-- Upload single or multiple files
-- Limit file size and type
-- Store files in memory or on disk
-- Rename files during upload
-- Handle file uploads in forms
-
-#### Technologies Used
-
-- **Node.js**: Backend runtime environment
-- **Express.js**: Web framework for Node.js
-- **Multer**: Middleware for handling file uploads
-
-#### Project Structure
-
-```
-file-upload/
-├── uploads/
-├── app.js
-└── package.json
-```
-
-#### Setting Up the Project
-
-1. **Initialize Node.js Project**
-
-   ```bash
-   mkdir file-upload
-   cd file-upload
-   npm init -y
-   ```
-
-2. **Install Dependencies**
-
-   ```bash
-   npm install express multer
-   ```
-
-3. **Create Project Structure**
-
-   ```bash
-   mkdir uploads
-   touch app.js
-   ```
-
-4. **Set Up File Uploads with Multer (app.js)**
-
-   ```javascript
-   const express = require('express');
-   const multer = require('multer');
-   const path = require('path');
-
-   const app = express();
-
-   // Set up storage engine
-   const storage = multer.diskStorage({
-   	destination: './uploads',
-   	filename: (req, file, cb) => {
-   		cb(
-   			null,
-   			file.fieldname + '-' + Date.now() + path.extname(file.originalname)
-   		);
-   	},
-   });
-
-   // Initialize upload variable
-   const upload = multer({
-   	storage,
-   	limits: { fileSize: 1000000 }, // 1 MB limit
-   	fileFilter: (req, file, cb) => {
-   		const filetypes = /jpeg|jpg|png|gif/;
-   		const extname = filetypes.test(
-   			path.extname(file.originalname).toLowerCase()
-   		);
-   		const mimetype = filetypes.test(file.mimetype);
-
-   		if (mimetype && extname) {
-   			return cb(null, true);
-   		}
-   		cb(
-   			'Error: File upload only supports the following filetypes - ' +
-   				filetypes
-   		);
-   	},
-   }).single('myImage'); // 'myImage' is the name attribute in the file input field
-
-   app.post('/upload', (req, res) => {
-   	upload(req, res, (err) => {
-   		if (err) {
-   			return res.status(400).send(err);
-   		}
-   		res.send(`File uploaded: ${req.file.filename}`);
-   	});
-   });
-
-   app.listen(3000, () => {
-   	console.log('Server running on port 3000');
-   });
-   ```
-
-5. **Create Upload Form (public/index.html)**
-
-   ```html
-   <!DOCTYPE html>
-   <html lang="en">
-   	<head>
-   		<meta charset="UTF-8" />
-   		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   		<title>File Upload</title>
-   	</head>
-   	<body>
-   		<h1>File Upload</h1>
-   		<form id="uploadForm" enctype="multipart/form-data">
-   			<input type="file" name="myImage" accept="image/*" required />
-   			<button type="submit">Upload</button>
-   		</form>
-   		<div id="result"></div>
-
-   		<script>
-   			document
-   				.getElementById('uploadForm')
-   				.addEventListener('submit', async (e) => {
-   					e.preventDefault();
-   					const formData = new FormData();
-   					const fileField = document.querySelector('input[type="file"]');
-
-   					formData.append('myImage', fileField.files[0]);
-
-   					const response = await fetch('/upload', {
-   						method: 'POST',
-   						body: formData,
-   					});
-
-   					const data = await response.text();
-   					document.getElementById('result').innerText = data;
-   				});
-   		</script>
-   	</body>
-   </html>
-   ```
-
-6. **Run the Application**
-
-   ```bash
-   node app.js
-   ```
-
-7. **Test File Uploads**
-
-   - Open your browser and go to `http://localhost:3000`.
-   - Select an image file and click "Upload".
-   - Check the `uploads` folder for the uploaded file.
 
 ## 7. Deployment & Performance
 

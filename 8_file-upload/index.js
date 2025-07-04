@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
     res.render('homepage');
 });
 
-app.post('/upload', upload.single('profileImage'), (req, res) => {
+app.post('/upload', upload.single('yourFile'), (req, res) => {
     console.log('File uploaded:', req.file);
     res.redirect('/');
 });
