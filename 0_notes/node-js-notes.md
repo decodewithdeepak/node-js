@@ -2012,14 +2012,14 @@ Vercel is a popular serverless platform optimized for frontend frameworks and No
    app.use(express.json());
 
    app.get('/', (req, res) => {
-   	res.json({ message: 'Hello Serverless!' });
+   	res.send('Hello Vercel!');
    });
 
    // For local development
    if (process.env.NODE_ENV !== 'production') {
    	const PORT = process.env.PORT || 3000;
    	app.listen(PORT, () => {
-   		console.log(`Server running on port ${PORT}`);
+   		console.log(`Server running on http://localhost:${PORT}`);
    	});
    }
 
