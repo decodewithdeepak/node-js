@@ -1,0 +1,95 @@
+<%- include('partials/header', {title: 'Dashboard - Blog App' }) %>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>My Posts</h2>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newPostModal">
+                        <i class="fas fa-plus"></i> New Post
+                    </button>
+                </div>
+
+                <div id="user-posts">
+                    <!-- User posts will be loaded here -->
+                    <div class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Profile</h5>
+                    </div>
+                    <div class="card-body" id="user-profile">
+                        <!-- User profile will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Post Modal -->
+    <div class="modal fade" id="newPostModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create New Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="new-post-form">
+                        <div class="mb-3">
+                            <label for="post-title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="post-title" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="post-content" class="form-label">Content</label>
+                            <textarea class="form-control" id="post-content" name="content" rows="10"
+                                required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="save-post">Save Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Post Modal -->
+    <div class="modal fade" id="editPostModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-post-form">
+                        <input type="hidden" id="edit-post-id">
+                        <div class="mb-3">
+                            <label for="edit-post-title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="edit-post-title" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-post-content" class="form-label">Content</label>
+                            <textarea class="form-control" id="edit-post-content" name="content" rows="10"
+                                required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="update-post">Update Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('partials/footer') %>

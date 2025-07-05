@@ -2180,6 +2180,10 @@ blog-app/
    app.use(express.json());
    app.use(express.static('public'));
 
+   // Set EJS as the view engine
+   app.set('view engine', 'ejs');
+   app.set('views', './views');
+
    // Routes
    app.use('/api/users', userRoutes);
    app.use('/api/posts', postRoutes);
