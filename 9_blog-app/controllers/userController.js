@@ -13,7 +13,7 @@ const generateToken = (userId, username, email) => {
     }, JWT_SECRET, { expiresIn: '7d' });
 };
 
-// Register user
+// Signup user
 exports.signup = async (req, res) => {
     const { username, email, password } = req.body;
 
@@ -24,7 +24,7 @@ exports.signup = async (req, res) => {
         });
 
         if (existingUser) {
-            return res.render('register', {
+            return res.render('signup', {
                 error: 'User with this email or username already exists'
             });
         }
@@ -36,7 +36,7 @@ exports.signup = async (req, res) => {
         res.cookie('token', token);
         res.redirect('/dashboard');
     } catch (error) {
-        res.render('register', { error: error.message });
+        res.render('signup', { error: error.message });
     }
 };
 

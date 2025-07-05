@@ -45,7 +45,7 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/signup', (req, res) => {
-    res.render('register');
+    res.render('signup');
 });
 
 app.get('/dashboard', async (req, res) => {
