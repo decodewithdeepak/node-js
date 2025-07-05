@@ -1,27 +1,32 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-require('dotenv').config();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
-
-module.exports = async (req, res, next) => {
-    try {
-        const token = req.headers['authorization']?.split(' ')[1];
-
-        if (!token) {
-            return res.status(401).json({ message: 'Access token required' });
+function checkForAuthenticationCookie(cookieName) {
+    return (req, res, next) => {
+        const tokenCookieValue = req.cookies[cookieName];
+        if (!tokenCookieValue) {
+            return next();
         }
 
-        const decoded = jwt.verify(token, JWT_SECRET);
-        const user = await User.findById(decoded.id).select('-password');
-
-        if (!user) {
-            return res.status(401).json({ message: 'User not found' });
+        try {
+            const userPayload = jwt.verify(tokenCookieValue, process.env.JWT_SECRET || 'your-secret-key');
+            req.user = userPayload;
+        } catch (error) {
+            // Invalid token, clear the cookie
+            res.clearCookie(cookieName);
         }
 
-        req.user = user;
-        next();
-    } catch (error) {
-        res.status(401).json({ message: 'Invalid or expired token' });
+        return next();
+    };
+}
+
+function requireAuth(req, res, next) {
+    if (!req.user) {
+        return res.redirect('/login');
     }
+    next();
+}
+
+module.exports = {
+    checkForAuthenticationCookie,
+    requireAuth,
 };

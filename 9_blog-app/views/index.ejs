@@ -1,29 +1,61 @@
 <%- include('partials/header', {title: 'Home - Blog App' }) %>
 
     <div class="container mt-4">
-        <!-- Message container for notifications -->
-        <div id="main-message"></div>
+        <% if (locals.error) { %>
+            <div class="alert alert-danger" role="alert">
+                <%= error %>
+            </div>
+            <% } %>
 
-        <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
-            <h1 class="display-4">Welcome to Blog App</h1>
-            <p class="lead">Share your thoughts, stories, and ideas with the world.</p>
-            <a class="btn btn-light btn-lg" href="/register" role="button">Get Started</a>
-        </div>
+                <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
+                    <h1 class="display-4">Welcome to Blogify</h1>
+                    <p class="lead">Share your thoughts, stories, and ideas with the world.</p>
+                    <% if (!user) { %>
+                        <a class="btn btn-light btn-lg" href="/signup" role="button">Get Started</a>
+                        <% } else { %>
+                            <a class="btn btn-light btn-lg" href="/dashboard" role="button">My Dashboard</a>
+                            <% } %>
+                </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Latest Posts</h2>
-                <div id="latest-posts">
-                    <!-- Posts will be loaded here via JavaScript -->
-                    <div class="text-center">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Latest Blogs</h2>
+                        <div id="latest-blogs">
+                            <% if (blogs && blogs.length> 0) { %>
+                                <% blogs.forEach(blog=> { %>
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h5>
+                                                <%= blog.title %>
+                                            </h5>
+                                            <p>
+                                                <%= blog.content.length> 150 ? blog.content.substring(0, 150) + '...' :
+                                                    blog.content %>
+                                            </p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <small class="text-muted">By <%= blog.author.username %> • <%= new
+                                                            Date(blog.createdAt).toLocaleDateString() %></small>
+                                                <small class="text-muted">
+                                                    ❤️ <%= blog.likes ? blog.likes.length : 0 %>
+                                                        💬 <%= blog.comments ? blog.comments.length : 0 %>
+                                                </small>
+                                            </div>
+                                            <a href="/blog/<%= blog._id %>" class="btn btn-primary btn-sm mt-2">Read
+                                                More</a>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                                        <% } else { %>
+                                            <div class="card">
+                                                <div class="card-body text-center">
+                                                    <p class="text-muted">No blogs found. Be the first to create a blog!
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <% } %>
                         </div>
                     </div>
                 </div>
-            </div>
-
-        </div>
     </div>
 
     <%- include('partials/footer') %>
