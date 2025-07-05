@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Public routes
 router.post('/signup', userController.signup);
-router.post('/signin', userController.signin);
+router.post('/login', userController.login);
 router.get('/logout', userController.logout);
 
 // Protected routes
