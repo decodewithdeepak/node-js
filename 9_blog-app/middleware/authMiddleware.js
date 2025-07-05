@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+
 function checkForAuthenticationCookie(cookieName) {
     return (req, res, next) => {
         const tokenCookieValue = req.cookies[cookieName];
@@ -8,7 +10,7 @@ function checkForAuthenticationCookie(cookieName) {
         }
 
         try {
-            const userPayload = jwt.verify(tokenCookieValue, process.env.JWT_SECRET || 'your-secret-key');
+            const userPayload = jwt.verify(tokenCookieValue, JWT_SECRET);
             req.user = userPayload;
         } catch (error) {
             // Invalid token, clear the cookie
