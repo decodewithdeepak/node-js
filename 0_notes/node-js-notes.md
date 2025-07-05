@@ -92,6 +92,7 @@ Node.js is an open-source, cross-platform JavaScript runtime environment that al
 - **Community Support:** Huge, active community and lots of learning resources.
 
 **Comparison Example:**
+
 - Traditional backend (e.g., PHP, Java): Each request may create a new thread, which is resource-intensive.
 - Node.js: Uses a single-threaded event loop to handle many requests efficiently.
 
@@ -579,9 +580,11 @@ app.use((err, req, res, next) => {
 	res.status(500).send('Something broke!');
 });
 ```
+
 ### 3.5 HTTP Status Codes
 
 HTTP status codes indicate the result of an HTTP request. They are grouped into five categories:
+
 - **1xx Informational**: Request received, continuing process
 - **2xx Success**: The request was successfully received, understood, and accepted
 - **3xx Redirection**: Further action needs to be taken to complete the request
@@ -591,11 +594,13 @@ HTTP status codes indicate the result of an HTTP request. They are grouped into 
 #### Common Status Codes
 
 - **2xx Success**
+
   - 200 OK: Request successful
   - 201 Created: Resource created successfully
   - 204 No Content: Request successful, no content to return
 
 - **4xx Client Error**
+
   - 400 Bad Request: Invalid request
   - 401 Unauthorized: Authentication required
   - 403 Forbidden: Access denied
@@ -605,7 +610,7 @@ HTTP status codes indicate the result of an HTTP request. They are grouped into 
   - 500 Internal Server Error: Server error
   - 503 Service Unavailable: Server temporarily unavailable
 
-> Always return a appropriate status code with the response to indicate the result of the request. 
+> Always return a appropriate status code with the response to indicate the result of the request.
 
 ### 3.6 HTTP Headers in APIs
 
@@ -626,7 +631,9 @@ app.get('/api/users', (req, res) => {
 	res.json(users);
 });
 ```
+
 #### Common built-in HTTP Headers
+
 - **Content-Type**: Indicates the media type of the resource (e.g., `application/json`, `text/html`).
 - **Authorization**: Contains credentials for authenticating the client.
 - **Cache-Control**: Directives for caching mechanisms in both requests and responses.
@@ -692,10 +699,10 @@ MongoDB uses the lightweight and flexible BSON (Binary JSON), an extension JSON,
 - **Rich Query Language**: Powerful querying capabilities
 
 #### Installation and Setup of MongoDB
+
 - **Windows/Mac/Linux**: Download from [mongodb.com](https://www.mongodb.com/try/download/community).
 
 > For step-by-step installation, refer to this blog: [How to Install MongoDB on Windows](https://deepakmodi.hashnode.dev/how-to-install-mongodb-with-mongosh-on-windows-manually)
-
 
 #### MongoDB Concepts
 
@@ -709,7 +716,9 @@ MongoDB uses the lightweight and flexible BSON (Binary JSON), an extension JSON,
 Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js that provides schema validation, casting, and business logic hooks.
 
 #### Installation of Mongoose
+
 To use Mongoose, you need to install it in your Node.js project:
+
 ```bash
 npm install mongoose
 ```
@@ -720,9 +729,10 @@ npm install mongoose
 const mongoose = require('mongoose');
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/myapp')
-    .then(() => console.log('MongoDB connected'))
-    .catch((err) => console.error('MongoDB connection error:', err));
+mongoose
+	.connect('mongodb://localhost:27017/myapp')
+	.then(() => console.log('MongoDB connected'))
+	.catch((err) => console.error('MongoDB connection error:', err));
 ```
 
 #### Defining Schemas and Models
@@ -826,6 +836,7 @@ app.delete('/api/users/:id', async (req, res) => {
 MVC (Model-View-Controller) is an architectural pattern that separates application logic into three interconnected components.
 
 #### MVC Structure
+
 A typical MVC structure in Node.js might look like this:
 
 ```
@@ -843,7 +854,8 @@ project/
 ```
 
 #### Model (models/User.js)
-The model handles data and database interactions. 
+
+The model handles data and database interactions.
 
 ```javascript
 const mongoose = require('mongoose');
@@ -858,6 +870,7 @@ module.exports = mongoose.model('User', userSchema);
 ```
 
 #### Controller (controllers/userController.js)
+
 The controller contains the logic for handling requests and responses.
 
 ```javascript
@@ -894,28 +907,30 @@ exports.getUserById = async (req, res) => {
 ```
 
 #### View (views/users.ejs)
+
 The view is responsible for rendering the user interface. For web apps, you might use templating engines like EJS, Pug, or Handlebars. For REST APIs serving JSON to frontend frameworks like React/Next.js, views are typically handled on the frontend.
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Users</title>
-</head>
-<body>
-	<h1>Users List</h1>
-	<ul>
-		<% users.forEach(user => { %>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Users</title>
+	</head>
+	<body>
+		<h1>Users List</h1>
+		<ul>
+			<% users.forEach(user => { %>
 			<li><%= user.name %> - <%= user.email %></li>
-		<% }) %>
-	</ul>
-</body>
+			<% }) %>
+		</ul>
+	</body>
 </html>
 ```
 
 #### Routes (routes/userRoutes.js)
+
 The routes define the endpoints and map them to controller functions.
 
 ```javascript
@@ -932,6 +947,7 @@ module.exports = router;
 ```
 
 #### Main App (app.js)
+
 The entry point of the application sets up the server, connects to the database, and uses the routes.
 
 ```javascript
@@ -964,6 +980,7 @@ Authentication and authorization are crucial security components in web applicat
 ### 5.1 Authentication Methods
 
 Authentication is the process of verifying who a user is. There are several methods to implement authentication in Node.js applications:
+
 - **Password-based Authentication**: Storing user credentials (username/email and password) securely in database.
 - **Session-based Authentication (Stateful)**: Storing user information on the server and using cookies to maintain state.
 - **Token-based Authentication (Stateless)**: Using tokens (like JWT) to authenticate users without maintaining server-side state.
@@ -979,54 +996,54 @@ const User = require('../models/User');
 
 // Registration
 const registerUser = async (req, res) => {
-    const { username, email, password } = req.body;
-    
-    try {
-        // Hash password
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
-        
-        // Create user
-        const user = new User({
-            username,
-            email,
-            password: hashedPassword
-        });
-        
-        await user.save();
-        res.status(201).json({ message: 'User registered successfully' });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
+	const { username, email, password } = req.body;
+
+	try {
+		// Hash password
+		const saltRounds = 10;
+		const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+		// Create user
+		const user = new User({
+			username,
+			email,
+			password: hashedPassword,
+		});
+
+		await user.save();
+		res.status(201).json({ message: 'User registered successfully' });
+	} catch (error) {
+		res.status(400).json({ error: error.message });
+	}
 };
 
 // Login
 const loginUser = async (req, res) => {
-    const { email, password } = req.body;
-    
-    try {
-        // Find user
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(401).json({ message: 'User not found' });
-        }
-        
-        // Verify password
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) {
-            return res.status(401).json({ message: 'Wrong password' });
-        }
-        
-        res.status(200).json({ message: 'Login successful', userId: user._id });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+	const { email, password } = req.body;
+
+	try {
+		// Find user
+		const user = await User.findOne({ email });
+		if (!user) {
+			return res.status(401).json({ message: 'User not found' });
+		}
+
+		// Verify password
+		const isPasswordValid = await bcrypt.compare(password, user.password);
+		if (!isPasswordValid) {
+			return res.status(401).json({ message: 'Wrong password' });
+		}
+
+		res.status(200).json({ message: 'Login successful', userId: user._id });
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
 };
 ```
 
 ### 5.2 Session-based Authentication
 
-Session-based authentication stores user information on the server and uses cookies (session ID) to maintain state. 
+Session-based authentication stores user information on the server and uses cookies (session ID) to maintain state.
 
 #### Installing Session Dependencies
 
@@ -1041,60 +1058,64 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 
 // Session configuration
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'your-session-secret',
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-        mongoUrl: 'mongodb://localhost:27017/your-app'
-    }),
-    cookie: {
-        secure: false, // Set to true in production with HTTPS
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000 // 24 hours
-    }
-}));
+app.use(
+	session({
+		secret: process.env.SESSION_SECRET || 'your-session-secret',
+		resave: false,
+		saveUninitialized: false,
+		store: MongoStore.create({
+			mongoUrl: 'mongodb://localhost:27017/your-app',
+		}),
+		cookie: {
+			secure: false, // Set to true in production with HTTPS
+			httpOnly: true,
+			maxAge: 24 * 60 * 60 * 1000, // 24 hours
+		},
+	})
+);
 
 // Login with sessions
 const loginWithSession = async (req, res) => {
-    const { email, password } = req.body;
-    
-    try {
-        const user = await User.findOne({ email });
-        if (!user || !(await bcrypt.compare(password, user.password))) {
-            return res.status(401).json({ message: 'Invalid credentials' });
-        }
-        
-        // Store user info in session
-        req.session.userId = user._id;
-        req.session.username = user.username;
-        
-        res.status(200).json({
-            message: 'Login successful',
-            user: { id: user._id, username: user.username, email: user.email }
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+	const { email, password } = req.body;
+
+	try {
+		const user = await User.findOne({ email });
+		if (!user || !(await bcrypt.compare(password, user.password))) {
+			return res.status(401).json({ message: 'Invalid credentials' });
+		}
+
+		// Store user info in session
+		req.session.userId = user._id;
+		req.session.username = user.username;
+
+		res.status(200).json({
+			message: 'Login successful',
+			user: { id: user._id, username: user.username, email: user.email },
+		});
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
 };
 
 // Session middleware for protecting routes
 const requireAuth = (req, res, next) => {
-    if (!req.session.userId) {
-        return res.status(401).json({ message: 'Please log in to access this resource' });
-    }
-    next();
+	if (!req.session.userId) {
+		return res
+			.status(401)
+			.json({ message: 'Please log in to access this resource' });
+	}
+	next();
 };
 
 // Logout
 const logout = (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            return res.status(500).json({ message: 'Could not log out' });
-        }
-        res.clearCookie('connect.sid'); // Clear session cookie
-        res.status(200).json({ message: 'Logged out successfully' });
-    });
+	req.session.destroy((err) => {
+		if (err) {
+			return res.status(500).json({ message: 'Could not log out' });
+		}
+		res.clearCookie('connect.sid'); // Clear session cookie
+		res.status(200).json({ message: 'Logged out successfully' });
+	});
 };
 ```
 
@@ -1116,58 +1137,58 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 // Generate JWT token
 const generateToken = (userId) => {
-    return jwt.sign({ userId }, JWT_SECRET, { expiresIn: '7d' });
+	return jwt.sign({ userId }, JWT_SECRET, { expiresIn: '7d' });
 };
 
 // Login with JWT
 const loginWithJWT = async (req, res) => {
-    const { email, password } = req.body;
-    
-    try {
-        const user = await User.findOne({ email });
-        if (!user || !(await bcrypt.compare(password, user.password))) {
-            return res.status(401).json({ message: 'Invalid credentials' });
-        }
-        
-        // Generate token
-        const token = generateToken(user._id);
-        
-        res.status(200).json({
-            message: 'Login successful',
-            token,
-            user: { id: user._id, username: user.username, email: user.email }
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+	const { email, password } = req.body;
+
+	try {
+		const user = await User.findOne({ email });
+		if (!user || !(await bcrypt.compare(password, user.password))) {
+			return res.status(401).json({ message: 'Invalid credentials' });
+		}
+
+		// Generate token
+		const token = generateToken(user._id);
+
+		res.status(200).json({
+			message: 'Login successful',
+			token,
+			user: { id: user._id, username: user.username, email: user.email },
+		});
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
 };
 
 // JWT Middleware for protecting routes
 const authenticateToken = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
-    
-    if (!token) {
-        return res.status(401).json({ message: 'Access token required' });
-    }
-    
-    jwt.verify(token, JWT_SECRET, (err, decoded) => {
-        if (err) {
-            return res.status(403).json({ message: 'Invalid or expired token' });
-        }
-        req.userId = decoded.userId;
-        next();
-    });
+	const authHeader = req.headers['authorization'];
+	const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+
+	if (!token) {
+		return res.status(401).json({ message: 'Access token required' });
+	}
+
+	jwt.verify(token, JWT_SECRET, (err, decoded) => {
+		if (err) {
+			return res.status(403).json({ message: 'Invalid or expired token' });
+		}
+		req.userId = decoded.userId;
+		next();
+	});
 };
 
 // Protected route example
 app.get('/api/profile', authenticateToken, async (req, res) => {
-    try {
-        const user = await User.findById(req.userId).select('-password');
-        res.json(user);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+	try {
+		const user = await User.findById(req.userId).select('-password');
+		res.json(user);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
 });
 ```
 
@@ -1188,58 +1209,65 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 // Google OAuth configuration
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: '/auth/google/callback'
-}, async (accessToken, refreshToken, profile, done) => {
-    try {
-        // Check if user exists
-        let user = await User.findOne({ googleId: profile.id });
-        
-        if (user) {
-            return done(null, user);
-        }
-        
-        // Create new user
-        user = new User({
-            googleId: profile.id,
-            username: profile.displayName,
-            email: profile.emails[0].value,
-            avatar: profile.photos[0].value
-        });
-        
-        await user.save();
-        return done(null, user);
-    } catch (error) {
-        return done(error, null);
-    }
-}));
+passport.use(
+	new GoogleStrategy(
+		{
+			clientID: process.env.GOOGLE_CLIENT_ID,
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+			callbackURL: '/auth/google/callback',
+		},
+		async (accessToken, refreshToken, profile, done) => {
+			try {
+				// Check if user exists
+				let user = await User.findOne({ googleId: profile.id });
+
+				if (user) {
+					return done(null, user);
+				}
+
+				// Create new user
+				user = new User({
+					googleId: profile.id,
+					username: profile.displayName,
+					email: profile.emails[0].value,
+					avatar: profile.photos[0].value,
+				});
+
+				await user.save();
+				return done(null, user);
+			} catch (error) {
+				return done(error, null);
+			}
+		}
+	)
+);
 
 // Serialize user for session
 passport.serializeUser((user, done) => {
-    done(null, user._id);
+	done(null, user._id);
 });
 
 passport.deserializeUser(async (id, done) => {
-    try {
-        const user = await User.findById(id);
-        done(null, user);
-    } catch (error) {
-        done(error, null);
-    }
+	try {
+		const user = await User.findById(id);
+		done(null, user);
+	} catch (error) {
+		done(error, null);
+	}
 });
 
 // OAuth routes
-app.get('/auth/google',
-    passport.authenticate('google', { scope: ['profile', 'email'] })
+app.get(
+	'/auth/google',
+	passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-app.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login' }),
-    (req, res) => {
-        res.redirect('/dashboard'); // Successful authentication
-    }
+app.get(
+	'/auth/google/callback',
+	passport.authenticate('google', { failureRedirect: '/login' }),
+	(req, res) => {
+		res.redirect('/dashboard'); // Successful authentication
+	}
 );
 ```
 
@@ -1252,114 +1280,121 @@ Authorization determines what authenticated users can access based on their role
 ```javascript
 // User model with roles
 const userSchema = new mongoose.Schema({
-    username: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    role: {
-        type: String,
-        enum: ['user', 'admin', 'moderator'],
-        default: 'user'
-    },
-    permissions: [{
-        type: String,
-        enum: ['read', 'write', 'delete', 'manage_users']
-    }]
+	username: { type: String, required: true },
+	email: { type: String, required: true, unique: true },
+	password: { type: String, required: true },
+	role: {
+		type: String,
+		enum: ['user', 'admin', 'moderator'],
+		default: 'user',
+	},
+	permissions: [
+		{
+			type: String,
+			enum: ['read', 'write', 'delete', 'manage_users'],
+		},
+	],
 });
 
 // Authorization middleware
 const authorize = (roles = []) => {
-    return (req, res, next) => {
-        if (!req.user) {
-            return res.status(401).json({ message: 'Authentication required' });
-        }
-        
-        if (roles.length && !roles.includes(req.user.role)) {
-            return res.status(403).json({ message: 'Insufficient permissions' });
-        }
-        
-        next();
-    };
+	return (req, res, next) => {
+		if (!req.user) {
+			return res.status(401).json({ message: 'Authentication required' });
+		}
+
+		if (roles.length && !roles.includes(req.user.role)) {
+			return res.status(403).json({ message: 'Insufficient permissions' });
+		}
+
+		next();
+	};
 };
 
 // Permission-based authorization
 const checkPermission = (permission) => {
-    return (req, res, next) => {
-        if (!req.user) {
-            return res.status(401).json({ message: 'Authentication required' });
-        }
-        
-        if (!req.user.permissions.includes(permission)) {
-            return res.status(403).json({ message: `${permission} permission required` });
-        }
-        
-        next();
-    };
+	return (req, res, next) => {
+		if (!req.user) {
+			return res.status(401).json({ message: 'Authentication required' });
+		}
+
+		if (!req.user.permissions.includes(permission)) {
+			return res
+				.status(403)
+				.json({ message: `${permission} permission required` });
+		}
+
+		next();
+	};
 };
 
 // Protected routes with role-based access
-app.get('/api/admin/users', 
-    authenticateToken, 
-    authorize(['admin']), 
-    async (req, res) => {
-        try {
-            const users = await User.find().select('-password');
-            res.json(users);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    }
+app.get(
+	'/api/admin/users',
+	authenticateToken,
+	authorize(['admin']),
+	async (req, res) => {
+		try {
+			const users = await User.find().select('-password');
+			res.json(users);
+		} catch (error) {
+			res.status(500).json({ error: error.message });
+		}
+	}
 );
 
-app.delete('/api/posts/:id', 
-    authenticateToken, 
-    checkPermission('delete'), 
-    async (req, res) => {
-        try {
-            const post = await Post.findByIdAndDelete(req.params.id);
-            if (!post) {
-                return res.status(404).json({ message: 'Post not found' });
-            }
-            res.status(204).send();
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    }
+app.delete(
+	'/api/posts/:id',
+	authenticateToken,
+	checkPermission('delete'),
+	async (req, res) => {
+		try {
+			const post = await Post.findByIdAndDelete(req.params.id);
+			if (!post) {
+				return res.status(404).json({ message: 'Post not found' });
+			}
+			res.status(204).send();
+		} catch (error) {
+			res.status(500).json({ error: error.message });
+		}
+	}
 );
 
 // Resource-based authorization (users can only edit their own posts)
 const checkResourceOwnership = async (req, res, next) => {
-    try {
-        const post = await Post.findById(req.params.id);
-        if (!post) {
-            return res.status(404).json({ message: 'Post not found' });
-        }
-        
-        if (post.author.toString() !== req.userId && req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Access denied' });
-        }
-        
-        req.post = post;
-        next();
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+	try {
+		const post = await Post.findById(req.params.id);
+		if (!post) {
+			return res.status(404).json({ message: 'Post not found' });
+		}
+
+		if (post.author.toString() !== req.userId && req.user.role !== 'admin') {
+			return res.status(403).json({ message: 'Access denied' });
+		}
+
+		req.post = post;
+		next();
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
 };
 
-app.put('/api/posts/:id', 
-    authenticateToken, 
-    checkResourceOwnership, 
-    async (req, res) => {
-        try {
-            const updatedPost = await Post.findByIdAndUpdate(
-                req.params.id, 
-                req.body, 
-                { new: true }
-            );
-            res.json(updatedPost);
-        } catch (error) {
-            res.status(400).json({ error: error.message });
-        }
-    }
+app.put(
+	'/api/posts/:id',
+	authenticateToken,
+	checkResourceOwnership,
+	async (req, res) => {
+		try {
+			const updatedPost = await Post.findByIdAndUpdate(
+				req.params.id,
+				req.body,
+				{ new: true }
+			);
+			res.json(updatedPost);
+		} catch (error) {
+			res.status(400).json({ error: error.message });
+		}
+	}
 );
 ```
 
@@ -1445,9 +1480,9 @@ url-shortener/
 
    exports.shortenUrl = async (req, res) => {
    	const { originalUrl } = req.body;
-   	const shortCode = Math.random()       // 0.7834592847563
-                        .toString(36)     // "0.s8w7xqp4zk"
-                        .substring(2, 8); // "s8w7xq"
+   	const shortCode = Math.random() // 0.7834592847563
+   		.toString(36) // "0.s8w7xqp4zk"
+   		.substring(2, 8); // "s8w7xq"
 
    	try {
    		const url = new Url({ originalUrl, shortCode });
@@ -1506,7 +1541,8 @@ url-shortener/
    app.use('/api/urls', urlRoutes);
 
    // Connect to MongoDB
-   mongoose.connect('mongodb://localhost:27017/urlshortener')
+   mongoose
+   	.connect('mongodb://localhost:27017/urlshortener')
    	.then(() => console.log('MongoDB Connected'))
    	.catch((err) => console.error('MongoDB connection error:', err));
 
@@ -1552,16 +1588,16 @@ url-shortener/
    						},
    						body: JSON.stringify({ originalUrl }),
    					});
-					const data = await response.json();
-					if (response.ok) {
-						document.getElementById(
-							'result'
-						).innerHTML = `Short URL: <a href="/api/urls/${data.shortCode}">${data.shortCode}</a>`;
-					} else {
-						document.getElementById(
-							'result'
-						).innerHTML = `Error: ${data.error}`;
-					}
+   					const data = await response.json();
+   					if (response.ok) {
+   						document.getElementById(
+   							'result'
+   						).innerHTML = `Short URL: <a href="/api/urls/${data.shortCode}">${data.shortCode}</a>`;
+   					} else {
+   						document.getElementById(
+   							'result'
+   						).innerHTML = `Error: ${data.error}`;
+   					}
    				});
    		</script>
    	</body>
@@ -1785,13 +1821,13 @@ file-upload/
 
    // Using diskStorage for better file control
    const storage = multer.diskStorage({
-       destination: function (req, file, cb) {
-           cb(null, 'uploads/'); // directory where files will be saved
-       },
-       filename: function (req, file, cb) {
-           cb(null, Date.now() + '-' + file.originalname); // unique filename
-       }
-   })
+   	destination: function (req, file, cb) {
+   		cb(null, 'uploads/'); // directory where files will be saved
+   	},
+   	filename: function (req, file, cb) {
+   		cb(null, Date.now() + '-' + file.originalname); // unique filename
+   	},
+   });
    const upload = multer({ storage: storage });
 
    // Set EJS as the view engine
@@ -1802,16 +1838,16 @@ file-upload/
    app.use('/uploads', express.static('uploads'));
 
    app.get('/', (req, res) => {
-       res.render('homepage');
+   	res.render('homepage');
    });
 
    app.post('/upload', upload.single('yourFile'), (req, res) => {
-       console.log('File uploaded:', req.file);
-       res.redirect('/');
+   	console.log('File uploaded:', req.file);
+   	res.redirect('/');
    });
 
    app.listen(PORT, () => {
-       console.log(`Server is running on http://localhost:${PORT}`);
+   	console.log(`Server is running on http://localhost:${PORT}`);
    });
    ```
 
@@ -1820,18 +1856,18 @@ file-upload/
    ```html
    <!DOCTYPE html>
    <html lang="en">
-   <head>
-       <meta charset="UTF-8">
-       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <title>File Upload</title>
-   </head>
-   <body>
-       <h1>File Upload</h1>
-       <form action="/upload" method="POST" enctype="multipart/form-data">
-           <input type="file" name="yourFile">
-           <button type="submit">Upload</button>
-       </form>
-   </body>
+   	<head>
+   		<meta charset="UTF-8" />
+   		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   		<title>File Upload</title>
+   	</head>
+   	<body>
+   		<h1>File Upload</h1>
+   		<form action="/upload" method="POST" enctype="multipart/form-data">
+   			<input type="file" name="yourFile" />
+   			<button type="submit">Upload</button>
+   		</form>
+   	</body>
    </html>
    ```
 
@@ -1839,10 +1875,10 @@ file-upload/
 
    ```json
    {
-     "scripts": {
-       "start": "node index.js",
-       "dev": "nodemon index.js"
-     }
+   	"scripts": {
+   		"start": "node index.js",
+   		"dev": "nodemon index.js"
+   	}
    }
    ```
 
@@ -1862,15 +1898,17 @@ file-upload/
 #### Key Features Explained
 
 **DiskStorage Configuration:**
+
 ```javascript
 const storage = multer.diskStorage({
-    destination: 'uploads/',
-    filename: Date.now() + '-' + file.originalname
+	destination: 'uploads/',
+	filename: Date.now() + '-' + file.originalname,
 });
 ```
 
 **File Information:**
 When a file is uploaded, you get detailed information:
+
 ```javascript
 {
   fieldname: 'yourFile',
@@ -1910,7 +1948,109 @@ A blog application is a web application that allows users to create, read, updat
 
 ## 7. Deployment & Performance
 
-### 7.1 AWS Deployment
+### 7.1 Vercel Deployment
+
+Vercel is a popular serverless platform optimized for frontend frameworks and Node.js applications. It provides excellent developer experience with zero-configuration deployments. The only catch is that it is primarily designed for serverless functions, so you need to adapt your Node.js app accordingly.
+
+#### Why Vercel for Node.js?
+
+- **Zero Configuration**: Deploy with minimal setup
+- **Automatic HTTPS**: Built-in SSL certificates
+- **Global CDN**: Fast content delivery worldwide
+- **GitHub Integration**: Automatic deployments on git push
+- **Environment Variables**: Easy configuration management
+- **Custom Domains**: Free custom domain support
+- **Serverless Functions**: Run backend code without managing servers
+
+#### Step-by-Step Vercel Deployment
+
+1. **Install Vercel CLI**
+
+   ```bash
+   npm install -g vercel
+   ```
+
+2. **Prepare Your Node.js App**
+
+   Your project structure should look like:
+
+   ```
+   my-app/
+   ├── app.js          # Main application file
+   ├── package.json    # Dependencies and scripts
+   ├── vercel.json     # Vercel configuration (optional)
+   └── .env            # Environment variables (local only)
+   ```
+
+3. **Create vercel.json Configuration**
+
+   ```json
+   {
+   	"version": 2,
+   	"builds": [
+   		{
+   			"src": "./app.js",
+   			"use": "@vercel/node"
+   		}
+   	],
+   	"routes": [
+   		{
+   			"src": "/(.*)",
+   			"dest": "/app.js"
+   		}
+   	]
+   }
+   ```
+
+4. **Modify Your Express App for Serverless**
+
+   ```javascript
+   const express = require('express');
+   const app = express();
+
+   // Middleware and routes
+   app.use(express.json());
+
+   app.get('/', (req, res) => {
+   	res.json({ message: 'Hello Serverless!' });
+   });
+
+   // For local development
+   if (process.env.NODE_ENV !== 'production') {
+   	const PORT = process.env.PORT || 3000;
+   	app.listen(PORT, () => {
+   		console.log(`Server running on port ${PORT}`);
+   	});
+   }
+
+   // Export for serverless
+   module.exports = app;
+   ```
+
+5. **Deploy to Vercel**
+
+   ```bash
+   vercel login      # Login to your Vercel account
+   vercel            # Deploy the project
+   vercel --prod     # Deploy to production
+   ```
+
+6. **Set Environment Variables**
+
+   ```bash
+   vercel env add MONGODB_URI
+   vercel env add JWT_SECRET
+   ```
+
+   Or via Vercel Dashboard:
+
+   - Go to your project settings
+   - Navigate to Environment Variables
+   - Add your variables for Production, Preview, and Development
+
+    > Use MongoDB Atlas cloud database for production to maintain consistency across environments.
+
+### 7.2 AWS Deployment
 
 Deploying Node.js applications on AWS can be done using various services like EC2, Elastic Beanstalk, or Lambda (for serverless).
 
@@ -1932,7 +2072,7 @@ Deploying Node.js applications on AWS can be done using various services like EC
 4. **Configure Environment Variables**: Set any necessary environment variables in the Elastic Beanstalk console.
 5. **Access the Application**: Once deployed, Elastic Beanstalk provides a URL to access your application.
 
-### 7.2 NGINX (Setup, Serve Static Content, SSL with LetsEncrypt)
+### 7.3 NGINX (Setup, Serve Static Content, SSL with LetsEncrypt)
 
 NGINX is a high-performance web server that can also be used as a reverse proxy, load balancer, and HTTP cache. It is often used to serve static content and as a reverse proxy for Node.js applications.
 
@@ -2007,7 +2147,7 @@ sudo apt install nginx
    sudo certbot renew --dry-run
    ```
 
-### 7.3 Scaling Node.js with Cluster
+### 7.4 Scaling Node.js with Cluster
 
 The Node.js cluster module allows you to create multiple child processes (workers) that share the same server port. This takes advantage of multi-core systems and improves the performance of Node.js applications.
 
@@ -2055,13 +2195,15 @@ The Node.js cluster module allows you to create multiple child processes (worker
 
    - Send requests to the server and observe that multiple worker processes handle the requests.
 
-### 7.4 Serverless Framework + AWS Lambda
+### 7.5 Serverless Framework + AWS Lambda
 
 Serverless computing allows you to build and run applications without having to manage servers. AWS Lambda is a serverless compute service that runs your code in response to events and automatically manages the underlying compute resources.
 
 #### Serverless Framework
 
 The Serverless Framework is an open-source framework that simplifies the development and deployment of serverless applications.
+
+> Note: Difference between serverless and Serverless Framework: Serverless is a general term for serverless computing, while the Serverless Framework is a specific tool that helps you build and deploy serverless applications.
 
 1. **Install Serverless Framework**
 
@@ -2587,15 +2729,15 @@ As your GraphQL schema and resolvers grow, it's important to keep your code orga
    const DataLoader = require('dataloader');
 
    const userLoader = new DataLoader(async (userIds) => {
-       const users = await User.findByIds(userIds);
-       return userIds.map(id => users.find(user => user.id === id));
+   	const users = await User.findByIds(userIds);
+   	return userIds.map((id) => users.find((user) => user.id === id));
    });
 
    // In your resolver
    const resolvers = {
-       Post: {
-           author: (post) => userLoader.load(post.authorId)
-       }
+   	Post: {
+   		author: (post) => userLoader.load(post.authorId),
+   	},
    };
    ```
 
@@ -2605,25 +2747,25 @@ As your GraphQL schema and resolvers grow, it's important to keep your code orga
    const { GraphQLError } = require('graphql');
 
    const resolvers = {
-       Mutation: {
-           createUser: async (parent, args, context) => {
-               try {
-                   // Validate input
-                   if (!args.email) {
-                       throw new GraphQLError('Email is required', {
-                           extensions: { code: 'BAD_USER_INPUT' }
-                       });
-                   }
+   	Mutation: {
+   		createUser: async (parent, args, context) => {
+   			try {
+   				// Validate input
+   				if (!args.email) {
+   					throw new GraphQLError('Email is required', {
+   						extensions: { code: 'BAD_USER_INPUT' },
+   					});
+   				}
 
-                   const user = await User.create(args);
-                   return user;
-               } catch (error) {
-                   throw new GraphQLError('Failed to create user', {
-                       extensions: { code: 'INTERNAL_ERROR' }
-                   });
-               }
-           }
-       }
+   				const user = await User.create(args);
+   				return user;
+   			} catch (error) {
+   				throw new GraphQLError('Failed to create user', {
+   					extensions: { code: 'INTERNAL_ERROR' },
+   				});
+   			}
+   		},
+   	},
    };
    ```
 
@@ -2640,8 +2782,8 @@ As your GraphQL schema and resolvers grow, it's important to keep your code orga
    `;
 
    const schema = makeExecutableSchema({
-       typeDefs,
-       resolvers
+   	typeDefs,
+   	resolvers,
    });
    ```
 
@@ -2669,34 +2811,34 @@ Authentication and authorization are crucial for securing GraphQL APIs. JSON Web
 
    // Generate JWT token
    const generateToken = (payload) => {
-       return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+   	return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
    };
 
    // Verify JWT token
    const verifyToken = (token) => {
-       try {
-           return jwt.verify(token, JWT_SECRET);
-       } catch (error) {
-           throw new Error('Invalid or expired token');
-       }
+   	try {
+   		return jwt.verify(token, JWT_SECRET);
+   	} catch (error) {
+   		throw new Error('Invalid or expired token');
+   	}
    };
 
    // Hash password
    const hashPassword = async (password) => {
-       const saltRounds = 10;
-       return await bcrypt.hash(password, saltRounds);
+   	const saltRounds = 10;
+   	return await bcrypt.hash(password, saltRounds);
    };
 
    // Compare password
    const comparePassword = async (password, hashedPassword) => {
-       return await bcrypt.compare(password, hashedPassword);
+   	return await bcrypt.compare(password, hashedPassword);
    };
 
    module.exports = {
-       generateToken,
-       verifyToken,
-       hashPassword,
-       comparePassword
+   	generateToken,
+   	verifyToken,
+   	hashPassword,
+   	comparePassword,
    };
    ```
 
@@ -2707,36 +2849,39 @@ Authentication and authorization are crucial for securing GraphQL APIs. JSON Web
    const mongoose = require('mongoose');
    const { hashPassword } = require('../utils/auth');
 
-   const userSchema = new mongoose.Schema({
-       username: {
-           type: String,
-           required: true,
-           unique: true,
-           trim: true
-       },
-       email: {
-           type: String,
-           required: true,
-           unique: true,
-           lowercase: true
-       },
-       password: {
-           type: String,
-           required: true,
-           minlength: 6
-       },
-       role: {
-           type: String,
-           enum: ['USER', 'ADMIN'],
-           default: 'USER'
-       }
-   }, { timestamps: true });
+   const userSchema = new mongoose.Schema(
+   	{
+   		username: {
+   			type: String,
+   			required: true,
+   			unique: true,
+   			trim: true,
+   		},
+   		email: {
+   			type: String,
+   			required: true,
+   			unique: true,
+   			lowercase: true,
+   		},
+   		password: {
+   			type: String,
+   			required: true,
+   			minlength: 6,
+   		},
+   		role: {
+   			type: String,
+   			enum: ['USER', 'ADMIN'],
+   			default: 'USER',
+   		},
+   	},
+   	{ timestamps: true }
+   );
 
    // Hash password before saving
-   userSchema.pre('save', async function(next) {
-       if (!this.isModified('password')) return next();
-       this.password = await hashPassword(this.password);
-       next();
+   userSchema.pre('save', async function (next) {
+   	if (!this.isModified('password')) return next();
+   	this.password = await hashPassword(this.password);
+   	next();
    });
 
    module.exports = mongoose.model('User', userSchema);
@@ -2750,17 +2895,17 @@ Authentication and authorization are crucial for securing GraphQL APIs. JSON Web
    const User = require('../models/User');
 
    const getUser = async (req) => {
-       const token = req.headers.authorization?.replace('Bearer ', '');
-       
-       if (!token) return null;
+   	const token = req.headers.authorization?.replace('Bearer ', '');
 
-       try {
-           const decoded = verifyToken(token);
-           const user = await User.findById(decoded.userId);
-           return user;
-       } catch (error) {
-           return null;
-       }
+   	if (!token) return null;
+
+   	try {
+   		const decoded = verifyToken(token);
+   		const user = await User.findById(decoded.userId);
+   		return user;
+   	} catch (error) {
+   		return null;
+   	}
    };
 
    module.exports = { getUser };
@@ -2773,51 +2918,51 @@ Authentication and authorization are crucial for securing GraphQL APIs. JSON Web
    const { gql } = require('apollo-server-express');
 
    const typeDefs = gql`
-       type User {
-           id: ID!
-           username: String!
-           email: String!
-           role: Role!
-           createdAt: String!
-           updatedAt: String!
-       }
+   	type User {
+   		id: ID!
+   		username: String!
+   		email: String!
+   		role: Role!
+   		createdAt: String!
+   		updatedAt: String!
+   	}
 
-       enum Role {
-           USER
-           ADMIN
-       }
+   	enum Role {
+   		USER
+   		ADMIN
+   	}
 
-       type AuthPayload {
-           token: String!
-           user: User!
-       }
+   	type AuthPayload {
+   		token: String!
+   		user: User!
+   	}
 
-       type Query {
-           me: User
-           users: [User!]! # Admin only
-       }
+   	type Query {
+   		me: User
+   		users: [User!]! # Admin only
+   	}
 
-       type Mutation {
-           register(input: RegisterInput!): AuthPayload!
-           login(input: LoginInput!): AuthPayload!
-           updateProfile(input: UpdateProfileInput!): User!
-       }
+   	type Mutation {
+   		register(input: RegisterInput!): AuthPayload!
+   		login(input: LoginInput!): AuthPayload!
+   		updateProfile(input: UpdateProfileInput!): User!
+   	}
 
-       input RegisterInput {
-           username: String!
-           email: String!
-           password: String!
-       }
+   	input RegisterInput {
+   		username: String!
+   		email: String!
+   		password: String!
+   	}
 
-       input LoginInput {
-           email: String!
-           password: String!
-       }
+   	input LoginInput {
+   		email: String!
+   		password: String!
+   	}
 
-       input UpdateProfileInput {
-           username: String
-           email: String
-       }
+   	input UpdateProfileInput {
+   		username: String
+   		email: String
+   	}
    `;
 
    module.exports = typeDefs;
@@ -2832,109 +2977,115 @@ Authentication and authorization are crucial for securing GraphQL APIs. JSON Web
    const { generateToken, comparePassword } = require('../utils/auth');
 
    const authResolvers = {
-       Query: {
-           me: async (parent, args, context) => {
-               if (!context.user) {
-                   throw new GraphQLError('You must be logged in', {
-                       extensions: { code: 'UNAUTHENTICATED' }
-                   });
-               }
-               return context.user;
-           },
+   	Query: {
+   		me: async (parent, args, context) => {
+   			if (!context.user) {
+   				throw new GraphQLError('You must be logged in', {
+   					extensions: { code: 'UNAUTHENTICATED' },
+   				});
+   			}
+   			return context.user;
+   		},
 
-           users: async (parent, args, context) => {
-               // Check if user is admin
-               if (!context.user || context.user.role !== 'ADMIN') {
-                   throw new GraphQLError('Access denied. Admin privileges required.', {
-                       extensions: { code: 'FORBIDDEN' }
-                   });
-               }
-               return await User.find();
-           }
-       },
+   		users: async (parent, args, context) => {
+   			// Check if user is admin
+   			if (!context.user || context.user.role !== 'ADMIN') {
+   				throw new GraphQLError('Access denied. Admin privileges required.', {
+   					extensions: { code: 'FORBIDDEN' },
+   				});
+   			}
+   			return await User.find();
+   		},
+   	},
 
-       Mutation: {
-           register: async (parent, { input }) => {
-               try {
-                   // Check if user already exists
-                   const existingUser = await User.findOne({ 
-                       $or: [{ email: input.email }, { username: input.username }]
-                   });
+   	Mutation: {
+   		register: async (parent, { input }) => {
+   			try {
+   				// Check if user already exists
+   				const existingUser = await User.findOne({
+   					$or: [{ email: input.email }, { username: input.username }],
+   				});
 
-                   if (existingUser) {
-                       throw new GraphQLError('User with this email or username already exists', {
-                           extensions: { code: 'BAD_USER_INPUT' }
-                       });
-                   }
+   				if (existingUser) {
+   					throw new GraphQLError(
+   						'User with this email or username already exists',
+   						{
+   							extensions: { code: 'BAD_USER_INPUT' },
+   						}
+   					);
+   				}
 
-                   // Create new user
-                   const user = new User(input);
-                   await user.save();
+   				// Create new user
+   				const user = new User(input);
+   				await user.save();
 
-                   // Generate token
-                   const token = generateToken({ userId: user.id });
+   				// Generate token
+   				const token = generateToken({ userId: user.id });
 
-                   return { token, user };
-               } catch (error) {
-                   throw new GraphQLError(error.message, {
-                       extensions: { code: 'BAD_USER_INPUT' }
-                   });
-               }
-           },
+   				return { token, user };
+   			} catch (error) {
+   				throw new GraphQLError(error.message, {
+   					extensions: { code: 'BAD_USER_INPUT' },
+   				});
+   			}
+   		},
 
-           login: async (parent, { input }) => {
-               try {
-                   // Find user by email
-                   const user = await User.findOne({ email: input.email });
+   		login: async (parent, { input }) => {
+   			try {
+   				// Find user by email
+   				const user = await User.findOne({ email: input.email });
 
-                   if (!user) {
-                       throw new GraphQLError('Invalid email or password', {
-                           extensions: { code: 'UNAUTHENTICATED' }
-                       });
-                   }
+   				if (!user) {
+   					throw new GraphQLError('Invalid email or password', {
+   						extensions: { code: 'UNAUTHENTICATED' },
+   					});
+   				}
 
-                   // Check password
-                   const isPasswordValid = await comparePassword(input.password, user.password);
+   				// Check password
+   				const isPasswordValid = await comparePassword(
+   					input.password,
+   					user.password
+   				);
 
-                   if (!isPasswordValid) {
-                       throw new GraphQLError('Invalid email or password', {
-                           extensions: { code: 'UNAUTHENTICATED' }
-                       });
-                   }
+   				if (!isPasswordValid) {
+   					throw new GraphQLError('Invalid email or password', {
+   						extensions: { code: 'UNAUTHENTICATED' },
+   					});
+   				}
 
-                   // Generate token
-                   const token = generateToken({ userId: user.id });
+   				// Generate token
+   				const token = generateToken({ userId: user.id });
 
-                   return { token, user };
-               } catch (error) {
-                   throw new GraphQLError(error.message, {
-                       extensions: { code: 'UNAUTHENTICATED' }
-                   });
-               }
-           },
+   				return { token, user };
+   			} catch (error) {
+   				throw new GraphQLError(error.message, {
+   					extensions: { code: 'UNAUTHENTICATED' },
+   				});
+   			}
+   		},
 
-           updateProfile: async (parent, { input }, context) => {
-               if (!context.user) {
-                   throw new GraphQLError('You must be logged in', {
-                       extensions: { code: 'UNAUTHENTICATED' }
-                   });
-               }
+   		updateProfile: async (parent, { input }, context) => {
+   			if (!context.user) {
+   				throw new GraphQLError('You must be logged in', {
+   					extensions: { code: 'UNAUTHENTICATED' },
+   				});
+   			}
 
-               try {
-                   const updatedUser = await User.findByIdAndUpdate(
-                       context.user.id,
-                       input,
-                       { new: true, runValidators: true }
-                   );
+   			try {
+   				const updatedUser = await User.findByIdAndUpdate(
+   					context.user.id,
+   					input,
+   					{ new: true, runValidators: true }
+   				);
 
-                   return updatedUser;
-               } catch (error) {
-                   throw new GraphQLError('Failed to update profile', {
-                       extensions: { code: 'BAD_USER_INPUT' }
-                   });
-               }
-           }
-       }
+   				return updatedUser;
+   			} catch (error) {
+   				throw new GraphQLError('Failed to update profile', {
+   					extensions: { code: 'BAD_USER_INPUT' },
+   				});
+   			}
+   		},
+   	},
    };
 
    module.exports = authResolvers;
@@ -2952,33 +3103,35 @@ Authentication and authorization are crucial for securing GraphQL APIs. JSON Web
    const { getUser } = require('./context/auth');
 
    async function startServer() {
-       const app = express();
+   	const app = express();
 
-       // Connect to MongoDB
-       await mongoose.connect('mongodb://localhost:27017/graphql-auth');
+   	// Connect to MongoDB
+   	await mongoose.connect('mongodb://localhost:27017/graphql-auth');
 
-       // Create Apollo Server
-       const server = new ApolloServer({
-           typeDefs,
-           resolvers,
-           context: async ({ req }) => {
-               // Get user from token
-               const user = await getUser(req);
-               return { user };
-           }
-       });
+   	// Create Apollo Server
+   	const server = new ApolloServer({
+   		typeDefs,
+   		resolvers,
+   		context: async ({ req }) => {
+   			// Get user from token
+   			const user = await getUser(req);
+   			return { user };
+   		},
+   	});
 
-       await server.start();
-       server.applyMiddleware({ app });
+   	await server.start();
+   	server.applyMiddleware({ app });
 
-       const PORT = process.env.PORT || 4000;
-       app.listen(PORT, () => {
-           console.log(`Server running on http://localhost:${PORT}${server.graphqlPath}`);
-       });
+   	const PORT = process.env.PORT || 4000;
+   	app.listen(PORT, () => {
+   		console.log(
+   			`Server running on http://localhost:${PORT}${server.graphqlPath}`
+   		);
+   	});
    }
 
-   startServer().catch(error => {
-       console.error('Error starting server:', error);
+   startServer().catch((error) => {
+   	console.error('Error starting server:', error);
    });
    ```
 
@@ -2988,19 +3141,21 @@ Authentication and authorization are crucial for securing GraphQL APIs. JSON Web
 
    ```graphql
    mutation {
-       register(input: {
-           username: "johndoe"
-           email: "john@example.com"
-           password: "password123"
-       }) {
-           token
-           user {
-               id
-               username
-               email
-               role
-           }
-       }
+   	register(
+   		input: {
+   			username: "johndoe"
+   			email: "john@example.com"
+   			password: "password123"
+   		}
+   	) {
+   		token
+   		user {
+   			id
+   			username
+   			email
+   			role
+   		}
+   	}
    }
    ```
 
@@ -3008,23 +3163,21 @@ Authentication and authorization are crucial for securing GraphQL APIs. JSON Web
 
    ```graphql
    mutation {
-       login(input: {
-           email: "john@example.com"
-           password: "password123"
-       }) {
-           token
-           user {
-               id
-               username
-               email
-           }
-       }
+   	login(input: { email: "john@example.com", password: "password123" }) {
+   		token
+   		user {
+   			id
+   			username
+   			email
+   		}
+   	}
    }
    ```
 
 3. **Access Protected Resources**
 
    Add the JWT token to your request headers:
+
    ```
    {
        "Authorization": "Bearer your-jwt-token-here"
@@ -3032,14 +3185,15 @@ Authentication and authorization are crucial for securing GraphQL APIs. JSON Web
    ```
 
    Then query protected resources:
+
    ```graphql
    query {
-       me {
-           id
-           username
-           email
-           role
-       }
+   	me {
+   		id
+   		username
+   		email
+   		role
+   	}
    }
    ```
 
@@ -3058,41 +3212,49 @@ Authentication and authorization are crucial for securing GraphQL APIs. JSON Web
 
    ```javascript
    const resolvers = {
-       User: {
-           email: (user, args, context) => {
-               // Only allow users to see their own email or admins to see all emails
-               if (context.user.id === user.id || context.user.role === 'ADMIN') {
-                   return user.email;
-               }
-               throw new GraphQLError('Access denied');
-           }
-       }
+   	User: {
+   		email: (user, args, context) => {
+   			// Only allow users to see their own email or admins to see all emails
+   			if (context.user.id === user.id || context.user.role === 'ADMIN') {
+   				return user.email;
+   			}
+   			throw new GraphQLError('Access denied');
+   		},
+   	},
    };
    ```
 
 2. **Directive-Based Authorization**
 
    ```javascript
-   const { mapSchema, getDirective, MapperKind } = require('@graphql-tools/utils');
+   const {
+   	mapSchema,
+   	getDirective,
+   	MapperKind,
+   } = require('@graphql-tools/utils');
 
    function authDirectiveTransformer(schema, directiveName) {
-       return mapSchema(schema, {
-           [MapperKind.FIELD]: (fieldConfig, _fieldName, typeName) => {
-               const authDirective = getDirective(schema, fieldConfig, directiveName)?.[0];
-               if (authDirective) {
-                   const { requires } = authDirective;
-                   const { resolve = defaultFieldResolver } = fieldConfig;
-                   
-                   fieldConfig.resolve = function(source, args, context, info) {
-                       if (!context.user || context.user.role !== requires) {
-                           throw new GraphQLError('Access denied');
-                       }
-                       return resolve(source, args, context, info);
-                   };
-               }
-               return fieldConfig;
-           }
-       });
+   	return mapSchema(schema, {
+   		[MapperKind.FIELD]: (fieldConfig, _fieldName, typeName) => {
+   			const authDirective = getDirective(
+   				schema,
+   				fieldConfig,
+   				directiveName
+   			)?.[0];
+   			if (authDirective) {
+   				const { requires } = authDirective;
+   				const { resolve = defaultFieldResolver } = fieldConfig;
+
+   				fieldConfig.resolve = function (source, args, context, info) {
+   					if (!context.user || context.user.role !== requires) {
+   						throw new GraphQLError('Access denied');
+   					}
+   					return resolve(source, args, context, info);
+   				};
+   			}
+   			return fieldConfig;
+   		},
+   	});
    }
    ```
 
@@ -3100,8 +3262,8 @@ This completes the comprehensive Node.js notes covering all topics from beginner
 
 ---
 
-*These Notes Were Compiled By Deepak Modi*		
+_These Notes Were Compiled By Deepak Modi_
 
-*Website: [Deepak Modi](https://deepakmodi.tech)*	
+_Website: [Deepak Modi](https://deepakmodi.tech)_
 
-*Connect with me on [LinkedIn](https://www.linkedin.com/in/deepakmodi1/) for more updates and resources!*
+_Connect with me on [LinkedIn](https://www.linkedin.com/in/deepakmodi1/) for more updates and resources!_
