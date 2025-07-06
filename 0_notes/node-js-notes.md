@@ -2077,11 +2077,12 @@ Deploying Node.js applications on AWS can be done using various services like EC
 
 Serverless computing allows you to build and run applications without having to manage servers. AWS Lambda is a serverless compute service that runs your code in response to events and automatically manages the underlying compute resources.
 
+#### Serverless vs Monolithic
+Serverless applications are event-driven and run in stateless compute containers, while monolithic applications are typically deployed on a single server or cluster. EC2 is a good choice for monolithic applications, while AWS Lambda is ideal for serverless architectures.
+
 #### Serverless Framework
 
 The Serverless Framework is an open-source framework that simplifies the development and deployment of serverless applications.
-
-> Note: Difference between serverless and Serverless Framework: Serverless is a general term for serverless computing, while the Serverless Framework is a specific tool that helps you build and deploy serverless applications.
 
 1. **Install Serverless Framework**
 
@@ -2188,9 +2189,13 @@ Node.js is single-threaded by default, which means it can only utilize one CPU c
 
 ### 7.5 NGINX (Setup, Serve Static Content, SSL with LetsEncrypt)
 
-NGINX is a high-performance web server that can also be used as a reverse proxy, load balancer, and HTTP cache. It is often used to serve static content and as a reverse proxy for Node.js applications.
+NGINX (Engine-X) is a high-performance open-source web server that uses a non-threaded, event-driven architecture to handle multiple concurrent requests efficiently. It can also be used as a reverse proxy, load balancer, and HTTP cache.
+
+NGINX is often used to serve static content, reverse proxy Node.js applications, and handle SSL termination.
 
 #### Installing NGINX
+
+To install NGINX on a Linux server (e.g., Ubuntu), follow these steps:
 
 ```bash
 sudo apt update
