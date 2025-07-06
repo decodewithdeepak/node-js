@@ -54,10 +54,11 @@
 
 7. [Deployment & Performance](#7-deployment--performance)
 
-   - [7.1 AWS Deployment](#71-aws-deployment)
-   - [7.2 NGINX (Setup, Serve Static Content, SSL with LetsEncrypt)](#72-nginx-setup-serve-static-content-ssl-with-letsencrypt)
-   - [7.3 Scaling Node.js with Cluster](#73-scaling-nodejs-with-cluster)
-   - [7.4 Serverless Framework + AWS Lambda](#74-serverless-framework--aws-lambda)
+   - [7.1 Vercel Deployment](#71-vercel-deployment)
+   - [7.2 AWS Deployment](#71-aws-deployment)
+   - [7.3 Serverless Framework + AWS Lambda](#73-serverless-framework--aws-lambda)
+   - [7.4 Scaling Node.js with Cluster](#74-scaling-nodejs-with-cluster)
+   - [7.5 NGINX (Setup, Serve Static Content, SSL with LetsEncrypt)](#75-nginx-setup-serve-static-content-ssl-with-letsencrypt)
 
 8. [Real-time and Streams](#8-real-time-and-streams)
 
@@ -2072,7 +2073,120 @@ Deploying Node.js applications on AWS can be done using various services like EC
 4. **Configure Environment Variables**: Set any necessary environment variables in the Elastic Beanstalk console.
 5. **Access the Application**: Once deployed, Elastic Beanstalk provides a URL to access your application.
 
-### 7.3 NGINX (Setup, Serve Static Content, SSL with LetsEncrypt)
+### 7.3 Serverless Framework + AWS Lambda
+
+Serverless computing allows you to build and run applications without having to manage servers. AWS Lambda is a serverless compute service that runs your code in response to events and automatically manages the underlying compute resources.
+
+#### Serverless Framework
+
+The Serverless Framework is an open-source framework that simplifies the development and deployment of serverless applications.
+
+> Note: Difference between serverless and Serverless Framework: Serverless is a general term for serverless computing, while the Serverless Framework is a specific tool that helps you build and deploy serverless applications.
+
+1. **Install Serverless Framework**
+
+   ```bash
+   npm install -g serverless
+   ```
+
+2. **Create a Serverless Service**
+
+   ```bash
+   serverless create --template aws-nodejs --path my-service
+   cd my-service
+   ```
+
+3. **Configure serverless.yml**
+
+   ```yaml
+   service: my-service
+
+   provider:
+     name: aws
+     runtime: nodejs14.x
+
+   functions:
+     hello:
+       handler: handler.hello
+       events:
+         - http:
+             path: hello
+             method: get
+   ```
+
+4. **Deploy the Service**
+
+   ```bash
+   serverless deploy
+   ```
+
+5. **Invoke the Function**
+
+   ```bash
+   serverless invoke -f hello
+   ```
+
+6. **View Logs**
+
+   ```bash
+   serverless logs -f hello
+   ```
+
+7. **Remove the Service**
+
+   ```bash
+   serverless remove
+   ```
+
+### 7.4 Scaling Node.js with Cluster
+
+Node.js is single-threaded by default, which means it can only utilize one CPU core. However, you can scale your Node.js application across multiple CPU cores using the built-in Cluster module. This allows you to create child processes (workers) that share the same server port.
+
+#### Basic Usage
+
+1. **Require the Cluster Module**
+
+   ```javascript
+   const cluster = require('cluster');
+   const http = require('http');
+   const numCPUs = require('os').cpus().length;
+   ```
+
+2. **Fork Workers**
+
+   ```javascript
+   if (cluster.isPrimary) {
+   	// Fork workers
+   	for (let i = 0; i < numCPUs; i++) {
+   		cluster.fork();
+   	}
+
+   	cluster.on('exit', (worker, code, signal) => {
+   		console.log(`Worker ${worker.process.pid} died`);
+   	});
+   } else {
+   	// Workers can share any TCP connection
+   	// In this case, it is an HTTP server
+   	http
+   		.createServer((req, res) => {
+   			res.writeHead(200);
+   			res.end('Hello World\n');
+   		})
+   		.listen(8000);
+   }
+   ```
+
+3. **Run the Application**
+
+   ```bash
+   node app.js
+   ```
+
+4. **Test the Clustered Application**
+
+   - Send requests to the server and observe that multiple worker processes handle the requests.
+
+### 7.5 NGINX (Setup, Serve Static Content, SSL with LetsEncrypt)
 
 NGINX is a high-performance web server that can also be used as a reverse proxy, load balancer, and HTTP cache. It is often used to serve static content and as a reverse proxy for Node.js applications.
 
@@ -2145,119 +2259,6 @@ sudo apt install nginx
 
    ```bash
    sudo certbot renew --dry-run
-   ```
-
-### 7.4 Scaling Node.js with Cluster
-
-The Node.js cluster module allows you to create multiple child processes (workers) that share the same server port. This takes advantage of multi-core systems and improves the performance of Node.js applications.
-
-#### Basic Usage
-
-1. **Require the Cluster Module**
-
-   ```javascript
-   const cluster = require('cluster');
-   const http = require('http');
-   const numCPUs = require('os').cpus().length;
-   ```
-
-2. **Fork Workers**
-
-   ```javascript
-   if (cluster.isMaster) {
-   	// Fork workers
-   	for (let i = 0; i < numCPUs; i++) {
-   		cluster.fork();
-   	}
-
-   	cluster.on('exit', (worker, code, signal) => {
-   		console.log(`Worker ${worker.process.pid} died`);
-   	});
-   } else {
-   	// Workers can share any TCP connection
-   	// In this case, it is an HTTP server
-   	http
-   		.createServer((req, res) => {
-   			res.writeHead(200);
-   			res.end('Hello World\n');
-   		})
-   		.listen(8000);
-   }
-   ```
-
-3. **Run the Application**
-
-   ```bash
-   node app.js
-   ```
-
-4. **Test the Clustered Application**
-
-   - Send requests to the server and observe that multiple worker processes handle the requests.
-
-### 7.5 Serverless Framework + AWS Lambda
-
-Serverless computing allows you to build and run applications without having to manage servers. AWS Lambda is a serverless compute service that runs your code in response to events and automatically manages the underlying compute resources.
-
-#### Serverless Framework
-
-The Serverless Framework is an open-source framework that simplifies the development and deployment of serverless applications.
-
-> Note: Difference between serverless and Serverless Framework: Serverless is a general term for serverless computing, while the Serverless Framework is a specific tool that helps you build and deploy serverless applications.
-
-1. **Install Serverless Framework**
-
-   ```bash
-   npm install -g serverless
-   ```
-
-2. **Create a Serverless Service**
-
-   ```bash
-   serverless create --template aws-nodejs --path my-service
-   cd my-service
-   ```
-
-3. **Configure serverless.yml**
-
-   ```yaml
-   service: my-service
-
-   provider:
-     name: aws
-     runtime: nodejs14.x
-
-   functions:
-     hello:
-       handler: handler.hello
-       events:
-         - http:
-             path: hello
-             method: get
-   ```
-
-4. **Deploy the Service**
-
-   ```bash
-   serverless deploy
-   ```
-
-5. **Invoke the Function**
-
-   ```bash
-   serverless invoke -f hello
-   ```
-
-6. **View Logs**
-
-   ```bash
-   serverless logs -f hello
-   ```
-
-7. **Remove the Service**
-
-   ```bash
-   serverless remove
    ```
 
 ## 8. Real-time and Streams
