@@ -1,0 +1,8 @@
+Node.js Streams
+- Streams are objects that allow you to read data from a source or write data to a destination in a continuous fashion. They are used for handling reading/writing files, network communications, or any kind of end-to-end information exchange.
+
+Types of Streams
+- Readable Streams: Streams from which data can be read (e.g., fs createReadStream()).
+- Writable Streams: Streams to which data can be written (e.g., fs.createWriteStream()).
+- Duplex Streams: Streams that are both readable and writable (e.g., TCP sockets).
+- Transform Streams: Duplex streams that can modify or transform the data as it is written and read (e.g., zlib compression streams).

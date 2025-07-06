@@ -2395,6 +2395,25 @@ realtime-app/
 
 Streams are objects that allow you to read data from a source or write data to a destination in a continuous fashion. They are used for handling reading/writing files, network communications, or any kind of end-to-end information exchange.
 
+#### Why Use Streaming?
+Streaming is a way to process data piece by piece (in chunks) rather than loading everything into memory at once. This is particularly useful for large files or data sources, as it reduces memory usage and allows for faster processing.
+
+```js
+// WITHOUT STREAMING (Bad for large files)
+app.get('/download-movie', (req, res) => {
+    fs.readFile('movie.mp4', (err, data) => {
+        if (err) throw err;
+        res.send(data); // Loads entire 2GB movie into memory first!
+    });
+});
+
+// WITH STREAMING (Good!)
+app.get('/download-movie', (req, res) => {
+    const stream = fs.createReadStream('movie.mp4');
+    stream.pipe(res); // Sends chunks as they're read
+});
+```
+
 #### Types of Streams
 
 - **Readable Streams**: Streams from which data can be read (e.g., `fs.createReadStream()`).
