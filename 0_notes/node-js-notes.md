@@ -2048,7 +2048,7 @@ Vercel is a popular serverless platform optimized for frontend frameworks and No
    - Navigate to Environment Variables
    - Add your variables for Production, Preview, and Development
 
-    > Use MongoDB Atlas cloud database for production to maintain consistency across environments.
+   > Use MongoDB Atlas cloud database for production to maintain consistency across environments.
 
 ### 7.2 AWS Deployment
 
@@ -2322,20 +2322,21 @@ realtime-app/
    const server = http.createServer(app);
    const io = socketIo(server);
 
-   app.get('/', (req, res) => {
-   	res.sendFile(__dirname + '/public/index.html');
-   });
+   app.use(express.static('public'));
 
    io.on('connection', (socket) => {
-   	console.log('A user connected');
-
+   	console.log('A user connected: ' + socket.id);
+   	socket.on('chat message', (msg) => {
+   		console.log('Message received from ' + socket.id + ': ' + msg);
+   		io.emit('chat message', msg); // Broadcast the message to all connected clients
+   	});
    	socket.on('disconnect', () => {
-   		console.log('User disconnected');
+   		console.log('A user disconnected: ' + socket.id);
    	});
    });
 
    server.listen(3000, () => {
-   	console.log('Server running on port 3000');
+   	console.log(`Server is running on http://localhost:3000`);
    });
    ```
 
@@ -2347,7 +2348,7 @@ realtime-app/
    	<head>
    		<meta charset="UTF-8" />
    		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   		<title>Real-time App</title>
+   		<title>Real-time Chat App</title>
    	</head>
    	<body>
    		<h1>Real-time Communication with Socket.IO</h1>
