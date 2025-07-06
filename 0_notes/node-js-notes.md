@@ -716,6 +716,8 @@ MongoDB uses the lightweight and flexible BSON (Binary JSON), an extension JSON,
 
 Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js that provides schema validation, casting, and business logic hooks.
 
+> For MongoDB (NoSQL), we have ODM (Object Data Modeling) library called Mongoose. And for SQL databases, we have ORM (Object Relational Mapping) libraries like Prisma and Drizzle.
+
 #### Installation of Mongoose
 
 To use Mongoose, you need to install it in your Node.js project:
